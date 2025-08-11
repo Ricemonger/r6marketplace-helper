@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class FastSellCommand implements Comparable<FastSellCommand> {
+public class FastTradeCommand implements Comparable<FastTradeCommand> {
     private final AuthorizationDTO authorizationDTO;
     private final FastTradeManagerCommandType commandType;
     private final String itemId;
@@ -17,7 +17,7 @@ public class FastSellCommand implements Comparable<FastSellCommand> {
     private final Integer newPrice;
 
     // CANCEL
-    public FastSellCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, String tradeId) {
+    public FastTradeCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, String tradeId) {
         this.authorizationDTO = authorizationDTO;
         this.commandType = commandType;
         this.itemId = itemId;
@@ -26,7 +26,7 @@ public class FastSellCommand implements Comparable<FastSellCommand> {
     }
 
     // UPDATE
-    public FastSellCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, String tradeId, Integer newPrice) {
+    public FastTradeCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, String tradeId, Integer newPrice) {
         this.authorizationDTO = authorizationDTO;
         this.commandType = commandType;
         this.itemId = itemId;
@@ -35,7 +35,7 @@ public class FastSellCommand implements Comparable<FastSellCommand> {
     }
 
     // CREATE
-    public FastSellCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, Integer newPrice) {
+    public FastTradeCommand(AuthorizationDTO authorizationDTO, FastTradeManagerCommandType commandType, String itemId, Integer newPrice) {
         this.authorizationDTO = authorizationDTO;
         this.commandType = commandType;
         this.itemId = itemId;
@@ -44,7 +44,7 @@ public class FastSellCommand implements Comparable<FastSellCommand> {
     }
 
     @Override
-    public int compareTo(FastSellCommand o) {
+    public int compareTo(FastTradeCommand o) {
         int typeCompare = this.commandType.compareTo(o.commandType);
         if (typeCompare != 0) {
             return typeCompare;

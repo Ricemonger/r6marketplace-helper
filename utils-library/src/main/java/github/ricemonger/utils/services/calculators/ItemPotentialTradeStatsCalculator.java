@@ -37,7 +37,6 @@ public class ItemPotentialTradeStatsCalculator {
             totalAmount += quantity;
 
             if (basicRequiredSalesAmount + itemTradeTimeCalculator.getSameOrHigherPricesBuyOrdersAmount(item, price) <= totalAmount) {
-                System.out.println(price);
                 return itemFancyPriceCalculator.getCurrentFancyBuyPrice(item, price);
             }
         }

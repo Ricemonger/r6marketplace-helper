@@ -1,6 +1,6 @@
 package github.ricemonger.fast_sell_trade_manager.services;
 
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastSellManagedUser;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.ManagedUser;
 import github.ricemonger.fast_sell_trade_manager.services.abstractions.UbiAccountEntryDatabaseService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -22,7 +22,7 @@ class UbiAccountServiceTest {
 
     @Test
     public void getFastSellManagedUserById_should_return_db_service_result() {
-        FastSellManagedUser user = Mockito.mock(FastSellManagedUser.class);
+        ManagedUser user = Mockito.mock(ManagedUser.class);
 
         when(ubiAccountEntryDatabaseService.getFastSellManagedUserById(1L, "email")).thenReturn(user);
 

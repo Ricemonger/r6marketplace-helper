@@ -20,6 +20,7 @@ public interface CustomTradeByItemIdManagerPostgresRepository extends JpaReposit
     void invertEnabledFlagByUserTelegramUserChatIdAndItemItemId(String chatId, String itemId);
 
     @Transactional
+    @Modifying
     void deleteByUserTelegramUserChatIdAndItemItemId(String chatId, String itemId);
 
     @Transactional(readOnly = true)

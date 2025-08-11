@@ -2,7 +2,7 @@ package github.ricemonger.fast_sell_trade_manager.postgres.services.entity_mappe
 
 
 import github.ricemonger.fast_sell_trade_manager.postgres.dto_projections.FastSellManagedUserProjection;
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastSellManagedUser;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.ManagedUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,8 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UbiAccountStatsEntityMapper {
 
-    public FastSellManagedUser createFastSellManagedUser(FastSellManagedUserProjection projection, List<String> resaleLocks) {
-        return new FastSellManagedUser(
+    public ManagedUser createFastSellManagedUser(FastSellManagedUserProjection projection, List<String> resaleLocks) {
+        return new ManagedUser(
                 projection.getUbiAuthTicket(),
                 projection.getUbiProfileId(),
                 projection.getUbiSpaceId(),

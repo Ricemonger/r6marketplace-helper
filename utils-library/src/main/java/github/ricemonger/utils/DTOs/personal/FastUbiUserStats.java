@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FastUserUbiStats {
-    private List<ItemCurrentPrices> itemsCurrentPrices;
+public class FastUbiUserStats {
+    private List<ItemCurrentPrices> ownedItemsCurrentPrices;
     private List<SellTrade> currentSellOrders;
 }

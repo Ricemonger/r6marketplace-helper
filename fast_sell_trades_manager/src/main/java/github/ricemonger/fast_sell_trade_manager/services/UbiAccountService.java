@@ -1,6 +1,6 @@
 package github.ricemonger.fast_sell_trade_manager.services;
 
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastSellManagedUser;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.ManagedUser;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.ItemMedianPriceAndRarity;
 import github.ricemonger.fast_sell_trade_manager.services.abstractions.UbiAccountEntryDatabaseService;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
@@ -17,7 +17,7 @@ public class UbiAccountService {
 
     private final UbiAccountEntryDatabaseService ubiAccountEntryDatabaseService;
 
-    public FastSellManagedUser getFastSellManagedUserById(Long userId, String email) {
+    public ManagedUser getFastSellManagedUserById(Long userId, String email) {
         return ubiAccountEntryDatabaseService.getFastSellManagedUserById(userId, email);
     }
 

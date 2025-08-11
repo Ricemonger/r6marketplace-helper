@@ -20,6 +20,7 @@ public interface CustomTradeByFiltersManagerPostgresRepository extends JpaReposi
     void invertEnabledFlagByUserTelegramUserChatIdAndName(String chatId, String name);
 
     @Transactional
+    @Modifying
     void deleteByUserTelegramUserChatIdAndName(String chatId, String name);
 
     @Transactional(readOnly = true)

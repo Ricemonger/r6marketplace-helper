@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @Configuration
 public class ItemTradePriorityByExpressionCalculatorConfiguration {
-
     @Value("${default_values.sell_trade_priority_expression}")
     private String defaultSellTradePriorityExpression;
 

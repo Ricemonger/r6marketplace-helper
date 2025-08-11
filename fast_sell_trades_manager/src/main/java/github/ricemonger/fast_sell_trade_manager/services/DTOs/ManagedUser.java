@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FastSellManagedUser {
+public class ManagedUser {
     private String ubiAuthTicket;
     private String ubiProfileId;
     private String ubiSpaceId;

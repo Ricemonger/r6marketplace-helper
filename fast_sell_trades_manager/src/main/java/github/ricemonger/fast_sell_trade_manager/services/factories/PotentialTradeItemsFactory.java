@@ -2,7 +2,7 @@ package github.ricemonger.fast_sell_trade_manager.services.factories;
 
 import github.ricemonger.fast_sell_trade_manager.services.CommonValuesService;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.ItemMedianPriceAndRarity;
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTrade;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTradeItem;
 import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -16,48 +16,48 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PotentialTradeFactory {
+public class PotentialTradeItemsFactory {
 
     private final CommonValuesService commonValuesService;
 
-    public List<PotentialTrade> createPotentialTradesForUser(Collection<ItemCurrentPrices> itemsCurrentPrices,
-                                                             Collection<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity,
-                                                             Integer minMedianPriceDifference,
-                                                             Integer minMedianPriceDifferencePercentage) {
-        List<PotentialTrade> potentialTrades = new ArrayList<>();
+    public List<PotentialTradeItem> createPotentialTradeItemsForUser(Collection<ItemCurrentPrices> ownedItemsCurrentPrices,
+                                                                     Collection<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity,
+                                                                     Integer minMedianPriceDifference,
+                                                                     Integer minMedianPriceDifferencePercentage) {
+        List<PotentialTradeItem> potentialTradeItems = new ArrayList<>();
 
-        for (ItemCurrentPrices itemPrices : itemsCurrentPrices) {
+        for (ItemCurrentPrices itemPrices : ownedItemsCurrentPrices) {
             ItemMedianPriceAndRarity itemMedianPriceAndRarity = itemsMedianPriceAndRarity.stream()
                     .filter(item -> item.getItemId().equals(itemPrices.getItemId()))
                     .findFirst()
                     .orElse(null);
 
             if (itemMedianPriceAndRarity != null && itemMedianPriceAndRarity.getMonthMedianPrice() != null) {
-                PotentialTrade trade = createPotentialTradeForUserOrNull(itemPrices, itemMedianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
+                PotentialTradeItem trade = createPotentialTradeItemsForUserOrNull(itemPrices, itemMedianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
                 if (trade != null) {
-                    potentialTrades.add(trade);
+                    potentialTradeItems.add(trade);
                 }
             }
         }
 
-        if (!potentialTrades.isEmpty()) {
-            log.debug("Potential trades for user: {}", potentialTrades);
+        if (!potentialTradeItems.isEmpty()) {
+            log.debug("Potential trade items for user: {}", potentialTradeItems);
         }
 
-        return potentialTrades;
+        return potentialTradeItems;
     }
 
-    public PotentialTrade createPotentialTradeForUserOrNull(@NonNull ItemCurrentPrices itemsCurrentPrices,
-                                                            @NonNull ItemMedianPriceAndRarity itemMedianPriceAndRarity,
-                                                            @NonNull Integer minMedianPriceDifference,
-                                                            @NonNull Integer minMedianPriceDifferencePercentage) {
+    public PotentialTradeItem createPotentialTradeItemsForUserOrNull(@NonNull ItemCurrentPrices itemsCurrentPrices,
+                                                                     @NonNull ItemMedianPriceAndRarity itemMedianPriceAndRarity,
+                                                                     @NonNull Integer minMedianPriceDifference,
+                                                                     @NonNull Integer minMedianPriceDifferencePercentage) {
 
         if (itemsCurrentPrices.getMaxBuyPrice() != null) {
             Integer buyPriceMedianPriceDifference = itemsCurrentPrices.getMaxBuyPrice() - itemMedianPriceAndRarity.getMonthMedianPrice();
             Integer buyPriceMedianPriceDifferencePercentage = (buyPriceMedianPriceDifference * 100) / itemMedianPriceAndRarity.getMonthMedianPrice();
 
             if (buyPriceMedianPriceDifference >= minMedianPriceDifference && buyPriceMedianPriceDifferencePercentage >= minMedianPriceDifferencePercentage) {
-                return new PotentialTrade(
+                return new PotentialTradeItem(
                         itemsCurrentPrices.getItemId(),
                         itemsCurrentPrices.getMaxBuyPrice() - 1,
                         buyPriceMedianPriceDifference,
@@ -72,7 +72,7 @@ public class PotentialTradeFactory {
         Integer sellPriceMedianPriceDifferencePercentage = (sellPriceMedianPriceDifference * 100) / itemMedianPriceAndRarity.getMonthMedianPrice();
 
         if (sellPriceMedianPriceDifference >= minMedianPriceDifference && sellPriceMedianPriceDifferencePercentage >= minMedianPriceDifferencePercentage) {
-            return new PotentialTrade(
+            return new PotentialTradeItem(
                     itemsCurrentPrices.getItemId(),
                     sellPrice - 1,
                     sellPriceMedianPriceDifference,

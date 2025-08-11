@@ -1,10 +1,10 @@
 package github.ricemonger.fast_sell_trade_manager.scheduled_tasks;
 
 import github.ricemonger.fast_sell_trade_manager.services.CommonValuesService;
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastSellManagedUser;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.ManagedUser;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.ItemMedianPriceAndRarity;
 import github.ricemonger.fast_sell_trade_manager.services.UbiAccountService;
-import github.ricemonger.fast_sell_trade_manager.services.UserFastSellTradesManager;
+import github.ricemonger.fast_sell_trade_manager.services.UserFastTradesManager;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,21 +19,21 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class ScheduledOneUserFastSellTradeManager {
-    private final UserFastSellTradesManager userFastSellTradesManager;
+    private final UserFastTradesManager userFastTradesManager;
 
     private final CommonValuesService commonValuesService;
     private final UbiAccountService ubiAccountService;
 
     private int sellLimit;
     private int sellSlots;
-    private FastSellManagedUser managedUser;
+    private ManagedUser managedUser;
     private List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity = new ArrayList<>();
     private List<AuthorizationDTO> fetchUsersAuthorizationDTOs;
     private int currentFetchUserIndex = 0;
 
     @Scheduled(fixedRateString = "${app.scheduling.management_update.fixedRate}", initialDelayString = "${app.scheduling.management_update.initialDelay}")
     public void submitCreateCommandsTaskByFetchedUserStats() {
-        userFastSellTradesManager.submitCreateCommandsTaskByFetchedUserStats(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+        userFastTradesManager.submitCreateCommandsTaskByFetchedUserStats(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.management_fetch.fixedRate}", initialDelayString = "${app.scheduling.management_fetch.initialDelay}")
@@ -45,18 +45,18 @@ public class ScheduledOneUserFastSellTradeManager {
             if (currentFetchUserIndex >= fetchUsersAuthorizationDTOs.size()) {
                 currentFetchUserIndex = 0;
             }
-            userFastSellTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(managedUser, fetchUsersAuthorizationDTOs.get(currentFetchUserIndex++), itemsMedianPriceAndRarity, sellLimit, sellSlots);
+            userFastTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(managedUser, fetchUsersAuthorizationDTOs.get(currentFetchUserIndex++), itemsMedianPriceAndRarity, sellLimit, sellSlots);
         }
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.management_execute.fixedRate}", initialDelayString = "${app.scheduling.management_execute.initialDelay}")
     public void executeFastSellCommands() {
-        userFastSellTradesManager.executeFastSellCommands();
+        userFastTradesManager.executeFastSellCommands();
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.keep_unused_slot.fixedRate}", initialDelayString = "${app.scheduling.keep_unused_slot.initialDelay}")
     public void keepUnusedOneSellSlotForManagedUser() {
-        userFastSellTradesManager.createAndExecuteCommandsToKeepOneSellSlotUnused(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+        userFastTradesManager.createAndExecuteCommandsToKeepOneSellSlotUnused(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.median_prices_fetch.fixedRate}", initialDelayString = "${app.scheduling.median_prices_fetch.initialDelay}")

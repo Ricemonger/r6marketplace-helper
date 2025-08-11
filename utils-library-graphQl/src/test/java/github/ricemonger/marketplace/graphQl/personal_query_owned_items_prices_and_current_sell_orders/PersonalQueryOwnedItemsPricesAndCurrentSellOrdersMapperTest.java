@@ -12,7 +12,7 @@ import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_a
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_and_current_sell_orders.DTO.meta.trades.nodes.PaymentOptions;
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_and_current_sell_orders.DTO.meta.trades.nodes.TradeItems;
 import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
-import github.ricemonger.utils.DTOs.personal.FastUserUbiStats;
+import github.ricemonger.utils.DTOs.personal.FastUbiUserStats;
 import github.ricemonger.utils.DTOs.personal.SellTrade;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalOwnedItemPricesAndCurrentSellOrdersMappingException;
 import org.junit.jupiter.api.Test;
@@ -65,9 +65,9 @@ class PersonalQueryOwnedItemsPricesAndCurrentSellOrdersMapperTest {
         doReturn(items).when(mapper).mapItems(marketableItems);
         doReturn(currentSellOrders).when(mapper).mapCurrentOrders(trades);
 
-        FastUserUbiStats result = mapper.mapOwnedItemsPricesAndCurrentSellOrders(meta);
+        FastUbiUserStats result = mapper.mapOwnedItemsPricesAndCurrentSellOrders(meta);
 
-        assertSame(items, result.getItemsCurrentPrices());
+        assertSame(items, result.getOwnedItemsCurrentPrices());
         assertSame(currentSellOrders, result.getCurrentSellOrders());
     }
 

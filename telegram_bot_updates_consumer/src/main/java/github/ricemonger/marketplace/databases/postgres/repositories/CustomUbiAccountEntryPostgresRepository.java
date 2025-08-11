@@ -19,7 +19,7 @@ public interface CustomUbiAccountEntryPostgresRepository extends JpaRepository<U
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.UbiAccountAuthorizationEntryProjection(" +
             "u.ubiAccountStats.ubiProfileId," +
-            " u.email," +
+            "u.email," +
             "u.encodedPassword," +
             "u.ubiSessionId," +
             "u.ubiSpaceId," +

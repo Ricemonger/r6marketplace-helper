@@ -8,7 +8,7 @@ import github.ricemonger.fast_sell_trade_manager.postgres.repositories.FetchingU
 import github.ricemonger.fast_sell_trade_manager.postgres.services.entity_mappers.fetch.FetchingUbiAccountAuthorizationEntryEntityMapper;
 import github.ricemonger.fast_sell_trade_manager.postgres.services.entity_mappers.item.ItemEntityMapper;
 import github.ricemonger.fast_sell_trade_manager.postgres.services.entity_mappers.user.UbiAccountStatsEntityMapper;
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastSellManagedUser;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.ManagedUser;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.ItemMedianPriceAndRarity;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utilspostgresschema.full_entities.fetch.FetchingUbiAccountAuthorizationEntryEntity;
@@ -52,7 +52,7 @@ class UbiAccountPostgresServiceTest {
         List resaleLocks = Mockito.mock(List.class);
         when(customUbiAccountStatsPostgresRepository.findAllUserResaleLocksItemIds("ubiProfileId")).thenReturn(resaleLocks);
 
-        FastSellManagedUser user = Mockito.mock(FastSellManagedUser.class);
+        ManagedUser user = Mockito.mock(ManagedUser.class);
 
         when(ubiAccountStatsEntityMapper.createFastSellManagedUser(same(projection), same(resaleLocks))).thenReturn(user);
 

@@ -11,7 +11,7 @@ import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_a
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_and_current_sell_orders.DTO.meta.trades.Nodes;
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_and_current_sell_orders.DTO.meta.trades.nodes.PaymentOptions;
 import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
-import github.ricemonger.utils.DTOs.personal.FastUserUbiStats;
+import github.ricemonger.utils.DTOs.personal.FastUbiUserStats;
 import github.ricemonger.utils.DTOs.personal.SellTrade;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalOwnedItemPricesAndCurrentSellOrdersMappingException;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PersonalQueryOwnedItemsPricesAndCurrentSellOrdersMapper {
 
-    public FastUserUbiStats mapOwnedItemsPricesAndCurrentSellOrders(Meta meta) throws GraphQlPersonalOwnedItemPricesAndCurrentSellOrdersMappingException, GraphQlPersonalOwnedItemPricesAndCurrentSellOrdersMappingException {
+    public FastUbiUserStats mapOwnedItemsPricesAndCurrentSellOrders(Meta meta) throws GraphQlPersonalOwnedItemPricesAndCurrentSellOrdersMappingException, GraphQlPersonalOwnedItemPricesAndCurrentSellOrdersMappingException {
 
         if (meta == null) {
             throw new GraphQlPersonalOwnedItemPricesAndCurrentSellOrdersMappingException("Meta is null");
@@ -39,7 +39,7 @@ public class PersonalQueryOwnedItemsPricesAndCurrentSellOrdersMapper {
         List<ItemCurrentPrices> items = mapItems(marketableItems);
         List<SellTrade> currentSellOrders = mapCurrentOrders(trades);
 
-        return new FastUserUbiStats(items, currentSellOrders);
+        return new FastUbiUserStats(items, currentSellOrders);
     }
 
     public List<SellTrade> mapCurrentOrders(Trades trades) throws GraphQlPersonalOwnedItemPricesAndCurrentSellOrdersMappingException {

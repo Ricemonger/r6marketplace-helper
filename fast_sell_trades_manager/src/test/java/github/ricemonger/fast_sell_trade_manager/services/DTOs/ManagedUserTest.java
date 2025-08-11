@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FastSellManagedUserTest {
+class ManagedUserTest {
 
     @Test
     public void toAuthorizationDTO_should_return_expected_authDTO() {
-        FastSellManagedUser fastSellManagedUser = new FastSellManagedUser("ticket", "profileId", "spaceId", "sessionId", "rememberDeviceTicket",
+        ManagedUser managedUser = new ManagedUser("ticket", "profileId", "spaceId", "sessionId", "rememberDeviceTicket",
                 "rememberMeTicket", null, null);
 
-        AuthorizationDTO authorizationDTO = fastSellManagedUser.toAuthorizationDTO();
+        AuthorizationDTO authorizationDTO = managedUser.toAuthorizationDTO();
 
         assertEquals("ticket", authorizationDTO.getTicket());
         assertEquals("profileId", authorizationDTO.getProfileId());

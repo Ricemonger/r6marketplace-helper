@@ -1,7 +1,7 @@
 package github.ricemonger.fast_sell_trade_manager.postgres.services.entity_mappers.user;
 
 import github.ricemonger.fast_sell_trade_manager.postgres.dto_projections.FastSellManagedUserProjection;
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastSellManagedUser;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.ManagedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -26,7 +26,7 @@ class UbiAccountStatsEntityMapperTest {
         projection.setSoldIn24h(1);
         List<String> resaleLocks = List.of("resaleLock1", "resaleLock2");
 
-        FastSellManagedUser result = ubiAccountStatsEntityMapper.createFastSellManagedUser(projection, resaleLocks);
+        ManagedUser result = ubiAccountStatsEntityMapper.createFastSellManagedUser(projection, resaleLocks);
 
         assertEquals("ubiAuthTicket", result.getUbiAuthTicket());
         assertEquals("ubiProfileId", result.getUbiProfileId());

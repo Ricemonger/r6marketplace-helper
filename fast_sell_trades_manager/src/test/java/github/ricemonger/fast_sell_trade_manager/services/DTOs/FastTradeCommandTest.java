@@ -4,17 +4,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FastSellCommandTest {
+class FastTradeCommandTest {
 
     @Test
     public void compareTo_should_compare_by_TradeCommandType_and_itemId() {
-        FastSellCommand sellOrderCancel = new FastSellCommand(null, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "aaa", 0);
-        FastSellCommand sellOrderUpdate = new FastSellCommand(null, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "a", 0);
-        FastSellCommand sellOrderCreate = new FastSellCommand(null, FastTradeManagerCommandType.SELL_ORDER_CREATE, "aa", 0);
+        FastTradeCommand sellOrderCancel = new FastTradeCommand(null, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "aaa", 0);
+        FastTradeCommand sellOrderUpdate = new FastTradeCommand(null, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "a", 0);
+        FastTradeCommand sellOrderCreate = new FastTradeCommand(null, FastTradeManagerCommandType.SELL_ORDER_CREATE, "aa", 0);
 
-        FastSellCommand sellOrderCancel1 = new FastSellCommand(null, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "aa", 0);
-        FastSellCommand sellOrderUpdate1 = new FastSellCommand(null, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "aa", 0);
-        FastSellCommand sellOrderCreate1 = new FastSellCommand(null, FastTradeManagerCommandType.SELL_ORDER_CREATE, "aaa", 0);
+        FastTradeCommand sellOrderCancel1 = new FastTradeCommand(null, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "aa", 0);
+        FastTradeCommand sellOrderUpdate1 = new FastTradeCommand(null, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "aa", 0);
+        FastTradeCommand sellOrderCreate1 = new FastTradeCommand(null, FastTradeManagerCommandType.SELL_ORDER_CREATE, "aaa", 0);
 
         assertEquals(-1, sellOrderCancel.compareTo(sellOrderUpdate));
         assertEquals(-1, sellOrderUpdate.compareTo(sellOrderCreate));

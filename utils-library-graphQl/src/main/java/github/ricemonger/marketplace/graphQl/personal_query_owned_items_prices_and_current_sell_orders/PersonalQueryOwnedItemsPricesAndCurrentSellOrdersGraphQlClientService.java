@@ -4,7 +4,7 @@ import github.ricemonger.marketplace.graphQl.GraphQlClientFactory;
 import github.ricemonger.marketplace.graphQl.GraphQlDocuments;
 import github.ricemonger.marketplace.graphQl.GraphQlVariablesService;
 import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_and_current_sell_orders.DTO.Meta;
-import github.ricemonger.utils.DTOs.personal.FastUserUbiStats;
+import github.ricemonger.utils.DTOs.personal.FastUbiUserStats;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.exceptions.server.GraphQlPersonalOwnedItemsMappingException;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientServi
 
     private final PersonalQueryOwnedItemsPricesAndCurrentSellOrdersMapper personalQueryOwnedItemsPricesAndCurrentSellOrdersMapper;
 
-    public FastUserUbiStats fetchOwnedItemsCurrentPricesAndSellOrdersForUser(AuthorizationDTO authorizationDTO, int ownedItemsLimit) throws GraphQlPersonalOwnedItemsMappingException {
+    public FastUbiUserStats fetchOwnedItemsCurrentPricesAndSellOrdersForUser(AuthorizationDTO authorizationDTO, int ownedItemsLimit) throws GraphQlPersonalOwnedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
         int offset = 0;
 

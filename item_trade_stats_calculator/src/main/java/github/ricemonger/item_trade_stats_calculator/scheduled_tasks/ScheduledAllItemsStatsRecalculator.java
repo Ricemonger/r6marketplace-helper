@@ -16,3 +16,4 @@ public class ScheduledAllItemsStatsRecalculator {
         itemService.recalculateAndSaveAllItemsHistoryFields();
     }
 }
+

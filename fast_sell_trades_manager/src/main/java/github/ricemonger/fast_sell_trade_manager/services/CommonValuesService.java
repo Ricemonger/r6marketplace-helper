@@ -84,6 +84,10 @@ public class CommonValuesService implements PricesCommonValuesService {
         return fastSellManagementConfiguration.getOwnedItemsLimit();
     }
 
+    public Integer getExpectedItemCount(){
+        return commonValuesDatabaseService.getExpectedItemCount();
+    }
+
     public Integer getFetchUsersItemsLimit() {
         return fastSellManagementConfiguration.getFetchUsersItemsLimit();
     }

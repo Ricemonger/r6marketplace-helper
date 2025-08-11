@@ -114,19 +114,18 @@ public class UserFastTradesManager {
 
             synchronized (commands) {
                 executeCommandsInOrder(commands);
+                commands.clear();
             }
-
-            commands.clear();
         }
     }
 
-    public void createAndExecuteCommandsToKeepOneSellSlotUnused(ManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+    public void createAndExecuteCommandsToKeepOneSellSlotUnused(ManagedUser managedUser, int sellLimit, int sellSlots) {
         try {
-            FastUbiUserStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getFastTradeOwnedItemsLimit());
+            FastUbiUserStats userStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService.fetchOwnedItemsCurrentPricesAndSellOrdersForUser(managedUser.toAuthorizationDTO(), commonValuesService.getExpectedItemCount());
 
             this.savedUserStats = userStats;
 
-            List<FastTradeCommand> keepUnusedSellSlotCommands = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(managedUser, userStats.getCurrentSellOrders(), userStats.getOwnedItemsCurrentPrices(), itemsMedianPriceAndRarity, sellLimit, sellSlots);
+            List<FastTradeCommand> keepUnusedSellSlotCommands = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(managedUser, userStats.getCurrentSellOrders(), userStats.getOwnedItemsCurrentPrices(), sellLimit, sellSlots);
 
             executeCommandsInOrder(keepUnusedSellSlotCommands);
 
@@ -136,6 +135,7 @@ public class UserFastTradesManager {
     }
 
     private void executeCommandsInOrder(Collection<FastTradeCommand> commands) {
+        System.out.println(commands);
         for (FastTradeCommand command : commands.stream().sorted().toList()) {
             tradeCommandExecutor.executeCommand(command);
             log.info("Executed command: {}", command.toLogString());

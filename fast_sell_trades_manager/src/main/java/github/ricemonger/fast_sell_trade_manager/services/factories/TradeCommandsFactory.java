@@ -45,35 +45,13 @@ public class TradeCommandsFactory {
         return commands;
     }
 
-    public List<FastTradeCommand> createTradeCommandsToKeepUnusedSlotForUser(ManagedUser user,
-                                                                             Collection<SellTrade> currentSellTrades,
-                                                                             Collection<ItemCurrentPrices> itemsCurrentPrices,
-                                                                             List<ItemMedianPriceAndRarity> medianPriceAndRarities,
-                                                                             int sellLimit,
-                                                                             int sellSlots) {
-        List<FastTradeCommand> commands = new ArrayList<>();
-
-        if (user.getSoldIn24h() >= sellLimit || currentSellTrades.size() < sellSlots) {
-            log.info("User has reached the sell limit for 24h or not all slots are used, skipping commands for slot cleaning");
-            return commands;
-        }
-
-        List<SellTrade> sortedTrades = getCurrentSellTradesWithBiggerThenMinSellPriceByPriorityAsc(currentSellTrades, itemsCurrentPrices, medianPriceAndRarities);
-
-        if (!sortedTrades.isEmpty()) {
-            commands.add(new FastTradeCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, sortedTrades.get(0).getItemId(), sortedTrades.get(0).getTradeId()));
-        }
-
-        return commands;
-    }
-
     private List<FastTradeCommand> createPairOfCancelCreateCommandsOrEmpty(ManagedUser user,
                                                                            Collection<SellTrade> currentSellTrades,
                                                                            Collection<String> higherPriorityExistingTrades,
                                                                            Collection<FastTradeCommand> higherPriorityExistingCommands,
                                                                            Collection<ItemCurrentPrices> currentPrices,
                                                                            Collection<ItemMedianPriceAndRarity> medianPriceAndRarities,
-                                                                           PotentialTradeItem item) {
+                                                                           PotentialTradeItem potentialTradeItem) {
 
         List<FastTradeCommand> pairCommands = new ArrayList<>();
 
@@ -86,39 +64,10 @@ public class TradeCommandsFactory {
             return pairCommands;
         } else {
             pairCommands.add(new FastTradeCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, sortedNotUpdatedTrades.get(0).getItemId(), sortedNotUpdatedTrades.get(0).getTradeId()));
-            pairCommands.add(new FastTradeCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CREATE, item.getItemId(), item.getPrice()));
+            pairCommands.add(new FastTradeCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CREATE, potentialTradeItem.getItemId(), potentialTradeItem.getPrice()));
         }
 
         return pairCommands;
-    }
-
-    private List<SellTrade> getCurrentSellTradesWithBiggerThenMinSellPriceByPriorityAsc(Collection<SellTrade> currentSellTrades,
-                                                                                        Collection<ItemCurrentPrices> ownedItemsCurrentPrices,
-                                                                                        Collection<ItemMedianPriceAndRarity> medianPriceAndRarities) {
-
-        return currentSellTrades.stream().filter(
-                trade -> ownedItemsCurrentPrices.stream().filter(item -> item.getItemId().equals(trade.getItemId())).findFirst().orElse(new ItemCurrentPrices("", 1, 1)).getMinSellPrice() < trade.getPrice()
-        ).sorted(new Comparator<SellTrade>() {
-            @Override
-            public int compare(SellTrade o1, SellTrade o2) {
-                Integer minSellPrice1 = ownedItemsCurrentPrices.stream().filter(item -> item.getItemId().equals(o1.getItemId())).findFirst().orElse(new ItemCurrentPrices()).getMinSellPrice();
-                Integer minSellPrice2 = ownedItemsCurrentPrices.stream().filter(item -> item.getItemId().equals(o2.getItemId())).findFirst().orElse(new ItemCurrentPrices()).getMinSellPrice();
-
-                minSellPrice1 = minSellPrice1 == null ? 1 : minSellPrice1;
-                minSellPrice2 = minSellPrice2 == null ? 1 : minSellPrice2;
-
-                int price1 = o1.getPrice() == null ? Integer.MAX_VALUE : o1.getPrice();
-                int price2 = o2.getPrice() == null ? Integer.MAX_VALUE : o2.getPrice();
-
-                if (price1 / minSellPrice1 < price2 / minSellPrice2) {
-                    return 1;
-                } else if (price1 / minSellPrice1 > price2 / minSellPrice2) {
-                    return -1;
-                } else {
-                    return price1 - price2;
-                }
-            }
-        }).toList();
     }
 
     private List<SellTrade> getCurrentSellTradesByPriorityAsc(Collection<SellTrade> currentSellTrades,
@@ -152,6 +101,55 @@ public class TradeCommandsFactory {
                     Integer medianPriceDiff2 = (price2 - medianPrice2) * (price2 - medianPrice2) / medianPrice2;
 
                     return medianPriceDiff1.compareTo(medianPriceDiff2);
+                }
+            }
+        }).toList();
+    }
+
+    public List<FastTradeCommand> createTradeCommandsToKeepUnusedSlotForUser(ManagedUser user,
+                                                                             Collection<SellTrade> currentSellTrades,
+                                                                             Collection<ItemCurrentPrices> itemsCurrentPrices,
+                                                                             int sellLimit,
+                                                                             int sellSlots) {
+        List<FastTradeCommand> commands = new ArrayList<>();
+
+        if (user.getSoldIn24h() >= sellLimit || currentSellTrades.size() < sellSlots) {
+            log.info("User has reached the sell limit for 24h or not all slots are used, skipping commands for slot cleaning");
+            return commands;
+        }
+
+        List<SellTrade> filteredAndSortedTrades = getCurrentSellTradesWithBiggerThenMinSellPriceByPriorityAsc(currentSellTrades, itemsCurrentPrices);
+
+        if (!filteredAndSortedTrades.isEmpty()) {
+            commands.add(new FastTradeCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, filteredAndSortedTrades.get(0).getItemId(), filteredAndSortedTrades.get(0).getTradeId()));
+        }
+
+        return commands;
+    }
+
+    private List<SellTrade> getCurrentSellTradesWithBiggerThenMinSellPriceByPriorityAsc(Collection<SellTrade> currentSellTrades,
+                                                                                        Collection<ItemCurrentPrices> ownedItemsCurrentPrices) {
+
+        return currentSellTrades.stream().filter(
+                trade -> ownedItemsCurrentPrices.stream().filter(item -> item.getItemId().equals(trade.getItemId())).findFirst().orElse(new ItemCurrentPrices("", 1, 1)).getMinSellPrice() < trade.getPrice()
+        ).sorted(new Comparator<SellTrade>() {
+            @Override
+            public int compare(SellTrade o1, SellTrade o2) {
+                Integer minSellPrice1 = ownedItemsCurrentPrices.stream().filter(item -> item.getItemId().equals(o1.getItemId())).findFirst().orElse(new ItemCurrentPrices()).getMinSellPrice();
+                Integer minSellPrice2 = ownedItemsCurrentPrices.stream().filter(item -> item.getItemId().equals(o2.getItemId())).findFirst().orElse(new ItemCurrentPrices()).getMinSellPrice();
+
+                minSellPrice1 = minSellPrice1 == null ? 1 : minSellPrice1;
+                minSellPrice2 = minSellPrice2 == null ? 1 : minSellPrice2;
+
+                int price1 = o1.getPrice() == null ? Integer.MAX_VALUE : o1.getPrice();
+                int price2 = o2.getPrice() == null ? Integer.MAX_VALUE : o2.getPrice();
+
+                if (price1 / minSellPrice1 < price2 / minSellPrice2) {
+                    return 1;
+                } else if (price1 / minSellPrice1 > price2 / minSellPrice2) {
+                    return -1;
+                } else {
+                    return price1 - price2;
                 }
             }
         }).toList();

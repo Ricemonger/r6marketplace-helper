@@ -127,19 +127,17 @@ class ScheduledOneUserFastSellTradeManagerTest {
     public void keepUnusedOneSellSlotForManagedUser_should_createAndExecuteCommandsToKeepOneSellSlotUnused_with_fields_values() {
         scheduledOneUserFastSellTradeManager = new ScheduledOneUserFastSellTradeManager(userFastTradesManager, commonValuesService, ubiAccountService);
 
-        List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity = Mockito.mock(List.class);
         ManagedUser user = Mockito.mock(ManagedUser.class);
         int sellLimit = 3;
         int sellSlots = 4;
 
-        ReflectionTestUtils.setField(scheduledOneUserFastSellTradeManager, "itemsMedianPriceAndRarity", itemsMedianPriceAndRarity);
         ReflectionTestUtils.setField(scheduledOneUserFastSellTradeManager, "managedUser", user);
         ReflectionTestUtils.setField(scheduledOneUserFastSellTradeManager, "sellLimit", sellLimit);
         ReflectionTestUtils.setField(scheduledOneUserFastSellTradeManager, "sellSlots", sellSlots);
 
         scheduledOneUserFastSellTradeManager.keepUnusedOneSellSlotForManagedUser();
 
-        verify(userFastTradesManager).createAndExecuteCommandsToKeepOneSellSlotUnused(same(user), same(itemsMedianPriceAndRarity), eq(sellLimit), eq(sellSlots));
+        verify(userFastTradesManager).createAndExecuteCommandsToKeepOneSellSlotUnused(same(user), eq(sellLimit), eq(sellSlots));
     }
 
     @Test

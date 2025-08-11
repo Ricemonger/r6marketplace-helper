@@ -354,20 +354,10 @@ class TradeCommandsFactoryTest {
 
         List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1,  leaveCurrentPrices2, cancelCurrentPrices);
 
-        ItemMedianPriceAndRarity leaveMedianPriceAndRarity2 = new ItemMedianPriceAndRarity();
-        leaveMedianPriceAndRarity2.setItemId("leaveSellTradeItemId2");
-        leaveMedianPriceAndRarity2.setMonthMedianPrice(15);
-
-        ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
-        cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
-        cancelMedianPriceAndRarity.setMonthMedianPrice(35);
-
-        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(leaveMedianPriceAndRarity2, cancelMedianPriceAndRarity);
-
         int sellLimit = 20;
         int sellSlots = 3;
 
-        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, sellLimit, sellSlots);
 
         assertEquals(1, result.size());
         assertEquals(new FastTradeCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId"), result.get(0));
@@ -408,20 +398,10 @@ class TradeCommandsFactoryTest {
 
         List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1, leaveCurrentPrices2, cancelCurrentPrices);
 
-        ItemMedianPriceAndRarity leaveMedianPriceAndRarity2 = new ItemMedianPriceAndRarity();
-        leaveMedianPriceAndRarity2.setItemId("leaveSellTradeItemId2");
-        leaveMedianPriceAndRarity2.setMonthMedianPrice(35);
-
-        ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
-        cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
-        cancelMedianPriceAndRarity.setMonthMedianPrice(15);
-
-        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(leaveMedianPriceAndRarity2, cancelMedianPriceAndRarity);
-
         int sellLimit = 20;
         int sellSlots = 3;
 
-        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, sellLimit, sellSlots);
 
         assertEquals(1, result.size());
         assertEquals(new FastTradeCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId"), result.get(0));
@@ -449,16 +429,10 @@ class TradeCommandsFactoryTest {
 
         List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrice);
 
-        ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
-        cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
-        cancelMedianPriceAndRarity.setMonthMedianPrice(15);
-
-        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(cancelMedianPriceAndRarity);
-
         int sellLimit = 20;
         int sellSlots = 2;
 
-        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, cancelSellTrade), currentPrices, sellLimit, sellSlots);
 
         assertEquals(1, result.size());
         assertEquals(new FastTradeCommand(user.toAuthorizationDTO(), FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId"), result.get(0));
@@ -499,20 +473,10 @@ class TradeCommandsFactoryTest {
 
         List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1, leaveCurrentPrices2, laveCurrentPrices3);
 
-        ItemMedianPriceAndRarity leaveMedianPriceAndRarity2 = new ItemMedianPriceAndRarity();
-        leaveMedianPriceAndRarity2.setItemId("leaveSellTradeItemId2");
-        leaveMedianPriceAndRarity2.setMonthMedianPrice(35);
-
-        ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
-        cancelMedianPriceAndRarity.setItemId("leaveSellTradeItemId3");
-        cancelMedianPriceAndRarity.setMonthMedianPrice(15);
-
-        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(leaveMedianPriceAndRarity2, cancelMedianPriceAndRarity);
-
         int sellLimit = 20;
         int sellSlots = 3;
 
-        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, leaveSellTrade3), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, leaveSellTrade3), currentPrices, sellLimit, sellSlots);
 
         assertEquals(0, result.size());
     }
@@ -552,20 +516,10 @@ class TradeCommandsFactoryTest {
 
         List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1, leaveCurrentPrices2, cancelCurrentPrices);
 
-        ItemMedianPriceAndRarity leaveMedianPriceAndRarity2 = new ItemMedianPriceAndRarity();
-        leaveMedianPriceAndRarity2.setItemId("leaveSellTradeItemId2");
-        leaveMedianPriceAndRarity2.setMonthMedianPrice(35);
-
-        ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
-        cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
-        cancelMedianPriceAndRarity.setMonthMedianPrice(15);
-
-        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(leaveMedianPriceAndRarity2, cancelMedianPriceAndRarity);
-
         int sellLimit = 20;
         int sellSlots = 4;
 
-        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, sellLimit, sellSlots);
 
         assertEquals(0, result.size());
     }
@@ -605,20 +559,10 @@ class TradeCommandsFactoryTest {
 
         List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1, leaveCurrentPrices2, cancelCurrentPrices);
 
-        ItemMedianPriceAndRarity leaveMedianPriceAndRarity2 = new ItemMedianPriceAndRarity();
-        leaveMedianPriceAndRarity2.setItemId("leaveSellTradeItemId2");
-        leaveMedianPriceAndRarity2.setMonthMedianPrice(35);
-
-        ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
-        cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
-        cancelMedianPriceAndRarity.setMonthMedianPrice(15);
-
-        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(leaveMedianPriceAndRarity2, cancelMedianPriceAndRarity);
-
         int sellLimit = 20;
         int sellSlots = 3;
 
-        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, medianPriceAndRarities, sellLimit, sellSlots);
+        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(user, List.of(leaveSellTrade1, leaveSellTrade2, cancelSellTrade), currentPrices, sellLimit, sellSlots);
 
         assertEquals(0, result.size());
     }

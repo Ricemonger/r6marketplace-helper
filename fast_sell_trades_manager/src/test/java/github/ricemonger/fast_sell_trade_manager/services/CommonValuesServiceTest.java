@@ -231,6 +231,14 @@ class CommonValuesServiceTest {
     }
 
     @Test
+    public void getExpectedItemCount_should_handle_to_service(){
+        Integer expectedItemCount = 10;
+        when(commonValuesDatabaseService.getExpectedItemCount()).thenReturn(expectedItemCount);
+
+        assertEquals(expectedItemCount, commonValuesService.getExpectedItemCount());
+    }
+
+    @Test
     public void getFastTradeOwnedItemsLimit_should_handle_to_service() {
         Integer limit = 10;
         when(fastSellManagementConfiguration.getOwnedItemsLimit()).thenReturn(limit);

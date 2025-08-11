@@ -10,6 +10,8 @@ import github.ricemonger.utils.exceptions.server.GraphQlPersonalOwnedItemsMappin
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.client.HttpGraphQlClient;
 
+import java.util.ArrayList;
+
 @RequiredArgsConstructor
 public class PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientService {
     private final GraphQlClientFactory graphQlClientFactory;
@@ -20,17 +22,54 @@ public class PersonalQueryOwnedItemsPricesAndCurrentSellOrdersGraphQlClientServi
 
     public FastUbiUserStats fetchOwnedItemsCurrentPricesAndSellOrdersForUser(AuthorizationDTO authorizationDTO, int ownedItemsLimit) throws GraphQlPersonalOwnedItemsMappingException {
         HttpGraphQlClient client = graphQlClientFactory.createAuthorizedUserClient(authorizationDTO);
-        int offset = 0;
 
-        int limit = Math.min(ownedItemsLimit, GraphQlVariablesService.MAX_LIMIT);
+        if (ownedItemsLimit <= GraphQlVariablesService.MAX_LIMIT) {
 
-        Meta meta = client
-                .document(GraphQlDocuments.QUERY_OWNED_ITEMS_PRICES_AND_CURRENT_SELL_ORDERS_DOCUMENT)
-                .variables(graphQlVariablesService.getFetchOwnedItemsPricesAndCurrentSellOrdersVariables(offset, limit, 0, GraphQlVariablesService.MAX_LIMIT))
-                .retrieve("game.viewer.meta")
-                .toEntity(Meta.class)
-                .block();
+            Meta meta = client
+                    .document(GraphQlDocuments.QUERY_OWNED_ITEMS_PRICES_AND_CURRENT_SELL_ORDERS_DOCUMENT)
+                    .variables(graphQlVariablesService.getFetchOwnedItemsPricesAndCurrentSellOrdersVariables(0, ownedItemsLimit, 0, GraphQlVariablesService.MAX_LIMIT))
+                    .retrieve("game.viewer.meta")
+                    .toEntity(Meta.class)
+                    .block();
 
-        return personalQueryOwnedItemsPricesAndCurrentSellOrdersMapper.mapOwnedItemsPricesAndCurrentSellOrders(meta);
+            return personalQueryOwnedItemsPricesAndCurrentSellOrdersMapper.mapOwnedItemsPricesAndCurrentSellOrders(meta);
+
+        } else {
+
+            FastUbiUserStats result = new FastUbiUserStats();
+            result.setOwnedItemsCurrentPrices(new ArrayList<>());
+
+            int requestsToDo = (int) Math.ceil((float) ownedItemsLimit / GraphQlVariablesService.MAX_LIMIT);
+
+            for (int i = 0; i < requestsToDo - 1; i++) {
+                Meta meta = client
+                        .document(GraphQlDocuments.QUERY_OWNED_ITEMS_PRICES_AND_CURRENT_SELL_ORDERS_DOCUMENT)
+                        .variables(graphQlVariablesService.getFetchOwnedItemsPricesAndCurrentSellOrdersVariables(GraphQlVariablesService.MAX_LIMIT * i, GraphQlVariablesService.MAX_LIMIT, 0, GraphQlVariablesService.MAX_LIMIT))
+                        .retrieve("game.viewer.meta")
+                        .toEntity(Meta.class)
+                        .block();
+
+                FastUbiUserStats tempUserStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersMapper.mapOwnedItemsPricesAndCurrentSellOrders(meta);
+
+                result.getOwnedItemsCurrentPrices().addAll(tempUserStats.getOwnedItemsCurrentPrices());
+            }
+
+            int lastRequestLimit = ownedItemsLimit % GraphQlVariablesService.MAX_LIMIT == 0 ? GraphQlVariablesService.MAX_LIMIT : ownedItemsLimit % GraphQlVariablesService.MAX_LIMIT;
+
+            Meta meta = client
+                    .document(GraphQlDocuments.QUERY_OWNED_ITEMS_PRICES_AND_CURRENT_SELL_ORDERS_DOCUMENT)
+                    .variables(graphQlVariablesService.getFetchOwnedItemsPricesAndCurrentSellOrdersVariables(GraphQlVariablesService.MAX_LIMIT * (requestsToDo - 1), lastRequestLimit, 0, GraphQlVariablesService.MAX_LIMIT))
+                    .retrieve("game.viewer.meta")
+                    .toEntity(Meta.class)
+                    .block();
+
+            FastUbiUserStats tempUserStats = personalQueryOwnedItemsPricesAndCurrentSellOrdersMapper.mapOwnedItemsPricesAndCurrentSellOrders(meta);
+
+            result.getOwnedItemsCurrentPrices().addAll(tempUserStats.getOwnedItemsCurrentPrices());
+            result.setCurrentSellOrders(tempUserStats.getCurrentSellOrders());
+
+            return result;
+
+        }
     }
 }

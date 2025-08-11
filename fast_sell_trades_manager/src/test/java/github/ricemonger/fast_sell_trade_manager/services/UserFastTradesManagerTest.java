@@ -581,16 +581,14 @@ class UserFastTradesManagerTest {
         when(commonValuesService.getMinMedianPriceDifference()).thenReturn(1);
         when(commonValuesService.getMinMedianPriceDifferencePercentage()).thenReturn(2);
 
-        List medianPricesAndRarity = Mockito.mock(List.class);
-
         FastTradeCommand command1 = Mockito.mock(FastTradeCommand.class);
         FastTradeCommand command2 = Mockito.mock(FastTradeCommand.class);
 
         List commands = List.of(command1, command2);
 
-        when(tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(same(user), same(fetchedUserStats.getCurrentSellOrders()), same(fetchedUserStats.getOwnedItemsCurrentPrices()), same(medianPricesAndRarity), eq(3), eq(4))).thenReturn(commands);
+        when(tradeCommandsFactory.createTradeCommandsToKeepUnusedSlotForUser(same(user), same(fetchedUserStats.getCurrentSellOrders()), same(fetchedUserStats.getOwnedItemsCurrentPrices()), eq(3), eq(4))).thenReturn(commands);
 
-        userFastTradesManager.createAndExecuteCommandsToKeepOneSellSlotUnused(user, medianPricesAndRarity, 3, 4);
+        userFastTradesManager.createAndExecuteCommandsToKeepOneSellSlotUnused(user, 3, 4);
 
         Mockito.verify(fastTradeManagementCommandExecutor).executeCommand(same(command1));
         Mockito.verify(fastTradeManagementCommandExecutor).executeCommand(same(command2));

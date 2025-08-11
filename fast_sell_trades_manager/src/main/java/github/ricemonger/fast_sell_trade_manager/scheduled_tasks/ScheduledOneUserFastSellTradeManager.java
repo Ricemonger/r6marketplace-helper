@@ -56,7 +56,7 @@ public class ScheduledOneUserFastSellTradeManager {
 
     @Scheduled(fixedRateString = "${app.scheduling.keep_unused_slot.fixedRate}", initialDelayString = "${app.scheduling.keep_unused_slot.initialDelay}")
     public void keepUnusedOneSellSlotForManagedUser() {
-        userFastTradesManager.createAndExecuteCommandsToKeepOneSellSlotUnused(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+        userFastTradesManager.createAndExecuteCommandsToKeepOneSellSlotUnused(managedUser, sellLimit, sellSlots);
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.median_prices_fetch.fixedRate}", initialDelayString = "${app.scheduling.median_prices_fetch.initialDelay}")

@@ -3,10 +3,10 @@ package github.ricemonger.fast_sell_trade_manager.scheduled_tasks;
 import github.ricemonger.fast_sell_trade_manager.services.CommonValuesService;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.ManagedUser;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.ItemMedianPriceAndRarity;
+import github.ricemonger.fast_sell_trade_manager.services.FetchUsersService;
 import github.ricemonger.fast_sell_trade_manager.services.UbiAccountService;
 import github.ricemonger.fast_sell_trade_manager.services.UserFastTradesManager;
 import github.ricemonger.utils.DTOs.common.ConfigTrades;
-import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,12 +24,12 @@ public class ScheduledOneUserFastSellTradeManager {
     private final CommonValuesService commonValuesService;
     private final UbiAccountService ubiAccountService;
 
+    private final FetchUsersService fetchUsersService;
+
     private int sellLimit;
     private int sellSlots;
     private ManagedUser managedUser;
     private List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity = new ArrayList<>();
-    private List<AuthorizationDTO> fetchUsersAuthorizationDTOs;
-    private int currentFetchUserIndex = 0;
 
     @Scheduled(fixedRateString = "${app.scheduling.management_update.fixedRate}", initialDelayString = "${app.scheduling.management_update.initialDelay}")
     public void submitCreateCommandsTaskByFetchedUserStats() {
@@ -38,15 +38,7 @@ public class ScheduledOneUserFastSellTradeManager {
 
     @Scheduled(fixedRateString = "${app.scheduling.management_fetch.fixedRate}", initialDelayString = "${app.scheduling.management_fetch.initialDelay}")
     public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices() {
-        if (fetchUsersAuthorizationDTOs.isEmpty()) {
-            log.debug("No fetch users found in the database");
-            return;
-        } else {
-            if (currentFetchUserIndex >= fetchUsersAuthorizationDTOs.size()) {
-                currentFetchUserIndex = 0;
-            }
-            userFastTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(managedUser, fetchUsersAuthorizationDTOs.get(currentFetchUserIndex++), itemsMedianPriceAndRarity, sellLimit, sellSlots);
-        }
+        userFastTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(managedUser, fetchUsersService.nextFetchUsersAuthorizationDTO(), itemsMedianPriceAndRarity, sellLimit, sellSlots);
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.management_execute.fixedRate}", initialDelayString = "${app.scheduling.management_execute.initialDelay}")
@@ -74,6 +66,6 @@ public class ScheduledOneUserFastSellTradeManager {
 
     @Scheduled(fixedRateString = "${app.scheduling.user_fetch.fixedRate}", initialDelayString = "${app.scheduling.user_fetch.initialDelay}")
     public void fetchFetchUsersAuthorizationFromDb() {
-        fetchUsersAuthorizationDTOs = ubiAccountService.getAllFetchAccountsAuthorizationDTOs();
+        fetchUsersService.saveFetchUsersAuthorizationDTOs(ubiAccountService.getAllFetchAccountsAuthorizationDTOs());
     }
 }

@@ -231,7 +231,7 @@ class CommonValuesServiceTest {
     }
 
     @Test
-    public void getExpectedItemCount_should_handle_to_service(){
+    public void getExpectedItemCount_should_handle_to_service() {
         Integer expectedItemCount = 10;
         when(commonValuesDatabaseService.getExpectedItemCount()).thenReturn(expectedItemCount);
 

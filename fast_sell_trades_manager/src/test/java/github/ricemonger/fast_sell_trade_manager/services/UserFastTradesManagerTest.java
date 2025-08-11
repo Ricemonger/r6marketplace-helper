@@ -9,6 +9,7 @@ import github.ricemonger.marketplace.graphQl.personal_query_owned_items_prices_a
 import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
 import github.ricemonger.utils.DTOs.personal.FastUbiUserStats;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -18,10 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
@@ -47,10 +45,13 @@ class UserFastTradesManagerTest {
     @MockBean
     private TradeCommandsExecutor fastTradeManagementCommandExecutor;
 
+    @BeforeEach
+    public void reflectionUtilsSetUp(){
+        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
+    }
+
     @Test
     public void submitCreateCommandsTaskByFetchedUserStats_should_add_commands_to_commands_list_and_set_saved_users_to_null_if_list_is_empty() throws Exception {
-        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
-
         ManagedUser user = mock(ManagedUser.class);
 
         AuthorizationDTO dto = mock(AuthorizationDTO.class);
@@ -95,7 +96,10 @@ class UserFastTradesManagerTest {
 
         List<FastTradeCommand> createdCommands = List.of(command1, command2);
 
-        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(fetchedUserStats.getCurrentSellOrders()), same(fetchedUserStats.getOwnedItemsCurrentPrices()), same(itemsMedianPriceAndRarity), same(potentialTrades), eq(3), eq(4))).thenReturn(createdCommands);
+        Set<String> alreadyManagedItems = mock(Set.class);
+        ReflectionTestUtils.setField(userFastTradesManager,"alreadyManagedItems", alreadyManagedItems);
+
+        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(fetchedUserStats.getCurrentSellOrders()), same(fetchedUserStats.getOwnedItemsCurrentPrices()), same(itemsMedianPriceAndRarity), same(potentialTrades), same(alreadyManagedItems), eq(3), eq(4))).thenReturn(createdCommands);
 
         userFastTradesManager.submitCreateCommandsTaskByFetchedUserStats(user, itemsMedianPriceAndRarity, 3, 4);
 
@@ -111,8 +115,6 @@ class UserFastTradesManagerTest {
 
     @Test
     public void submitCreateCommandsTaskByFetchedUserStats_should_additionally_check_commands_list_before_adding_new_commands() throws Exception {
-        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
-
         ManagedUser user = mock(ManagedUser.class);
 
         AuthorizationDTO dto = mock(AuthorizationDTO.class);
@@ -163,7 +165,9 @@ class UserFastTradesManagerTest {
 
         List<FastTradeCommand> createdCommands = List.of(command1, command2);
 
-        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(fetchedUserStats.getCurrentSellOrders()), same(fetchedUserStats.getOwnedItemsCurrentPrices()), same(itemsMedianPriceAndRarity), same(potentialTrades), eq(3), eq(4))).thenReturn(createdCommands);
+        List<String> alreadyManagedItems = mock(List.class);
+
+        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(fetchedUserStats.getCurrentSellOrders()), same(fetchedUserStats.getOwnedItemsCurrentPrices()), same(itemsMedianPriceAndRarity), same(potentialTrades), same(alreadyManagedItems), eq(3), eq(4))).thenReturn(createdCommands);
 
         userFastTradesManager.submitCreateCommandsTaskByFetchedUserStats(user, itemsMedianPriceAndRarity, 3, 4);
 
@@ -182,8 +186,6 @@ class UserFastTradesManagerTest {
 
     @Test
     public void submitCreateCommandsTaskByFetchedUserStats_should_do_nothing_if_commands_list_is_not_empty() throws Exception {
-        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
-
         ManagedUser user = mock(ManagedUser.class);
 
         AuthorizationDTO dto = mock(AuthorizationDTO.class);
@@ -228,7 +230,9 @@ class UserFastTradesManagerTest {
 
         List<FastTradeCommand> createdCommands = List.of(command1, command2);
 
-        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(fetchedUserStats.getCurrentSellOrders()), same(fetchedUserStats.getOwnedItemsCurrentPrices()), same(itemsMedianPriceAndRarity), same(potentialTrades), eq(3), eq(4))).thenReturn(createdCommands);
+        List<String> alreadyManagedItems = mock(List.class);
+
+        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(fetchedUserStats.getCurrentSellOrders()), same(fetchedUserStats.getOwnedItemsCurrentPrices()), same(itemsMedianPriceAndRarity), same(potentialTrades), same(alreadyManagedItems), eq(3), eq(4))).thenReturn(createdCommands);
 
         userFastTradesManager.submitCreateCommandsTaskByFetchedUserStats(user, itemsMedianPriceAndRarity, 3, 4);
 
@@ -237,13 +241,11 @@ class UserFastTradesManagerTest {
         verify(fastTradeManagementCommandExecutor, never()).executeCommand(any());
         verify(commonGraphQlClientService, never()).fetchLimitedItemsStats(any(), anyInt(), anyInt());
         verify(potentialTradeItemsFactory, never()).createPotentialTradeItemsForUser(any(), any(), anyInt(), anyInt());
-        verify(tradeCommandsFactory, never()).createTradeCommandsForUser(any(), any(), any(), any(), any(), anyInt(), anyInt());
+        verify(tradeCommandsFactory, never()).createTradeCommandsForUser(any(), any(), any(), any(), any(), any(), anyInt(), anyInt());
     }
 
     @Test
     public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices_should_add_commands_to_commands_list_and_set_saved_users_to_null_if_list_is_empty() throws Exception {
-        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
-
         ManagedUser user = mock(ManagedUser.class);
         List itemsMedianPriceAndRarity = mock(List.class);
 
@@ -288,12 +290,14 @@ class UserFastTradesManagerTest {
 
         List<FastTradeCommand> createdCommands = List.of(command1, command2);
 
+        Set<String> alreadyManagedItems = mock(Set.class);
+        ReflectionTestUtils.setField(userFastTradesManager,"alreadyManagedItems", alreadyManagedItems);
 
-        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(savedUserStats.getCurrentSellOrders()), argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), same(potentialTrades), eq(3), eq(4))).thenReturn(createdCommands);
+        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(savedUserStats.getCurrentSellOrders()), argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), same(potentialTrades), same(alreadyManagedItems), eq(3), eq(4))).thenReturn(createdCommands);
 
         userFastTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(user, authorizationDTO, itemsMedianPriceAndRarity, 3, 4);
 
-        assertTrue(tasks.size() == 1);
+        assertEquals(1, tasks.size());
 
         tasks.get(0).get();
 
@@ -305,8 +309,6 @@ class UserFastTradesManagerTest {
 
     @Test
     public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices_should_add_empty_list_if_savedUserStats_is_null() throws Exception {
-        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
-
         ManagedUser user = mock(ManagedUser.class);
         List itemsMedianPriceAndRarity = mock(List.class);
 
@@ -351,8 +353,9 @@ class UserFastTradesManagerTest {
 
         List<FastTradeCommand> createdCommands = List.of(command1, command2);
 
+        List<String> alreadyManagedItems = mock(List.class);
 
-        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(savedUserStats.getCurrentSellOrders()), argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), same(potentialTrades), eq(3), eq(4))).thenReturn(createdCommands);
+        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(savedUserStats.getCurrentSellOrders()), argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), same(potentialTrades), same(alreadyManagedItems), eq(3), eq(4))).thenReturn(createdCommands);
 
         userFastTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(user, authorizationDTO, itemsMedianPriceAndRarity, 3, 4);
 
@@ -365,8 +368,6 @@ class UserFastTradesManagerTest {
 
     @Test
     public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices_should_additionally_check_if_commands_list_empty_before_adding_new() throws Exception {
-        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
-
         ManagedUser user = mock(ManagedUser.class);
         List itemsMedianPriceAndRarity = mock(List.class);
 
@@ -417,8 +418,9 @@ class UserFastTradesManagerTest {
 
         List<FastTradeCommand> createdCommands = List.of(command1, command2);
 
+        List<String> alreadyManagedItems = mock(List.class);
 
-        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(savedUserStats.getCurrentSellOrders()), argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), same(potentialTrades), eq(3), eq(4))).thenReturn(createdCommands);
+        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(savedUserStats.getCurrentSellOrders()), argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), same(potentialTrades), same(alreadyManagedItems), eq(3), eq(4))).thenReturn(createdCommands);
 
         userFastTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(user, authorizationDTO, itemsMedianPriceAndRarity, 3, 4);
 
@@ -437,8 +439,6 @@ class UserFastTradesManagerTest {
 
     @Test
     public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices_should_do_nothing_if_commands_is_not_empty() throws Exception {
-        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
-
         ManagedUser user = mock(ManagedUser.class);
         List itemsMedianPriceAndRarity = mock(List.class);
 
@@ -484,8 +484,9 @@ class UserFastTradesManagerTest {
 
         List<FastTradeCommand> createdCommands = List.of(command1, command2);
 
+        List<String> alreadyManagedItems = mock(List.class);
 
-        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(savedUserStats.getCurrentSellOrders()), argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), same(potentialTrades), eq(3), eq(4))).thenReturn(createdCommands);
+        when(tradeCommandsFactory.createTradeCommandsForUser(same(user), same(savedUserStats.getCurrentSellOrders()), argThat(arg -> arg.containsAll(ownedItemsCurrentPrices) && arg.size() == ownedItemsCurrentPrices.size()), same(itemsMedianPriceAndRarity), same(potentialTrades), same(alreadyManagedItems), eq(3), eq(4))).thenReturn(createdCommands);
 
         userFastTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(user, authorizationDTO, itemsMedianPriceAndRarity, 3, 4);
 
@@ -494,13 +495,11 @@ class UserFastTradesManagerTest {
         verify(fastTradeManagementCommandExecutor, never()).executeCommand(any());
         verify(commonGraphQlClientService, never()).fetchLimitedItemsStats(any(), anyInt(), anyInt());
         verify(potentialTradeItemsFactory, never()).createPotentialTradeItemsForUser(any(), any(), anyInt(), anyInt());
-        verify(tradeCommandsFactory, never()).createTradeCommandsForUser(any(), any(), any(), any(), any(), anyInt(), anyInt());
+        verify(tradeCommandsFactory, never()).createTradeCommandsForUser(any(), any(), any(), any(), any(), any(), anyInt(), anyInt());
     }
 
     @Test
     public void executeFastSellCommands_should_execute_commands_and_clear_tasks_in_commands_list_is_not_empty() {
-        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
-
         FastTradeCommand command1 = mock(FastTradeCommand.class);
         FastTradeCommand command2 = mock(FastTradeCommand.class);
         Set commands = new TreeSet();
@@ -529,8 +528,6 @@ class UserFastTradesManagerTest {
 
     @Test
     public void executeFastSellCommands_should_do_nothing_is_commands_is_empty() {
-        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
-
         Set commands = new TreeSet();
 
         Future future1 = mock(Future.class);
@@ -549,9 +546,7 @@ class UserFastTradesManagerTest {
     }
 
     @Test
-    public void createAndExecuteCommandsToKeepOneSellSlotUnused_should_fetch_info_and_execute_commands_and_save_ubi_user_stats() {
-        userFastTradesManager = new UserFastTradesManager(personalGraphQlClientService, commonGraphQlClientService, commonValuesService, potentialTradeItemsFactory, tradeCommandsFactory, fastTradeManagementCommandExecutor);
-
+    public void createAndExecuteCommandsToKeepOneSellSlotUnused_should_fetch_info_and_execute_commands_and_save_ubi_user_stats_and_clear_alreadyManagedItemsAndClearAlreadyManagedItemsList() {
         List itemCurrentPrices = Mockito.mock(List.class);
         List sellTrades = Mockito.mock(List.class);
 
@@ -561,7 +556,10 @@ class UserFastTradesManagerTest {
         when(user.toAuthorizationDTO()).thenReturn(authorizationDTO);
         when(user.getUbiProfileId()).thenReturn("profileId");
 
-        when(commonValuesService.getFastTradeOwnedItemsLimit()).thenReturn(120);
+        when(commonValuesService.getExpectedItemCount()).thenReturn(120);
+
+        Set<String> alreadyManagedItems = mock(Set.class);
+        ReflectionTestUtils.setField(userFastTradesManager,"alreadyManagedItems", alreadyManagedItems);
 
         FastUbiUserStats savedUserStats = new FastUbiUserStats();
         savedUserStats.setOwnedItemsCurrentPrices(itemCurrentPrices);
@@ -592,6 +590,7 @@ class UserFastTradesManagerTest {
 
         Mockito.verify(fastTradeManagementCommandExecutor).executeCommand(same(command1));
         Mockito.verify(fastTradeManagementCommandExecutor).executeCommand(same(command2));
+        Mockito.verify(alreadyManagedItems).clear();
         assertEquals(ReflectionTestUtils.getField(userFastTradesManager, "savedUserStats"), fetchedUserStats);
     }
 }

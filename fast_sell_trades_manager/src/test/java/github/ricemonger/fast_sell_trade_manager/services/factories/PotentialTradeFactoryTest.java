@@ -2,7 +2,7 @@ package github.ricemonger.fast_sell_trade_manager.services.factories;
 
 import github.ricemonger.fast_sell_trade_manager.services.CommonValuesService;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.ItemMedianPriceAndRarity;
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTradeItem;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTrade;
 import github.ricemonger.utils.DTOs.common.ItemCurrentPrices;
 import github.ricemonger.utils.enums.ItemRarity;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class PotentialTradeItemFactoryTest {
+class PotentialTradeFactoryTest {
     @SpyBean
     private PotentialTradeItemsFactory potentialTradeItemsFactory;
     @MockBean
@@ -62,15 +62,15 @@ class PotentialTradeItemFactoryTest {
         Integer minMedianPriceDifference = 500;
         Integer minMedianPriceDifferencePercentage = 100;
 
-        doReturn(new PotentialTradeItem()).when(potentialTradeItemsFactory).createPotentialTradeItemsForUserOrNull(any(), any(), any(), any());
+        doReturn(new PotentialTrade()).when(potentialTradeItemsFactory).createPotentialTradeItemsForUserOrNull(any(), any(), any(), any());
         doReturn(null).when(potentialTradeItemsFactory).createPotentialTradeItemsForUserOrNull(currentPrices1, medianPriceAndRarity1, minMedianPriceDifference, minMedianPriceDifferencePercentage);
-        doReturn(new PotentialTradeItem("itemId2", 999, 500, 100, true)).when(potentialTradeItemsFactory).createPotentialTradeItemsForUserOrNull(currentPrices2, medianPriceAndRarity2, minMedianPriceDifference, minMedianPriceDifferencePercentage);
+        doReturn(new PotentialTrade("itemId2", 999, 500, 100, true)).when(potentialTradeItemsFactory).createPotentialTradeItemsForUserOrNull(currentPrices2, medianPriceAndRarity2, minMedianPriceDifference, minMedianPriceDifferencePercentage);
 
 
-        List<PotentialTradeItem> trades = potentialTradeItemsFactory.createPotentialTradeItemsForUser(currentPrices, medianPriceAndRarities, minMedianPriceDifference, minMedianPriceDifferencePercentage);
+        List<PotentialTrade> trades = potentialTradeItemsFactory.createPotentialTradeItemsForUser(currentPrices, medianPriceAndRarities, minMedianPriceDifference, minMedianPriceDifferencePercentage);
 
         assertEquals(1, trades.size());
-        assertEquals(new PotentialTradeItem("itemId2", 999, 500, 100, true), trades.get(0));
+        assertEquals(new PotentialTrade("itemId2", 999, 500, 100, true), trades.get(0));
     }
 
     @Test
@@ -84,9 +84,9 @@ class PotentialTradeItemFactoryTest {
         int minMedianPriceDifference = 500;
         int minMedianPriceDifferencePercentage = 100;
 
-        PotentialTradeItem trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
+        PotentialTrade trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
 
-        PotentialTradeItem expected = new PotentialTradeItem("itemId", 999, 500, 100, true);
+        PotentialTrade expected = new PotentialTrade("itemId", 999, 500, 100, true);
 
         assertEquals(expected, trade);
     }
@@ -102,9 +102,9 @@ class PotentialTradeItemFactoryTest {
         int minMedianPriceDifference = 500;
         int minMedianPriceDifferencePercentage = 100;
 
-        PotentialTradeItem trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
+        PotentialTrade trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
 
-        PotentialTradeItem expected = new PotentialTradeItem("itemId", 999, 500, 100, true);
+        PotentialTrade expected = new PotentialTrade("itemId", 999, 500, 100, true);
 
         assertEquals(expected, trade);
     }
@@ -120,9 +120,9 @@ class PotentialTradeItemFactoryTest {
         int minMedianPriceDifference = 500;
         int minMedianPriceDifferencePercentage = 100;
 
-        PotentialTradeItem trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
+        PotentialTrade trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
 
-        PotentialTradeItem expected = new PotentialTradeItem("itemId", 1499, 1000, 200, true);
+        PotentialTrade expected = new PotentialTrade("itemId", 1499, 1000, 200, true);
 
         assertEquals(expected, trade);
     }
@@ -138,9 +138,9 @@ class PotentialTradeItemFactoryTest {
         int minMedianPriceDifference = 500;
         int minMedianPriceDifferencePercentage = 100;
 
-        PotentialTradeItem trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
+        PotentialTrade trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
 
-        PotentialTradeItem expected = new PotentialTradeItem("itemId", 999, 500, 100, false);
+        PotentialTrade expected = new PotentialTrade("itemId", 999, 500, 100, false);
 
         assertEquals(expected, trade);
     }
@@ -156,9 +156,9 @@ class PotentialTradeItemFactoryTest {
         int minMedianPriceDifference = 500;
         int minMedianPriceDifferencePercentage = 100;
 
-        PotentialTradeItem trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
+        PotentialTrade trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
 
-        PotentialTradeItem expected = new PotentialTradeItem("itemId", 1499, 1000, 200, false);
+        PotentialTrade expected = new PotentialTrade("itemId", 1499, 1000, 200, false);
 
         assertEquals(expected, trade);
     }
@@ -177,9 +177,9 @@ class PotentialTradeItemFactoryTest {
 
         when(commonValuesService.getMaximumPriceByRarity(ItemRarity.RARE)).thenReturn(10000);
 
-        PotentialTradeItem trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
+        PotentialTrade trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
 
-        PotentialTradeItem expected = new PotentialTradeItem("itemId", 1499, 1000, 200, true);
+        PotentialTrade expected = new PotentialTrade("itemId", 1499, 1000, 200, true);
 
         assertEquals(expected, trade);
     }
@@ -195,7 +195,7 @@ class PotentialTradeItemFactoryTest {
         int minMedianPriceDifference = 500;
         int minMedianPriceDifferencePercentage = 100;
 
-        PotentialTradeItem trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
+        PotentialTrade trade = potentialTradeItemsFactory.createPotentialTradeItemsForUserOrNull(currentPrices, medianPriceAndRarity, minMedianPriceDifference, minMedianPriceDifferencePercentage);
 
         assertNull(trade);
     }

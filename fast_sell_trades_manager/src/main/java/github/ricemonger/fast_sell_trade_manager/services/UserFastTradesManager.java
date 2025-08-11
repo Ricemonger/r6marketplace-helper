@@ -3,7 +3,7 @@ package github.ricemonger.fast_sell_trade_manager.services;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.FastTradeCommand;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.ManagedUser;
 import github.ricemonger.fast_sell_trade_manager.services.DTOs.ItemMedianPriceAndRarity;
-import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTradeItem;
+import github.ricemonger.fast_sell_trade_manager.services.DTOs.PotentialTrade;
 import github.ricemonger.fast_sell_trade_manager.services.factories.PotentialTradeItemsFactory;
 import github.ricemonger.fast_sell_trade_manager.services.factories.TradeCommandsFactory;
 import github.ricemonger.marketplace.graphQl.common_query_items_prices.CommonQueryItemsPricesGraphQlClientService;
@@ -36,6 +36,7 @@ public class UserFastTradesManager {
 
     private final List<CompletableFuture<?>> createCommandsTasks = Collections.synchronizedList(new LinkedList<>());
     private final Set<FastTradeCommand> commands = Collections.synchronizedSortedSet((new TreeSet<>()));
+    private final Set<String> alreadyManagedItems = new HashSet<>();
 
     private FastUbiUserStats savedUserStats;
 
@@ -61,9 +62,9 @@ public class UserFastTradesManager {
 
             this.savedUserStats = userStats;
 
-            List<PotentialTradeItem> potentialTradeItems = potentialTradeItemsFactory.createPotentialTradeItemsForUser(userStats.getOwnedItemsCurrentPrices(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
+            List<PotentialTrade> potentialTrades = potentialTradeItemsFactory.createPotentialTradeItemsForUser(userStats.getOwnedItemsCurrentPrices(), itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
 
-            return tradeCommandsFactory.createTradeCommandsForUser(managedUser, userStats.getCurrentSellOrders(), userStats.getOwnedItemsCurrentPrices(), itemsMedianPriceAndRarity, potentialTradeItems, sellLimit, sellSlots);
+            return tradeCommandsFactory.createTradeCommandsForUser(managedUser, userStats.getCurrentSellOrders(), userStats.getOwnedItemsCurrentPrices(), itemsMedianPriceAndRarity, potentialTrades, alreadyManagedItems, sellLimit, sellSlots);
         } catch (Exception e) {
             log.error("Error while creating fast sell commands for user with id: {} : {}", managedUser.getUbiProfileId(), e.toString());
             return List.of();
@@ -99,9 +100,9 @@ public class UserFastTradesManager {
 
             log.debug("Sorted fetched items current prices size: {}", ownedItemsCurrentPrices.size());
 
-            List<PotentialTradeItem> items = potentialTradeItemsFactory.createPotentialTradeItemsForUser(ownedItemsCurrentPrices, itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
+            List<PotentialTrade> potentialTrades = potentialTradeItemsFactory.createPotentialTradeItemsForUser(ownedItemsCurrentPrices, itemsMedianPriceAndRarity, commonValuesService.getMinMedianPriceDifference(), commonValuesService.getMinMedianPriceDifferencePercentage());
 
-            return tradeCommandsFactory.createTradeCommandsForUser(managedUser, savedUserStats.getCurrentSellOrders(), ownedItemsCurrentPrices, itemsMedianPriceAndRarity, items, sellLimit, sellSlots);
+            return tradeCommandsFactory.createTradeCommandsForUser(managedUser, savedUserStats.getCurrentSellOrders(), ownedItemsCurrentPrices, itemsMedianPriceAndRarity, potentialTrades, alreadyManagedItems, sellLimit, sellSlots);
         } catch (Exception e) {
             log.error("Error while creating fast sell commands for user with id: {} : {}", managedUser.getUbiProfileId(), e.toString());
             return List.of();
@@ -129,13 +130,14 @@ public class UserFastTradesManager {
 
             executeCommandsInOrder(keepUnusedSellSlotCommands);
 
+            alreadyManagedItems.clear();
+
         } catch (Exception e) {
             log.error("Error while keeping unused sell slot for user with id: {} : {}", managedUser.getUbiProfileId(), e.toString());
         }
     }
 
     private void executeCommandsInOrder(Collection<FastTradeCommand> commands) {
-        System.out.println(commands);
         for (FastTradeCommand command : commands.stream().sorted().toList()) {
             tradeCommandExecutor.executeCommand(command);
             log.info("Executed command: {}", command.toLogString());

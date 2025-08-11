@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PotentialTradeItem implements Comparable<PotentialTradeItem> {
+public class PotentialTrade implements Comparable<PotentialTrade> {
     private String itemId;
     private Integer price;
     private Integer monthMedianPriceDifference;
@@ -15,7 +15,7 @@ public class PotentialTradeItem implements Comparable<PotentialTradeItem> {
     private boolean sellByMaxBuyPrice;
 
     @Override
-    public int compareTo(PotentialTradeItem other) {
+    public int compareTo(PotentialTrade other) {
         boolean byMaxBuyPrice1 = this.isSellByMaxBuyPrice();
         boolean byMaxBuyPrice2 = other.isSellByMaxBuyPrice();
 

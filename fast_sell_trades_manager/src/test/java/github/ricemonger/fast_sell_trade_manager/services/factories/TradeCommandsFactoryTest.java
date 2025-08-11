@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,7 +21,7 @@ class TradeCommandsFactoryTest {
     private TradeCommandsFactory tradeCommandsFactory;
 
     @Test
-    public void createTradeCommandsForUser_should_return_expected_commands() {
+    public void createTradeCommandsForUser_should_return_expected_commands_and_add_untouched_updated_created_trades_to_already_managed_list() {
         ManagedUser user = new ManagedUser();
         user.setUbiProfileId("profileId");
         user.setResaleLocks(List.of("lockedItemId1"));
@@ -45,50 +47,62 @@ class TradeCommandsFactoryTest {
         leaveSellTrade.setTradeId("leaveSellTradeId");
         leaveSellTrade.setPrice(50);
 
-        List<SellTrade> sellTrades = List.of(updateSellTrade, cancelSellTrade, alreadySameSellTrade, leaveSellTrade);
+        SellTrade leaveCauseAlreadyManagedTrade = new SellTrade();
+        leaveCauseAlreadyManagedTrade.setItemId("leaveCauseAlreadyManagedTradeItemId");
+        leaveCauseAlreadyManagedTrade.setTradeId("leaveCauseAlreadyManagedTradeId");
+        leaveCauseAlreadyManagedTrade.setPrice(50);
 
-        PotentialTradeItem updateExistingPotentialTradeItem = new PotentialTradeItem();
-        updateExistingPotentialTradeItem.setItemId("updateSellTradeItemId");
-        updateExistingPotentialTradeItem.setPrice(98);
-        updateExistingPotentialTradeItem.setMonthMedianPriceDifference(2);
-        updateExistingPotentialTradeItem.setMonthMedianPriceDifferencePercentage(2);
+        List<SellTrade> sellTrades = List.of(updateSellTrade, cancelSellTrade, alreadySameSellTrade, leaveSellTrade, leaveCauseAlreadyManagedTrade);
 
-        PotentialTradeItem createNewPotentialTradeItem = new PotentialTradeItem();
-        createNewPotentialTradeItem.setItemId("createNewPotentialTradeItemId");
-        createNewPotentialTradeItem.setPrice(50);
-        createNewPotentialTradeItem.setMonthMedianPriceDifference(2);
-        createNewPotentialTradeItem.setMonthMedianPriceDifferencePercentage(2);
+        PotentialTrade updateExistingPotentialTrade = new PotentialTrade();
+        updateExistingPotentialTrade.setItemId("updateSellTradeItemId");
+        updateExistingPotentialTrade.setPrice(98);
+        updateExistingPotentialTrade.setMonthMedianPriceDifference(2);
+        updateExistingPotentialTrade.setMonthMedianPriceDifferencePercentage(2);
 
-        PotentialTradeItem alreadySamePotentialTradeItem = new PotentialTradeItem();
-        alreadySamePotentialTradeItem.setItemId("alreadySameSellTradeItemId");
-        alreadySamePotentialTradeItem.setPrice(49);
-        alreadySamePotentialTradeItem.setMonthMedianPriceDifference(2);
-        alreadySamePotentialTradeItem.setMonthMedianPriceDifferencePercentage(2);
+        PotentialTrade createNewPotentialTrade = new PotentialTrade();
+        createNewPotentialTrade.setItemId("createNewPotentialTradeItemId");
+        createNewPotentialTrade.setPrice(50);
+        createNewPotentialTrade.setMonthMedianPriceDifference(3);
+        createNewPotentialTrade.setMonthMedianPriceDifferencePercentage(3);
 
-        PotentialTradeItem skipCauseResaleLockPotentialTradeItem = new PotentialTradeItem();
-        skipCauseResaleLockPotentialTradeItem.setItemId("lockedItemId1");
-        skipCauseResaleLockPotentialTradeItem.setPrice(1000);
-        skipCauseResaleLockPotentialTradeItem.setMonthMedianPriceDifference(200);
-        skipCauseResaleLockPotentialTradeItem.setMonthMedianPriceDifferencePercentage(200);
+        PotentialTrade alreadySamePotentialTrade = new PotentialTrade();
+        alreadySamePotentialTrade.setItemId("alreadySameSellTradeItemId");
+        alreadySamePotentialTrade.setPrice(49);
+        alreadySamePotentialTrade.setMonthMedianPriceDifference(2);
+        alreadySamePotentialTrade.setMonthMedianPriceDifferencePercentage(2);
 
-        List<PotentialTradeItem> items = List.of(updateExistingPotentialTradeItem, createNewPotentialTradeItem, alreadySamePotentialTradeItem, skipCauseResaleLockPotentialTradeItem);
+        PotentialTrade skipCauseResaleLockPotentialTrade = new PotentialTrade();
+        skipCauseResaleLockPotentialTrade.setItemId("lockedItemId1");
+        skipCauseResaleLockPotentialTrade.setPrice(1000);
+        skipCauseResaleLockPotentialTrade.setMonthMedianPriceDifference(200);
+        skipCauseResaleLockPotentialTrade.setMonthMedianPriceDifferencePercentage(200);
+
+        List<PotentialTrade> items = List.of(updateExistingPotentialTrade, createNewPotentialTrade, alreadySamePotentialTrade, skipCauseResaleLockPotentialTrade);
 
         List<ItemCurrentPrices> currentPrices = List.of();
 
         ItemMedianPriceAndRarity cancelMedianPriceAndRarity = new ItemMedianPriceAndRarity();
         cancelMedianPriceAndRarity.setItemId("cancelSellTradeItemId");
-        cancelMedianPriceAndRarity.setMonthMedianPrice(48);
+        cancelMedianPriceAndRarity.setMonthMedianPrice(49);
+
+        ItemMedianPriceAndRarity leaveCauseAlreadyManagedMedianPriceAndRarity = new ItemMedianPriceAndRarity();
+        leaveCauseAlreadyManagedMedianPriceAndRarity.setItemId("leaveCauseAlreadyManagedTradeItemId");
+        leaveCauseAlreadyManagedMedianPriceAndRarity.setMonthMedianPrice(1000);
 
         ItemMedianPriceAndRarity leaveMedianPriceAndRarity = new ItemMedianPriceAndRarity();
         leaveMedianPriceAndRarity.setItemId("leaveSellTradeItemId");
-        leaveMedianPriceAndRarity.setMonthMedianPrice(49);
+        leaveMedianPriceAndRarity.setMonthMedianPrice(48);
 
-        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(cancelMedianPriceAndRarity, leaveMedianPriceAndRarity);
+        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(cancelMedianPriceAndRarity, leaveCauseAlreadyManagedMedianPriceAndRarity, leaveMedianPriceAndRarity);
+
+        Set<String> alreadyManagedItems = new HashSet<>();
+        alreadyManagedItems.add("leaveCauseAlreadyManagedTradeItemId");
 
         int sellLimit = 20;
-        int sellSlots = 4;
+        int sellSlots = 5;
 
-        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
+        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, alreadyManagedItems, sellLimit, sellSlots);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO();
         authorizationDTO.setProfileId("profileId");
@@ -104,10 +118,19 @@ class TradeCommandsFactoryTest {
         assertTrue(result.contains(updateExpectedCommand));
         assertTrue(result.contains(createExpectedCommand));
         assertTrue(result.contains(cancelExpectedCommand));
+
+        System.out.println("Already Managed Items:");
+        alreadyManagedItems.forEach(System.out::println);
+
+        assertEquals(4, alreadyManagedItems.size());
+        assertTrue(alreadyManagedItems.contains("leaveCauseAlreadyManagedTradeItemId"));
+        assertTrue(alreadyManagedItems.contains("createNewPotentialTradeItemId"));
+        assertTrue(alreadyManagedItems.contains("alreadySameSellTradeItemId"));
+        assertTrue(alreadyManagedItems.contains("updateSellTradeItemId"));
     }
 
     @Test
-    public void createTradeCommandsForUser_should_return_expected_commands_if_too_many_potentialTrades() {
+    public void createTradeCommandsForUser_should_return_expected_commands_if_too_many_potentialTrades_and_add_untouched_updated_created_trades_to_already_managed_list() {
         ManagedUser user = new ManagedUser();
         user.setUbiProfileId("profileId");
         user.setResaleLocks(List.of("lockedItemId1"));
@@ -133,47 +156,52 @@ class TradeCommandsFactoryTest {
         leaveSellTrade.setTradeId("leaveSellTradeId");
         leaveSellTrade.setPrice(50);
 
-        List<SellTrade> sellTrades = List.of(updateSellTrade, cancelSellTrade, alreadySameSellTrade, leaveSellTrade);
+        SellTrade leaveCauseAlreadyManagedTrade = new SellTrade();
+        leaveCauseAlreadyManagedTrade.setItemId("leaveCauseAlreadyManagedTradeItemId");
+        leaveCauseAlreadyManagedTrade.setTradeId("leaveCauseAlreadyManagedTradeId");
+        leaveCauseAlreadyManagedTrade.setPrice(50);
 
-        PotentialTradeItem updateExistingPotentialTradeItem = new PotentialTradeItem();
-        updateExistingPotentialTradeItem.setItemId("updateSellTradeItemId");
-        updateExistingPotentialTradeItem.setPrice(98);
-        updateExistingPotentialTradeItem.setMonthMedianPriceDifference(2);
-        updateExistingPotentialTradeItem.setMonthMedianPriceDifferencePercentage(2);
+        List<SellTrade> sellTrades = List.of(updateSellTrade, cancelSellTrade, alreadySameSellTrade, leaveSellTrade, leaveCauseAlreadyManagedTrade);
 
-        PotentialTradeItem createNewPotentialTradeItem = new PotentialTradeItem();
-        createNewPotentialTradeItem.setItemId("createNewPotentialTradeItemId");
-        createNewPotentialTradeItem.setPrice(50);
-        createNewPotentialTradeItem.setMonthMedianPriceDifference(2);
-        createNewPotentialTradeItem.setMonthMedianPriceDifferencePercentage(2);
+        PotentialTrade updateExistingPotentialTrade = new PotentialTrade();
+        updateExistingPotentialTrade.setItemId("updateSellTradeItemId");
+        updateExistingPotentialTrade.setPrice(98);
+        updateExistingPotentialTrade.setMonthMedianPriceDifference(2);
+        updateExistingPotentialTrade.setMonthMedianPriceDifferencePercentage(2);
 
-        PotentialTradeItem createNewPotentialTradeItemByBuyPrice = new PotentialTradeItem();
-        createNewPotentialTradeItemByBuyPrice.setItemId("createNewPotentialTradeByBuyPriceItemId");
-        createNewPotentialTradeItemByBuyPrice.setPrice(1);
-        createNewPotentialTradeItemByBuyPrice.setMonthMedianPriceDifference(1);
-        createNewPotentialTradeItemByBuyPrice.setMonthMedianPriceDifferencePercentage(1);
-        createNewPotentialTradeItemByBuyPrice.setSellByMaxBuyPrice(true);
+        PotentialTrade createNewPotentialTrade = new PotentialTrade();
+        createNewPotentialTrade.setItemId("createNewPotentialTradeItemId");
+        createNewPotentialTrade.setPrice(50);
+        createNewPotentialTrade.setMonthMedianPriceDifference(2);
+        createNewPotentialTrade.setMonthMedianPriceDifferencePercentage(2);
 
-        PotentialTradeItem createNewPotentialTradeItemLowerProfit = new PotentialTradeItem();
-        createNewPotentialTradeItemLowerProfit.setItemId("createNewPotentialTradeLowerProfitItemId");
-        createNewPotentialTradeItemLowerProfit.setPrice(50);
-        createNewPotentialTradeItemLowerProfit.setMonthMedianPriceDifference(1);
-        createNewPotentialTradeItemLowerProfit.setMonthMedianPriceDifferencePercentage(2);
+        PotentialTrade createNewPotentialTradeByBuyPrice = new PotentialTrade();
+        createNewPotentialTradeByBuyPrice.setItemId("createNewPotentialTradeByBuyPriceItemId");
+        createNewPotentialTradeByBuyPrice.setPrice(1);
+        createNewPotentialTradeByBuyPrice.setMonthMedianPriceDifference(1);
+        createNewPotentialTradeByBuyPrice.setMonthMedianPriceDifferencePercentage(1);
+        createNewPotentialTradeByBuyPrice.setSellByMaxBuyPrice(true);
 
-        PotentialTradeItem alreadySamePotentialTradeItem = new PotentialTradeItem();
-        alreadySamePotentialTradeItem.setItemId("alreadySameSellTradeItemId");
-        alreadySamePotentialTradeItem.setPrice(49);
-        alreadySamePotentialTradeItem.setMonthMedianPriceDifference(2);
-        alreadySamePotentialTradeItem.setMonthMedianPriceDifferencePercentage(2);
+        PotentialTrade createNewPotentialTradeLowerProfit = new PotentialTrade();
+        createNewPotentialTradeLowerProfit.setItemId("createNewPotentialTradeLowerProfitItemId");
+        createNewPotentialTradeLowerProfit.setPrice(50);
+        createNewPotentialTradeLowerProfit.setMonthMedianPriceDifference(2);
+        createNewPotentialTradeLowerProfit.setMonthMedianPriceDifferencePercentage(1);
 
-        PotentialTradeItem skipCauseResaleLockPotentialTradeItem = new PotentialTradeItem();
-        skipCauseResaleLockPotentialTradeItem.setItemId("lockedItemId1");
-        skipCauseResaleLockPotentialTradeItem.setPrice(1000);
-        skipCauseResaleLockPotentialTradeItem.setMonthMedianPriceDifference(200);
-        skipCauseResaleLockPotentialTradeItem.setMonthMedianPriceDifferencePercentage(200);
+        PotentialTrade alreadySamePotentialTrade = new PotentialTrade();
+        alreadySamePotentialTrade.setItemId("alreadySameSellTradeItemId");
+        alreadySamePotentialTrade.setPrice(49);
+        alreadySamePotentialTrade.setMonthMedianPriceDifference(2);
+        alreadySamePotentialTrade.setMonthMedianPriceDifferencePercentage(2);
 
-        List<PotentialTradeItem> items = List.of(updateExistingPotentialTradeItem, createNewPotentialTradeItem, alreadySamePotentialTradeItem,
-                skipCauseResaleLockPotentialTradeItem, createNewPotentialTradeItemLowerProfit, createNewPotentialTradeItemByBuyPrice);
+        PotentialTrade skipCauseResaleLockPotentialTrade = new PotentialTrade();
+        skipCauseResaleLockPotentialTrade.setItemId("lockedItemId1");
+        skipCauseResaleLockPotentialTrade.setPrice(1000);
+        skipCauseResaleLockPotentialTrade.setMonthMedianPriceDifference(200);
+        skipCauseResaleLockPotentialTrade.setMonthMedianPriceDifferencePercentage(200);
+
+        List<PotentialTrade> items = List.of(updateExistingPotentialTrade, createNewPotentialTrade, alreadySamePotentialTrade,
+                skipCauseResaleLockPotentialTrade, createNewPotentialTradeLowerProfit, createNewPotentialTradeByBuyPrice);
 
         ItemCurrentPrices cancelCurrentPrices = new ItemCurrentPrices();
         cancelCurrentPrices.setItemId("cancelSellTradeItemId");
@@ -181,7 +209,7 @@ class TradeCommandsFactoryTest {
 
         ItemCurrentPrices leaveCurrentPrices = new ItemCurrentPrices();
         leaveCurrentPrices.setItemId("leaveSellTradeItemId");
-        leaveCurrentPrices.setMinSellPrice(48);
+        leaveCurrentPrices.setMinSellPrice(50);
 
         List<ItemCurrentPrices> currentPrices = List.of(cancelCurrentPrices, leaveCurrentPrices);
 
@@ -193,6 +221,10 @@ class TradeCommandsFactoryTest {
         leaveMedianPriceAndRarity.setItemId("leaveSellTradeItemId");
         leaveMedianPriceAndRarity.setMonthMedianPrice(47);
 
+        ItemMedianPriceAndRarity leaveCauseAlreadyManagedMedianPriceAndRarity = new ItemMedianPriceAndRarity();
+        leaveCauseAlreadyManagedMedianPriceAndRarity.setItemId("leaveCauseAlreadyManagedTradeItemId");
+        leaveCauseAlreadyManagedMedianPriceAndRarity.setMonthMedianPrice(40);
+
         ItemMedianPriceAndRarity updateMedianPriceAndRarity = new ItemMedianPriceAndRarity();
         updateMedianPriceAndRarity.setItemId("updateSellTradeItemId");
         updateMedianPriceAndRarity.setMonthMedianPrice(90);
@@ -201,31 +233,39 @@ class TradeCommandsFactoryTest {
         alreadySameMedianPriceAndRarity.setItemId("alreadySameSellTradeItemId");
         alreadySameMedianPriceAndRarity.setMonthMedianPrice(40);
 
-        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(cancelMedianPriceAndRarity, leaveMedianPriceAndRarity, updateMedianPriceAndRarity, alreadySameMedianPriceAndRarity);
+        List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(cancelMedianPriceAndRarity, leaveMedianPriceAndRarity, updateMedianPriceAndRarity, alreadySameMedianPriceAndRarity, leaveCauseAlreadyManagedMedianPriceAndRarity);
+
+        Set<String> alreadyManagedItems = new HashSet<>();
+        alreadyManagedItems.add("leaveCauseAlreadyManagedTradeItemId");
 
         int sellLimit = 20;
-        int sellSlots = 4;
+        int sellSlots = 5;
 
-        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
+        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, alreadyManagedItems, sellLimit, sellSlots);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO();
         authorizationDTO.setProfileId("profileId");
 
-        FastTradeCommand updateExpectedCommand = new FastTradeCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "updateSellTradeItemId", "updateSellTradeId", 98);
-        FastTradeCommand createExpectedCommand = new FastTradeCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CREATE, "createNewPotentialTradeItemId", 50);
         FastTradeCommand createExpectedCommandByBuyPrice = new FastTradeCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CREATE, "createNewPotentialTradeByBuyPriceItemId", 1);
         FastTradeCommand cancelExpectedCommand = new FastTradeCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "cancelSellTradeItemId", "cancelSellTradeId");
-        FastTradeCommand cancelLeftExpectedCommand = new FastTradeCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_CANCEL, "leaveSellTradeItemId", "leaveSellTradeId");
+        FastTradeCommand updateExpectedCommand = new FastTradeCommand(authorizationDTO, FastTradeManagerCommandType.SELL_ORDER_UPDATE, "updateSellTradeItemId", "updateSellTradeId", 98);
 
         System.out.println("Result:");
         result.forEach(System.out::println);
 
-        assertEquals(5, result.size());
-        assertTrue(result.contains(updateExpectedCommand));
-        assertTrue(result.contains(createExpectedCommand));
+        assertEquals(3, result.size());
         assertTrue(result.contains(createExpectedCommandByBuyPrice));
         assertTrue(result.contains(cancelExpectedCommand));
-        assertTrue(result.contains(cancelLeftExpectedCommand));
+        assertTrue(result.contains(updateExpectedCommand));
+
+        System.out.println("Already Managed Items:");
+        alreadyManagedItems.forEach(System.out::println);
+
+        assertEquals(4, alreadyManagedItems.size());
+        assertTrue(alreadyManagedItems.contains("leaveCauseAlreadyManagedTradeItemId"));
+        assertTrue(alreadyManagedItems.contains("createNewPotentialTradeByBuyPriceItemId"));
+        assertTrue(alreadyManagedItems.contains("alreadySameSellTradeItemId"));
+        assertTrue(alreadyManagedItems.contains("updateSellTradeItemId"));
     }
 
     @Test
@@ -257,38 +297,38 @@ class TradeCommandsFactoryTest {
 
         List<SellTrade> sellTrades = List.of(updateSellTrade, cancelSellTrade, alreadySameSellTrade, leaveSellTrade);
 
-        PotentialTradeItem updateExistingPotentialTradeItem = new PotentialTradeItem();
-        updateExistingPotentialTradeItem.setItemId("updateSellTradeItemId");
-        updateExistingPotentialTradeItem.setPrice(98);
-        updateExistingPotentialTradeItem.setMonthMedianPriceDifference(2);
-        updateExistingPotentialTradeItem.setMonthMedianPriceDifferencePercentage(2);
+        PotentialTrade updateExistingPotentialTrade = new PotentialTrade();
+        updateExistingPotentialTrade.setItemId("updateSellTradeItemId");
+        updateExistingPotentialTrade.setPrice(98);
+        updateExistingPotentialTrade.setMonthMedianPriceDifference(2);
+        updateExistingPotentialTrade.setMonthMedianPriceDifferencePercentage(2);
 
-        PotentialTradeItem createNewPotentialTradeItem = new PotentialTradeItem();
-        createNewPotentialTradeItem.setItemId("createNewPotentialTradeItemId");
-        createNewPotentialTradeItem.setPrice(50);
-        createNewPotentialTradeItem.setMonthMedianPriceDifference(2);
-        createNewPotentialTradeItem.setMonthMedianPriceDifferencePercentage(2);
+        PotentialTrade createNewPotentialTrade = new PotentialTrade();
+        createNewPotentialTrade.setItemId("createNewPotentialTradeItemId");
+        createNewPotentialTrade.setPrice(50);
+        createNewPotentialTrade.setMonthMedianPriceDifference(2);
+        createNewPotentialTrade.setMonthMedianPriceDifferencePercentage(2);
 
-        PotentialTradeItem createNewPotentialTradeItemLowerProfit = new PotentialTradeItem();
-        createNewPotentialTradeItemLowerProfit.setItemId("createNewPotentialTradeLowerProfitItemId");
-        createNewPotentialTradeItemLowerProfit.setPrice(50);
-        createNewPotentialTradeItemLowerProfit.setMonthMedianPriceDifference(1);
-        createNewPotentialTradeItemLowerProfit.setMonthMedianPriceDifferencePercentage(2);
+        PotentialTrade createNewPotentialTradeLowerProfit = new PotentialTrade();
+        createNewPotentialTradeLowerProfit.setItemId("createNewPotentialTradeLowerProfitItemId");
+        createNewPotentialTradeLowerProfit.setPrice(50);
+        createNewPotentialTradeLowerProfit.setMonthMedianPriceDifference(1);
+        createNewPotentialTradeLowerProfit.setMonthMedianPriceDifferencePercentage(2);
 
-        PotentialTradeItem alreadySamePotentialTradeItem = new PotentialTradeItem();
-        alreadySamePotentialTradeItem.setItemId("alreadySameSellTradeItemId");
-        alreadySamePotentialTradeItem.setPrice(49);
-        alreadySamePotentialTradeItem.setMonthMedianPriceDifference(2);
-        alreadySamePotentialTradeItem.setMonthMedianPriceDifferencePercentage(2);
+        PotentialTrade alreadySamePotentialTrade = new PotentialTrade();
+        alreadySamePotentialTrade.setItemId("alreadySameSellTradeItemId");
+        alreadySamePotentialTrade.setPrice(49);
+        alreadySamePotentialTrade.setMonthMedianPriceDifference(2);
+        alreadySamePotentialTrade.setMonthMedianPriceDifferencePercentage(2);
 
-        PotentialTradeItem skipCauseResaleLockPotentialTradeItem = new PotentialTradeItem();
-        skipCauseResaleLockPotentialTradeItem.setItemId("lockedItemId1");
-        skipCauseResaleLockPotentialTradeItem.setPrice(1000);
-        skipCauseResaleLockPotentialTradeItem.setMonthMedianPriceDifference(200);
-        skipCauseResaleLockPotentialTradeItem.setMonthMedianPriceDifferencePercentage(200);
+        PotentialTrade skipCauseResaleLockPotentialTrade = new PotentialTrade();
+        skipCauseResaleLockPotentialTrade.setItemId("lockedItemId1");
+        skipCauseResaleLockPotentialTrade.setPrice(1000);
+        skipCauseResaleLockPotentialTrade.setMonthMedianPriceDifference(200);
+        skipCauseResaleLockPotentialTrade.setMonthMedianPriceDifferencePercentage(200);
 
-        List<PotentialTradeItem> items = List.of(updateExistingPotentialTradeItem, createNewPotentialTradeItem, alreadySamePotentialTradeItem,
-                skipCauseResaleLockPotentialTradeItem, createNewPotentialTradeItemLowerProfit);
+        List<PotentialTrade> items = List.of(updateExistingPotentialTrade, createNewPotentialTrade, alreadySamePotentialTrade,
+                skipCauseResaleLockPotentialTrade, createNewPotentialTradeLowerProfit);
 
         List<ItemCurrentPrices> currentPrices = List.of();
 
@@ -302,10 +342,12 @@ class TradeCommandsFactoryTest {
 
         List<ItemMedianPriceAndRarity> medianPriceAndRarities = List.of(cancelMedianPriceAndRarity, leaveMedianPriceAndRarity);
 
+        Set<String> alreadyManagedItems = new HashSet<>();
+
         int sellLimit = 20;
         int sellSlots = 4;
 
-        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, sellLimit, sellSlots);
+        List<FastTradeCommand> result = tradeCommandsFactory.createTradeCommandsForUser(user, sellTrades, currentPrices, medianPriceAndRarities, items, alreadyManagedItems, sellLimit, sellSlots);
 
         AuthorizationDTO authorizationDTO = new AuthorizationDTO();
         authorizationDTO.setProfileId("profileId");
@@ -352,7 +394,7 @@ class TradeCommandsFactoryTest {
         cancelCurrentPrices.setItemId("cancelSellTradeItemId");
         cancelCurrentPrices.setMinSellPrice(49);
 
-        List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1,  leaveCurrentPrices2, cancelCurrentPrices);
+        List<ItemCurrentPrices> currentPrices = List.of(leaveCurrentPrices1, leaveCurrentPrices2, cancelCurrentPrices);
 
         int sellLimit = 20;
         int sellSlots = 3;

@@ -235,9 +235,9 @@ services:
       FAST_SELL_USER_ID: 1
       FAST_SELL_EMAIL: leskotr23@gmail.com
 
-      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE: 500
+      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE: 300
       FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENTAGE: 100
-      FAST_SELL_OWNED_ITEMS_LIMIT: 300 # recommended to be <= 500, takes 360ms for 300
+      FAST_SELL_OWNED_ITEMS_LIMIT: 350 # recommended to be <= 500, takes 360ms for 300
       FAST_SELL_FETCH_USERS_ITEMS_OFFSET: 75
       FAST_SELL_FETCH_USERS_ITEMS_LIMIT: 2000 # takes 300ms, 170 owned items for 1500, 390ms and 250 items for 2000
     networks:

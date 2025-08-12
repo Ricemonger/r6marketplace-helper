@@ -34,26 +34,26 @@ public class UserFastTradesManager {
     private final TradeCommandsFactory tradeCommandsFactory;
     private final TradeCommandsExecutor tradeCommandExecutor;
 
-    private final List<CompletableFuture<?>> createCommandsTasks = Collections.synchronizedList(new LinkedList<>());
+    private final List<CompletableFuture<?>> createCommandsTasks = new LinkedList<>();
     private final Set<FastTradeCommand> commands = Collections.synchronizedSortedSet((new TreeSet<>()));
     private final Set<String> alreadyManagedItems = new HashSet<>();
 
     private FastUbiUserStats savedUserStats;
 
-    public void submitCreateCommandsTaskByFetchedUserStats(ManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
-        if (commands.isEmpty()) {
-            CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> {
-                List<FastTradeCommand> newCommands = fetchAndUpdateUserStatsAndCreateCommandsByThem(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+    public synchronized void submitCreateCommandsTaskByFetchedUserStats(ManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+        CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> {
+            List<FastTradeCommand> newCommands = fetchAndUpdateUserStatsAndCreateCommandsByThem(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
 
+            synchronized (commands) {
                 if (commands.isEmpty() && !newCommands.isEmpty()) {
                     savedUserStats = null;
                     commands.addAll(newCommands);
                 }
+            }
 
-                return newCommands;
-            });
-            createCommandsTasks.add(task);
-        }
+            return newCommands;
+        });
+        createCommandsTasks.add(task);
     }
 
     private List<FastTradeCommand> fetchAndUpdateUserStatsAndCreateCommandsByThem(ManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
@@ -71,20 +71,20 @@ public class UserFastTradesManager {
         }
     }
 
-    public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(ManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
-        if (commands.isEmpty()) {
-            CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> {
-                List<FastTradeCommand> newCommands = fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(managedUser, authorizationDTO, itemsMedianPriceAndRarity, sellLimit, sellSlots);
+    public synchronized void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(ManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+        CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> {
+            List<FastTradeCommand> newCommands = fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(managedUser, authorizationDTO, itemsMedianPriceAndRarity, sellLimit, sellSlots);
 
+            synchronized (commands) {
                 if (commands.isEmpty() && !newCommands.isEmpty()) {
                     savedUserStats = null;
                     commands.addAll(newCommands);
                 }
+            }
 
-                return newCommands;
-            });
-            createCommandsTasks.add(task);
-        }
+            return newCommands;
+        });
+        createCommandsTasks.add(task);
     }
 
     private List<FastTradeCommand> fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(ManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
@@ -109,13 +109,13 @@ public class UserFastTradesManager {
         }
     }
 
-    public void executeFastSellCommands() {
-        if (!commands.isEmpty()) {
-            cancelAllCreateCommandsTasks();
-
-            synchronized (commands) {
+    public synchronized void executeFastSellCommands() {
+        synchronized (commands) {
+            if (!commands.isEmpty()) {
+                cancelAllCreateCommandsTasks();
                 executeCommandsInOrder(commands);
                 commands.clear();
+                cancelAllCreateCommandsTasks();
             }
         }
     }
@@ -145,11 +145,9 @@ public class UserFastTradesManager {
     }
 
     private void cancelAllCreateCommandsTasks() {
-        synchronized (createCommandsTasks) {
-            for (Future<?> future : createCommandsTasks) {
-                future.cancel(true);
-            }
-            createCommandsTasks.clear();
+        for (Future<?> future : createCommandsTasks) {
+            future.cancel(true);
         }
+        createCommandsTasks.clear();
     }
 }

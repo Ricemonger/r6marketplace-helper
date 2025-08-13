@@ -261,4 +261,12 @@ class CommonValuesServiceTest {
 
         assertEquals(offset, commonValuesService.getFetchUsersItemsOffset());
     }
+
+    @Test
+    public void getSleepAfterCommandsExecutionTime_should_handle_to_service(){
+        Integer sleepAfterCommandsExecutionTime = 100;
+        when(fastSellManagementConfiguration.getSleepAfterExecutionTime()).thenReturn(sleepAfterCommandsExecutionTime);
+
+        assertEquals(sleepAfterCommandsExecutionTime, commonValuesService.getSleepAfterCommandsExecutionTime());
+    }
 }

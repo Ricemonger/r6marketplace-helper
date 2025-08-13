@@ -95,4 +95,8 @@ public class CommonValuesService implements PricesCommonValuesService {
     public Integer getFetchUsersItemsOffset() {
         return fastSellManagementConfiguration.getFetchUsersItemsOffset();
     }
+
+    public Integer getSleepAfterCommandsExecutionTime() {
+        return fastSellManagementConfiguration.getSleepAfterExecutionTime();
+    }
 }

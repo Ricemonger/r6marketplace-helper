@@ -56,6 +56,7 @@ fast_sell_management:
   fetch_users_items_offset: ${FAST_SELL_FETCH_USERS_ITEMS_OFFSET:80} # 80 unavailable items with 0 sales in history
   fetch_users_items_limit: ${FAST_SELL_FETCH_USERS_ITEMS_LIMIT:1000} # personal for each user, 500 takes 220-290ms, but has only 13 owned items for
   # account with 1.5k items, 1000 takes 270-350ms, 44 items, 1500 takes 300-450ms, 82 items
+  sleep_after_execution_time_ms: ${FAST_SELL_SLEEP_AFTER_EXECUTION_TIME_MS:0}
 
 logging:
   level:

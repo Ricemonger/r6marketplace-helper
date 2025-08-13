@@ -32,17 +32,17 @@ public class ScheduledOneUserFastSellTradeManager {
     private List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity = new ArrayList<>();
 
     @Scheduled(fixedRateString = "${app.scheduling.management_update.fixedRate}", initialDelayString = "${app.scheduling.management_update.initialDelay}")
-    public void submitCreateCommandsTaskByFetchedUserStats() {
+    public synchronized void submitCreateCommandsTaskByFetchedUserStats() {
         userFastTradesManager.submitCreateCommandsTaskByFetchedUserStats(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.management_fetch.fixedRate}", initialDelayString = "${app.scheduling.management_fetch.initialDelay}")
-    public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices() {
+    public synchronized void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices() {
         userFastTradesManager.submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(managedUser, fetchUsersService.nextFetchUsersAuthorizationDTO(), itemsMedianPriceAndRarity, sellLimit, sellSlots);
     }
 
     @Scheduled(fixedRateString = "${app.scheduling.management_execute.fixedRate}", initialDelayString = "${app.scheduling.management_execute.initialDelay}")
-    public void executeFastSellCommands() {
+    public synchronized void executeFastSellCommands() {
         userFastTradesManager.executeFastSellCommands();
     }
 

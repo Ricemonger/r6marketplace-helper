@@ -23,4 +23,6 @@ public class FastSellManagementConfiguration {
     private Integer fetchUsersItemsLimit;
     @Value("${fast_sell_management.fetch_users_items_offset}")
     private Integer fetchUsersItemsOffset;
+    @Value("${fast_sell_management.sleep_after_execution_time_ms}")
+    private Integer sleepAfterExecutionTime;
 }

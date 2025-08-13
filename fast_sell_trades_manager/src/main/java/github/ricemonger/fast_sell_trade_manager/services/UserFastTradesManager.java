@@ -35,20 +35,18 @@ public class UserFastTradesManager {
     private final TradeCommandsExecutor tradeCommandExecutor;
 
     private final List<CompletableFuture<?>> createCommandsTasks = new LinkedList<>();
-    private final Set<FastTradeCommand> commands = Collections.synchronizedSortedSet((new TreeSet<>()));
+    private final Set<FastTradeCommand> commands = new TreeSet<>();
     private final Set<String> alreadyManagedItems = new HashSet<>();
 
     private FastUbiUserStats savedUserStats;
 
-    public synchronized void submitCreateCommandsTaskByFetchedUserStats(ManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+    public void submitCreateCommandsTaskByFetchedUserStats(ManagedUser managedUser, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
         CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> {
             List<FastTradeCommand> newCommands = fetchAndUpdateUserStatsAndCreateCommandsByThem(managedUser, itemsMedianPriceAndRarity, sellLimit, sellSlots);
 
-            synchronized (commands) {
-                if (commands.isEmpty() && !newCommands.isEmpty()) {
-                    savedUserStats = null;
-                    commands.addAll(newCommands);
-                }
+            if (commands.isEmpty() && !newCommands.isEmpty()) {
+                savedUserStats = null;
+                commands.addAll(newCommands);
             }
 
             return newCommands;
@@ -71,15 +69,13 @@ public class UserFastTradesManager {
         }
     }
 
-    public synchronized void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(ManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
+    public void submitCreateCommandsTaskBySavedUserStatsAndFetchedCurrentPrices(ManagedUser managedUser, AuthorizationDTO authorizationDTO, List<ItemMedianPriceAndRarity> itemsMedianPriceAndRarity, int sellLimit, int sellSlots) {
         CompletableFuture<?> task = CompletableFuture.supplyAsync(() -> {
             List<FastTradeCommand> newCommands = fetchItemsCurrentStatsAndCreateCommandsByThemAndSavedUserStats(managedUser, authorizationDTO, itemsMedianPriceAndRarity, sellLimit, sellSlots);
 
-            synchronized (commands) {
-                if (commands.isEmpty() && !newCommands.isEmpty()) {
-                    savedUserStats = null;
-                    commands.addAll(newCommands);
-                }
+            if (commands.isEmpty() && !newCommands.isEmpty()) {
+                savedUserStats = null;
+                commands.addAll(newCommands);
             }
 
             return newCommands;
@@ -109,15 +105,24 @@ public class UserFastTradesManager {
         }
     }
 
-    public synchronized void executeFastSellCommands() {
-        synchronized (commands) {
-            if (!commands.isEmpty()) {
-                cancelAllCreateCommandsTasks();
-                executeCommandsInOrder(commands);
-                commands.clear();
-                cancelAllCreateCommandsTasks();
+    public void executeFastSellCommands() {
+        if (!commands.isEmpty()) {
+            cancelAllCreateCommandsTasks();
+            executeCommandsInOrder(commands);
+            commands.clear();
+            log.info("Executed fast sell commands, sleeping for {} ms...", commonValuesService.getSleepAfterCommandsExecutionTime());
+            try {
+                Thread.sleep(commonValuesService.getSleepAfterCommandsExecutionTime());
+            } catch (InterruptedException ignored) {
             }
         }
+    }
+
+    private void cancelAllCreateCommandsTasks() {
+        for (Future<?> future : createCommandsTasks) {
+            future.cancel(true);
+        }
+        createCommandsTasks.clear();
     }
 
     public void createAndExecuteCommandsToKeepOneSellSlotUnused(ManagedUser managedUser, int sellLimit, int sellSlots) {
@@ -142,12 +147,5 @@ public class UserFastTradesManager {
             tradeCommandExecutor.executeCommand(command);
             log.info("Executed command: {}", command.toLogString());
         }
-    }
-
-    private void cancelAllCreateCommandsTasks() {
-        for (Future<?> future : createCommandsTasks) {
-            future.cancel(true);
-        }
-        createCommandsTasks.clear();
     }
 }

@@ -18,5 +18,8 @@ class FastSellManagementConfigurationTest {
         assertNotNull(fastSellManagementConfiguration.getMinMedianPriceDifference());
         assertNotNull(fastSellManagementConfiguration.getMinMedianPriceDifferencePercentage());
         assertNotNull(fastSellManagementConfiguration.getOwnedItemsLimit());
+        assertNotNull(fastSellManagementConfiguration.getFetchUsersItemsLimit());
+        assertNotNull(fastSellManagementConfiguration.getFetchUsersItemsOffset());
+        assertNotNull(fastSellManagementConfiguration.getSleepAfterExecutionTime());
     }
 }

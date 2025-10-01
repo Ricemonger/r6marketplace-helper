@@ -52,9 +52,12 @@ public class PotentialTradeItemsFactory {
                                                                  @NonNull Integer minMedianPriceDifference,
                                                                  @NonNull Integer minMedianPriceDifferencePercentage) {
 
+        int sellPrice = itemsCurrentPrices.getMinSellPrice() == null ? commonValuesService.getMaximumPriceByRarity(itemMedianPriceAndRarity.getRarity()) : itemsCurrentPrices.getMinSellPrice();
+        int itemMonthMedianPrice = itemMedianPriceAndRarity.getMonthMedianPrice() == 0 ? commonValuesService.getMinimumPriceByRarity(itemMedianPriceAndRarity.getRarity()) : itemMedianPriceAndRarity.getMonthMedianPrice();
+
         if (itemsCurrentPrices.getMaxBuyPrice() != null) {
-            Integer buyPriceMedianPriceDifference = itemsCurrentPrices.getMaxBuyPrice() - itemMedianPriceAndRarity.getMonthMedianPrice();
-            Integer buyPriceMedianPriceDifferencePercentage = (buyPriceMedianPriceDifference * 100) / itemMedianPriceAndRarity.getMonthMedianPrice();
+            Integer buyPriceMedianPriceDifference = itemsCurrentPrices.getMaxBuyPrice() - itemMonthMedianPrice;
+            Integer buyPriceMedianPriceDifferencePercentage = (buyPriceMedianPriceDifference * 100) / itemMonthMedianPrice;
 
             if (buyPriceMedianPriceDifference >= minMedianPriceDifference && buyPriceMedianPriceDifferencePercentage >= minMedianPriceDifferencePercentage) {
                 return new PotentialTrade(
@@ -66,10 +69,9 @@ public class PotentialTradeItemsFactory {
                 );
             }
         }
-        int sellPrice = itemsCurrentPrices.getMinSellPrice() == null ? commonValuesService.getMaximumPriceByRarity(itemMedianPriceAndRarity.getRarity()) : itemsCurrentPrices.getMinSellPrice();
 
-        Integer sellPriceMedianPriceDifference = sellPrice - itemMedianPriceAndRarity.getMonthMedianPrice();
-        Integer sellPriceMedianPriceDifferencePercentage = (sellPriceMedianPriceDifference * 100) / itemMedianPriceAndRarity.getMonthMedianPrice();
+        Integer sellPriceMedianPriceDifference = sellPrice - itemMonthMedianPrice;
+        Integer sellPriceMedianPriceDifferencePercentage = (sellPriceMedianPriceDifference * 100) / itemMonthMedianPrice;
 
         if (sellPriceMedianPriceDifference >= minMedianPriceDifference && sellPriceMedianPriceDifferencePercentage >= minMedianPriceDifferencePercentage) {
             return new PotentialTrade(

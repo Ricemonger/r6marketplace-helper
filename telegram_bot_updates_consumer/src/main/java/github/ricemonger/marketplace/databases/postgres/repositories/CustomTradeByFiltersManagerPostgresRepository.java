@@ -14,9 +14,9 @@ public interface CustomTradeByFiltersManagerPostgresRepository extends JpaReposi
     @Transactional
     @Modifying
     @Query(value = "UPDATE trade_manager_by_item_filters t " +
-            "SET enabled = NOT (enabled)" +
-            "FROM telegram_user tu " +
-            "WHERE t.user_id = tu.user_id AND tu.chat_id = :chatId AND t.name = :name", nativeQuery = true)
+                   "SET enabled = NOT (enabled)" +
+                   "FROM telegram_user tu " +
+                   "WHERE t.user_id = tu.user_id AND tu.chat_id = :chatId AND t.name = :name", nativeQuery = true)
     void invertEnabledFlagByUserTelegramUserChatIdAndName(String chatId, String name);
 
     @Transactional

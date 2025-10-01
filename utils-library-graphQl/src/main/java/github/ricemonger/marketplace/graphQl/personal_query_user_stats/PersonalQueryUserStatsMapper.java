@@ -132,12 +132,12 @@ public class PersonalQueryUserStatsMapper {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(graphQlCommonValuesService.getDateFormat());
 
         if (node.getTradeId() == null
-                || node.getState() == null
-                || node.getCategory() == null
-                || node.getLastModifiedAt() == null
-                || node.getTradeItems() == null || node.getTradeItems().length == 0
-                || node.getTradeItems()[0].getItem() == null
-                || node.getTradeItems()[0].getItem().getItemId() == null) {
+            || node.getState() == null
+            || node.getCategory() == null
+            || node.getLastModifiedAt() == null
+            || node.getTradeItems() == null || node.getTradeItems().length == 0
+            || node.getTradeItems()[0].getItem() == null
+            || node.getTradeItems()[0].getItem().getItemId() == null) {
             throw new GraphQlPersonalUserStatsMappingException("One of node fields is null-" + node);
         }
 
@@ -271,10 +271,10 @@ public class PersonalQueryUserStatsMapper {
 
     public UserTransactionsCount mapUserTransactionsCount(TradesLimitations tradesLimitations) throws GraphQlPersonalUserStatsMappingException {
         if (tradesLimitations == null
-                || tradesLimitations.getBuy() == null
-                || tradesLimitations.getSell() == null
-                || tradesLimitations.getBuy().getActiveTransactionCount() == null || tradesLimitations.getBuy().getResolvedTransactionCount() == null
-                || tradesLimitations.getSell().getActiveTransactionCount() == null || tradesLimitations.getSell().getResolvedTransactionCount() == null) {
+            || tradesLimitations.getBuy() == null
+            || tradesLimitations.getSell() == null
+            || tradesLimitations.getBuy().getActiveTransactionCount() == null || tradesLimitations.getBuy().getResolvedTransactionCount() == null
+            || tradesLimitations.getSell().getActiveTransactionCount() == null || tradesLimitations.getSell().getResolvedTransactionCount() == null) {
             throw new GraphQlPersonalUserStatsMappingException("Trade limitation or one of its fields is null:" + tradesLimitations);
         }
 

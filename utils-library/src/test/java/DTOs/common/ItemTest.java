@@ -39,6 +39,14 @@ class ItemTest {
         toCopy.setDayMaxPrice(14);
         toCopy.setDayMinPrice(15);
         toCopy.setDaySales(16);
+        toCopy.setPriorityToSellByMaxBuyPrice(17L);
+        toCopy.setPriorityToSellByNextFancySellPrice(18L);
+        toCopy.setPriorityToBuyByMinSellPrice(19L);
+        toCopy.setPriorityToBuyIn1Hour(20L);
+        toCopy.setPriorityToBuyIn6Hours(21L);
+        toCopy.setPriorityToBuyIn24Hours(22L);
+        toCopy.setPriorityToBuyIn168Hours(23L);
+        toCopy.setPriorityToBuyIn720Hours(24L);
         toCopy.setPriceToBuyIn1Hour(25);
         toCopy.setPriceToBuyIn6Hours(26);
         toCopy.setPriceToBuyIn24Hours(27);
@@ -167,6 +175,15 @@ class ItemTest {
     }
 
     @Test
+    public void updateCurrentPricesPriorities_should_update_fields() {
+        Item item = new Item();
+        item.updateCurrentPricesPriorities(1L, 2L, 3L);
+        assertEquals(1L, item.getPriorityToSellByMaxBuyPrice());
+        assertEquals(2L, item.getPriorityToSellByNextFancySellPrice());
+        assertEquals(3L, item.getPriorityToBuyByMinSellPrice());
+    }
+
+    @Test
     public void isFullyEquals_should_return_true_for_same_objects() {
         Item item1 = new Item();
         item1.setItemId("1");
@@ -192,6 +209,14 @@ class ItemTest {
         item1.setDayMaxPrice(14);
         item1.setDayMinPrice(15);
         item1.setDaySales(16);
+        item1.setPriorityToSellByMaxBuyPrice(17L);
+        item1.setPriorityToSellByNextFancySellPrice(18L);
+        item1.setPriorityToBuyByMinSellPrice(19L);
+        item1.setPriorityToBuyIn1Hour(20L);
+        item1.setPriorityToBuyIn6Hours(21L);
+        item1.setPriorityToBuyIn24Hours(22L);
+        item1.setPriorityToBuyIn168Hours(23L);
+        item1.setPriorityToBuyIn720Hours(24L);
         item1.setPriceToBuyIn1Hour(25);
         item1.setPriceToBuyIn6Hours(26);
         item1.setPriceToBuyIn24Hours(27);
@@ -222,6 +247,14 @@ class ItemTest {
         item2.setDayMaxPrice(14);
         item2.setDayMinPrice(15);
         item2.setDaySales(16);
+        item2.setPriorityToSellByMaxBuyPrice(17L);
+        item2.setPriorityToSellByNextFancySellPrice(18L);
+        item2.setPriorityToBuyByMinSellPrice(19L);
+        item2.setPriorityToBuyIn1Hour(20L);
+        item2.setPriorityToBuyIn6Hours(21L);
+        item2.setPriorityToBuyIn24Hours(22L);
+        item2.setPriorityToBuyIn168Hours(23L);
+        item2.setPriorityToBuyIn720Hours(24L);
         item2.setPriceToBuyIn1Hour(25);
         item2.setPriceToBuyIn6Hours(26);
         item2.setPriceToBuyIn24Hours(27);
@@ -257,6 +290,14 @@ class ItemTest {
         item1.setDayMaxPrice(14);
         item1.setDayMinPrice(15);
         item1.setDaySales(16);
+        item1.setPriorityToSellByMaxBuyPrice(17L);
+        item1.setPriorityToSellByNextFancySellPrice(18L);
+        item1.setPriorityToBuyByMinSellPrice(19L);
+        item1.setPriorityToBuyIn1Hour(20L);
+        item1.setPriorityToBuyIn6Hours(21L);
+        item1.setPriorityToBuyIn24Hours(22L);
+        item1.setPriorityToBuyIn168Hours(23L);
+        item1.setPriorityToBuyIn720Hours(24L);
         item1.setPriceToBuyIn1Hour(25);
         item1.setPriceToBuyIn6Hours(26);
         item1.setPriceToBuyIn24Hours(27);
@@ -287,6 +328,14 @@ class ItemTest {
         item2.setDayMaxPrice(14);
         item2.setDayMinPrice(15);
         item2.setDaySales(16);
+        item2.setPriorityToSellByMaxBuyPrice(17L);
+        item2.setPriorityToSellByNextFancySellPrice(18L);
+        item2.setPriorityToBuyByMinSellPrice(19L);
+        item2.setPriorityToBuyIn1Hour(20L);
+        item2.setPriorityToBuyIn6Hours(21L);
+        item2.setPriorityToBuyIn24Hours(22L);
+        item2.setPriorityToBuyIn168Hours(23L);
+        item2.setPriorityToBuyIn720Hours(24L);
         item2.setPriceToBuyIn1Hour(25);
         item2.setPriceToBuyIn6Hours(26);
         item2.setPriceToBuyIn24Hours(27);
@@ -362,6 +411,30 @@ class ItemTest {
         item1.setDaySales(160);
         assertFalse(item1.isFullyEquals(item2));
         item1.setDaySales(16);
+        item1.setPriorityToSellByMaxBuyPrice(170L);
+        assertFalse(item1.isFullyEquals(item2));
+        item1.setPriorityToSellByMaxBuyPrice(17L);
+        item1.setPriorityToSellByNextFancySellPrice(180L);
+        assertFalse(item1.isFullyEquals(item2));
+        item1.setPriorityToSellByNextFancySellPrice(18L);
+        item1.setPriorityToBuyByMinSellPrice(190L);
+        assertFalse(item1.isFullyEquals(item2));
+        item1.setPriorityToBuyByMinSellPrice(19L);
+        item1.setPriorityToBuyIn1Hour(200L);
+        assertFalse(item1.isFullyEquals(item2));
+        item1.setPriorityToBuyIn1Hour(20L);
+        item1.setPriorityToBuyIn6Hours(210L);
+        assertFalse(item1.isFullyEquals(item2));
+        item1.setPriorityToBuyIn6Hours(21L);
+        item1.setPriorityToBuyIn24Hours(220L);
+        assertFalse(item1.isFullyEquals(item2));
+        item1.setPriorityToBuyIn24Hours(22L);
+        item1.setPriorityToBuyIn168Hours(230L);
+        assertFalse(item1.isFullyEquals(item2));
+        item1.setPriorityToBuyIn168Hours(23L);
+        item1.setPriorityToBuyIn720Hours(240L);
+        assertFalse(item1.isFullyEquals(item2));
+        item1.setPriorityToBuyIn720Hours(24L);
         item1.setPriceToBuyIn1Hour(250);
         assertFalse(item1.isFullyEquals(item2));
         item1.setPriceToBuyIn1Hour(25);
@@ -404,6 +477,14 @@ class ItemTest {
         item1.setDayMaxPrice(14);
         item1.setDayMinPrice(15);
         item1.setDaySales(16);
+        item1.setPriorityToSellByMaxBuyPrice(17L);
+        item1.setPriorityToSellByNextFancySellPrice(18L);
+        item1.setPriorityToBuyByMinSellPrice(19L);
+        item1.setPriorityToBuyIn1Hour(20L);
+        item1.setPriorityToBuyIn6Hours(21L);
+        item1.setPriorityToBuyIn24Hours(22L);
+        item1.setPriorityToBuyIn168Hours(23L);
+        item1.setPriorityToBuyIn720Hours(24L);
         item1.setPriceToBuyIn1Hour(25);
         item1.setPriceToBuyIn6Hours(26);
         item1.setPriceToBuyIn24Hours(27);
@@ -434,6 +515,14 @@ class ItemTest {
         item2.setDayMaxPrice(140);
         item2.setDayMinPrice(150);
         item2.setDaySales(160);
+        item2.setPriorityToSellByMaxBuyPrice(170L);
+        item2.setPriorityToSellByNextFancySellPrice(180L);
+        item2.setPriorityToBuyByMinSellPrice(190L);
+        item2.setPriorityToBuyIn1Hour(200L);
+        item2.setPriorityToBuyIn6Hours(210L);
+        item2.setPriorityToBuyIn24Hours(220L);
+        item2.setPriorityToBuyIn168Hours(230L);
+        item2.setPriorityToBuyIn720Hours(240L);
         item2.setPriceToBuyIn1Hour(250);
         item2.setPriceToBuyIn6Hours(260);
         item2.setPriceToBuyIn24Hours(270);
@@ -480,6 +569,14 @@ class ItemTest {
         item1.setDayMaxPrice(14);
         item1.setDayMinPrice(15);
         item1.setDaySales(16);
+        item1.setPriorityToSellByMaxBuyPrice(17L);
+        item1.setPriorityToSellByNextFancySellPrice(18L);
+        item1.setPriorityToBuyByMinSellPrice(19L);
+        item1.setPriorityToBuyIn1Hour(20L);
+        item1.setPriorityToBuyIn6Hours(21L);
+        item1.setPriorityToBuyIn24Hours(22L);
+        item1.setPriorityToBuyIn168Hours(23L);
+        item1.setPriorityToBuyIn720Hours(24L);
         item1.setPriceToBuyIn1Hour(25);
         item1.setPriceToBuyIn6Hours(26);
         item1.setPriceToBuyIn24Hours(27);
@@ -510,6 +607,14 @@ class ItemTest {
         item2.setDayMaxPrice(140);
         item2.setDayMinPrice(150);
         item2.setDaySales(160);
+        item2.setPriorityToSellByMaxBuyPrice(170L);
+        item2.setPriorityToSellByNextFancySellPrice(180L);
+        item2.setPriorityToBuyByMinSellPrice(190L);
+        item2.setPriorityToBuyIn1Hour(200L);
+        item2.setPriorityToBuyIn6Hours(210L);
+        item2.setPriorityToBuyIn24Hours(220L);
+        item2.setPriorityToBuyIn168Hours(230L);
+        item2.setPriorityToBuyIn720Hours(240L);
         item2.setPriceToBuyIn1Hour(250);
         item2.setPriceToBuyIn6Hours(260);
         item2.setPriceToBuyIn24Hours(270);

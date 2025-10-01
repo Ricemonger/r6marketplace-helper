@@ -12,6 +12,6 @@ import java.util.List;
 public interface CustomItemSalePostgresRepository extends JpaRepository<ItemSaleEntity, ItemSaleEntityId> {
     @Transactional(readOnly = true)
     @Query(value = "SELECT s.item_id AS itemId, s.sold_at AS soldAt, s.price AS price " +
-            "FROM item_sale s WHERE s.sold_at >= CURRENT_DATE - 30", nativeQuery = true)
+                   "FROM item_sale s WHERE s.sold_at >= CURRENT_DATE - 30", nativeQuery = true)
     List<ItemSaleProjectionI> findAllForLastMonth();
 }

@@ -12,19 +12,19 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CommonQueryItemsPricesGraphQlDocumentBuilder {
 
-    private final static String QUERY_PART_BEFORE_VARS =
+    private final static String personalQueryFetchUserStatsPartBeforeOwnedItemsOffsetVariables =
             """
                     query GetSellableItems(
                         $spaceId: String!,
                         $sortBy: MarketableItemSort
                     """;
 
-    private final static String QUERY_PART_AFTER_VARS_BEFORE_ADDITIONAL_QUERIES = """ 
+    private final static String personalQueryFetchUserStatsPartAfterOwnedItemsOffsetVariablesBeforeQueries = """ 
             ) {
                 game(spaceId: $spaceId) {
             """;
 
-    private final static String QUERY_PART_AFTER_ADDITIONAL_QUERIES = """ 
+    private final static String personalQueryFetchUserStatsPartAfterQueries = """ 
                            __typename
                   }
                   __typename
@@ -60,9 +60,9 @@ public class CommonQueryItemsPricesGraphQlDocumentBuilder {
               }
             """;
 
-    private final static String ADDITIONAL_QUERY_NAME = "marketableItems";
+    private final static String itemsQueryName = "marketableItems";
 
-    private final static String ADDITIONAL_QUERY_TEMPLATE = """
+    private final static String itemsQuery = """
             marketableItems(
                                 limit: $limit
                                 offset: $defaultVarKey
@@ -120,9 +120,9 @@ public class CommonQueryItemsPricesGraphQlDocumentBuilder {
                     createVariable("lastQueryLimit", limitRemainder, resultingVariables, variablesSection);
                 }
 
-                String alias = ADDITIONAL_QUERY_NAME + i;
+                String alias = itemsQueryName + i;
 
-                aliasesToFields.put(alias, ADDITIONAL_QUERY_NAME);
+                aliasesToFields.put(alias, itemsQueryName);
 
                 if (i == expectedOwnedItemsQueries - 1) {
                     queriesSection.append(createAliasedItemsQuerySection(alias, varKey, "lastQueryLimit"));
@@ -130,19 +130,19 @@ public class CommonQueryItemsPricesGraphQlDocumentBuilder {
                     queriesSection.append(createAliasedItemsQuerySection(alias, varKey));
                 }
 
-                aliasesToFields.put(ADDITIONAL_QUERY_NAME + i, ADDITIONAL_QUERY_NAME);
+                aliasesToFields.put(itemsQueryName + i, itemsQueryName);
             }
         }
 
-        document.append(QUERY_PART_BEFORE_VARS);
+        document.append(personalQueryFetchUserStatsPartBeforeOwnedItemsOffsetVariables);
 
         document.append(variablesSection);
 
-        document.append(QUERY_PART_AFTER_VARS_BEFORE_ADDITIONAL_QUERIES);
+        document.append(personalQueryFetchUserStatsPartAfterOwnedItemsOffsetVariablesBeforeQueries);
 
         document.append(queriesSection);
 
-        document.append(QUERY_PART_AFTER_ADDITIONAL_QUERIES);
+        document.append(personalQueryFetchUserStatsPartAfterQueries);
 
         resultingVariables.putAll(defaultVariables);
 
@@ -165,14 +165,14 @@ public class CommonQueryItemsPricesGraphQlDocumentBuilder {
     }
 
     private String createItemQuerySection(String offsetVarKey) {
-        return ADDITIONAL_QUERY_TEMPLATE.replace("$defaultVarKey", "$" + offsetVarKey);
+        return itemsQuery.replace("$defaultVarKey", "$" + offsetVarKey);
     }
 
     private String createAliasedItemsQuerySection(String alias, String offsetVarKey) {
-        return alias + ": " + ADDITIONAL_QUERY_TEMPLATE.replace("$defaultVarKey", "$" + offsetVarKey);
+        return alias + ": " + itemsQuery.replace("$defaultVarKey", "$" + offsetVarKey);
     }
 
     private String createAliasedItemsQuerySection(String alias, String offsetVarKey, String limitVarKey) {
-        return alias + ": " + ADDITIONAL_QUERY_TEMPLATE.replace("$defaultVarKey", "$" + offsetVarKey).replace("$limit", "$" + limitVarKey);
+        return alias + ": " + itemsQuery.replace("$defaultVarKey", "$" + offsetVarKey).replace("$limit", "$" + limitVarKey);
     }
 }

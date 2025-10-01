@@ -3,10 +3,7 @@ package github.ricemonger.ubi_users_stats_fetcher.services;
 import github.ricemonger.marketplace.graphQl.personal_query_user_stats.PersonalQueryUserStatsGraphQlClientService;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserAuthorizedUbiAccount;
-import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
-import github.ricemonger.utils.DTOs.personal.UbiUserStats;
-import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
+import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
@@ -31,6 +28,8 @@ public class UbiUsersStatsFetchingService {
 
     private final CommonValuesService commonValuesService;
 
+    private final TradeService tradeService;
+
     public void fetchAllAuthorizedUbiUsersStats() {
         List<UserAuthorizedUbiAccount> userAuthorizedUbiAccounts = ubiAccountService.findAllUsersUbiAccountEntries();
 
@@ -44,7 +43,7 @@ public class UbiUsersStatsFetchingService {
             }
         }
 
-        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0).plusSeconds(20));
+        commonValuesService.setLastUbiUsersStatsFetchTime(LocalDateTime.now().withNano(0).plusSeconds(10));
 
         ubiAccountService.saveAllUbiAccountStats(updatedUbiAccountsStats);
     }
@@ -72,6 +71,9 @@ public class UbiUsersStatsFetchingService {
         List<UbiTrade> currentSellTrades = currentOrders.stream().filter(order -> order.getCategory().equals(TradeCategory.Sell)).toList();
         List<UbiTrade> currentBuyTrades = currentOrders.stream().filter(order -> order.getCategory().equals(TradeCategory.Buy)).toList();
 
+        List<Trade> calculatedCurrentSellTrades = tradeService.calculateTradeStatsForUbiTrades(currentSellTrades);
+        List<Trade> calculatedCurrentBuyTrades = tradeService.calculateTradeStatsForUbiTrades(currentBuyTrades);
+
         notifyUser(userAuthorizedUbiAccount, creditAmount, soldIn24h, boughtIn24h);
 
         return new UbiAccountStats(
@@ -81,8 +83,8 @@ public class UbiUsersStatsFetchingService {
                 userTradesLimitations.getResolvedBuyTransactionCount(),
                 ownedItemsIds,
                 itemResaleLocks,
-                currentSellTrades,
-                currentBuyTrades);
+                calculatedCurrentSellTrades,
+                calculatedCurrentBuyTrades);
     }
 
     private void notifyUser(UserAuthorizedUbiAccount userAuthorizedUbiAccount, int creditAmount, List<UbiTrade> soldIn24h, List<UbiTrade> boughtIn24h) {

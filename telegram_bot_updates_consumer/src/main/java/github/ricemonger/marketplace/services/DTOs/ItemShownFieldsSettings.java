@@ -31,12 +31,12 @@ public class ItemShownFieldsSettings {
 
     public String toString() {
         return "Show Item Name: " + itemShowNameFlag + "\n" +
-                "Show Item Type: " + itemShowItemTypeFlag + "\n" +
-                "Show Max Buy Price: " + itemShowMaxBuyPrice + "\n" +
-                "Show Buy Orders Count: " + itemShowBuyOrdersCountFlag + "\n" +
-                "Show Min Sell Price: " + itemShowMinSellPriceFlag + "\n" +
-                "Show Sell Orders Count: " + itemsShowSellOrdersCountFlag + "\n" +
-                "Show Item Picture: " + itemShowPictureFlag + "\n";
+               "Show Item Type: " + itemShowItemTypeFlag + "\n" +
+               "Show Max Buy Price: " + itemShowMaxBuyPrice + "\n" +
+               "Show Buy Orders Count: " + itemShowBuyOrdersCountFlag + "\n" +
+               "Show Min Sell Price: " + itemShowMinSellPriceFlag + "\n" +
+               "Show Sell Orders Count: " + itemsShowSellOrdersCountFlag + "\n" +
+               "Show Item Picture: " + itemShowPictureFlag + "\n";
     }
 
     public String showItem(ItemMainFieldsI item) {

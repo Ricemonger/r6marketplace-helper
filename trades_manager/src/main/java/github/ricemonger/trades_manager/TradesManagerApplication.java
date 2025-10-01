@@ -16,14 +16,12 @@ import github.ricemonger.utils.services.calculators.TradeStatsCalculatorUtilsCon
 import github.ricemonger.utilslibrarykafka.KafkaUtilsConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"github.ricemonger.trades_manager", "github.ricemonger.utilspostgresschema"},
         basePackageClasses = github.ricemonger.utils.PublicMethodLogger.class)
-@EntityScan(basePackages = "github.ricemonger.utilspostgresschema")
 @Import({
         KafkaUtilsConfiguration.class,
         RedisUtilsConfiguration.class,

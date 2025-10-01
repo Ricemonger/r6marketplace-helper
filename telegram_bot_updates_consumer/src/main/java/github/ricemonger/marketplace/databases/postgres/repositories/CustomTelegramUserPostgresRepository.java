@@ -34,6 +34,6 @@ public interface CustomTelegramUserPostgresRepository extends JpaRepository<Tele
 
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.marketplace.services.DTOs.TelegramUserInputStateAndGroup(t.chatId, t.inputState, t.inputGroup) " +
-            "FROM TelegramUserEntity t WHERE t.chatId = :chatId")
+           "FROM TelegramUserEntity t WHERE t.chatId = :chatId")
     Optional<TelegramUserInputStateAndGroup> findTelegramUserInputStateAndGroupByChatId(String chatId);
 }

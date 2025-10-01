@@ -16,7 +16,7 @@ import github.ricemonger.utils.enums.InputState;
 import github.ricemonger.utils.enums.TagGroup;
 import github.ricemonger.utils.enums.TradeOperationType;
 import github.ricemonger.utils.exceptions.server.InvalidTelegramUserInputException;
-import github.ricemonger.utils.services.calculators.ItemTradePriorityByExpressionCalculator;
+import github.ricemonger.utils.services.calculators.TradePriorityExpressionDeserializer;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,7 +53,7 @@ public class BotInnerServiceTest {
     @MockBean
     private TagService tagService;
     @MockBean
-    private ItemTradePriorityByExpressionCalculator itemTradePriorityByExpressionCalculator;
+    private TradePriorityExpressionDeserializer tradePriorityExpressionDeserializer;
 
     @Test
     public void sendText_should_handle_to_service() {
@@ -584,11 +584,11 @@ public class BotInnerServiceTest {
 
     @Test
     public void isTradePriorityExpressionValid_should_return_service_result() {
-        when(itemTradePriorityByExpressionCalculator.isValidExpression("1")).thenReturn(true);
+        when(tradePriorityExpressionDeserializer.isValidExpression("1")).thenReturn(true);
 
         assertTrue(botInnerService.isTradePriorityExpressionValid("1"));
 
-        when(itemTradePriorityByExpressionCalculator.isValidExpression("2")).thenReturn(false);
+        when(tradePriorityExpressionDeserializer.isValidExpression("2")).thenReturn(false);
 
         assertFalse(botInnerService.isTradePriorityExpressionValid("2"));
     }

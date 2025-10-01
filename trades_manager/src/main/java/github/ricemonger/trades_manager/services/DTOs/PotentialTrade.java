@@ -1,6 +1,6 @@
 package github.ricemonger.trades_manager.services.DTOs;
 
-import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
+import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -12,10 +12,9 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public abstract class PotentialTrade implements Comparable<PotentialTrade> {
-
     private final PersonalItem personalItem;
 
-    private final PrioritizedPotentialTradeStats prioritizedPotentialTradeStats;
+    private final PotentialTradeStats potentialTradeStats;
 
     public abstract TradeCategory getTradeCategory();
 
@@ -24,7 +23,7 @@ public abstract class PotentialTrade implements Comparable<PotentialTrade> {
     }
 
     public Long getTradePriority() {
-        return prioritizedPotentialTradeStats == null ? null : prioritizedPotentialTradeStats.getTradePriority();
+        return potentialTradeStats == null ? null : potentialTradeStats.getTradePriority();
     }
 
     public Boolean tradeForItemAlreadyExists() {
@@ -36,7 +35,7 @@ public abstract class PotentialTrade implements Comparable<PotentialTrade> {
     }
 
     public Integer getNewPrice() {
-        return prioritizedPotentialTradeStats == null ? null : prioritizedPotentialTradeStats.getPrice();
+        return potentialTradeStats == null ? null : potentialTradeStats.getPrice();
     }
 
     public Integer getOldPrice() {

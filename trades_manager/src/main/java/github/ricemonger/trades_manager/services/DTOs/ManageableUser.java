@@ -2,7 +2,6 @@ package github.ricemonger.trades_manager.services.DTOs;
 
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
 import github.ricemonger.utils.DTOs.personal.TradeByItemIdManager;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,10 +29,8 @@ public class ManageableUser {
     private List<TradeByItemIdManager> tradeByItemIdManagers = new ArrayList<>();
 
     private Boolean sellTradesManagingEnabledFlag;
-    private String sellTradePriorityExpression;
 
     private Boolean buyTradesManagingEnabledFlag;
-    private String buyTradePriorityExpression;
 
     public String getUbiProfileId() {
         return ubiAccountStats == null ? null : ubiAccountStats.getUbiProfileId();
@@ -59,11 +56,11 @@ public class ManageableUser {
         return ubiAccountStats == null ? null : ubiAccountStats.getResaleLocks();
     }
 
-    public List<UbiTrade> getCurrentSellTrades() {
+    public List<Trade> getCurrentSellTrades() {
         return ubiAccountStats == null ? null : ubiAccountStats.getCurrentSellTrades();
     }
 
-    public List<UbiTrade> getCurrentBuyTrades() {
+    public List<Trade> getCurrentBuyTrades() {
         return ubiAccountStats == null ? null : ubiAccountStats.getCurrentBuyTrades();
     }
 

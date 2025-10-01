@@ -48,6 +48,11 @@ public class TradeEntity {
     @Column(name = "proposed_payment_fee")
     private Integer proposedPaymentFee;
 
+    @Column(name = "minutes_to_trade")
+    private Integer minutesToTrade;
+    @Column(name = "trade_priority")
+    private Long tradePriority;
+
     @Override
     public int hashCode() {
         return Objects.hash(tradeId);
@@ -70,29 +75,33 @@ public class TradeEntity {
         String itemId = item == null || item.getItemId() == null ? "null" : item.toString();
 
         return "TradeEntity{" +
-                "tradeId='" + tradeId + '\'' +
-                ", state=" + state +
-                ", category=" + category +
-                ", expiresAt=" + expiresAt +
-                ", lastModifiedAt=" + lastModifiedAt +
-                ", item=" + itemId +
-                ", successPaymentPrice=" + successPaymentPrice +
-                ", successPaymentFee=" + successPaymentFee +
-                ", proposedPaymentPrice=" + proposedPaymentPrice +
-                ", proposedPaymentFee=" + proposedPaymentFee +
-                '}';
+               "tradeId='" + tradeId + '\'' +
+               ", state=" + state +
+               ", category=" + category +
+               ", expiresAt=" + expiresAt +
+               ", lastModifiedAt=" + lastModifiedAt +
+               ", item=" + itemId +
+               ", successPaymentPrice=" + successPaymentPrice +
+               ", successPaymentFee=" + successPaymentFee +
+               ", proposedPaymentPrice=" + proposedPaymentPrice +
+               ", proposedPaymentFee=" + proposedPaymentFee +
+               ", minutesToTrade=" + minutesToTrade +
+               ", tradePriority=" + tradePriority +
+               '}';
     }
 
     public boolean isFullyEqual(TradeEntity trade) {
         return equals(trade) &&
-                state == trade.state &&
-                category == trade.category &&
-                Objects.equals(expiresAt, trade.expiresAt) &&
-                Objects.equals(lastModifiedAt, trade.lastModifiedAt) &&
-                Objects.equals(item, trade.item) &&
-                Objects.equals(successPaymentPrice, trade.successPaymentPrice) &&
-                Objects.equals(successPaymentFee, trade.successPaymentFee) &&
-                Objects.equals(proposedPaymentPrice, trade.proposedPaymentPrice) &&
-                Objects.equals(proposedPaymentFee, trade.proposedPaymentFee);
+               state == trade.state &&
+               category == trade.category &&
+               Objects.equals(expiresAt, trade.expiresAt) &&
+               Objects.equals(lastModifiedAt, trade.lastModifiedAt) &&
+               Objects.equals(item, trade.item) &&
+               Objects.equals(successPaymentPrice, trade.successPaymentPrice) &&
+               Objects.equals(successPaymentFee, trade.successPaymentFee) &&
+               Objects.equals(proposedPaymentPrice, trade.proposedPaymentPrice) &&
+               Objects.equals(proposedPaymentFee, trade.proposedPaymentFee) &&
+               Objects.equals(minutesToTrade, trade.minutesToTrade) &&
+               Objects.equals(tradePriority, trade.tradePriority);
     }
 }

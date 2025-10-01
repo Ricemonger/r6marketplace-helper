@@ -74,31 +74,31 @@ public class UbiAccountStatsEntity {
     public boolean isFullyEqual(UbiAccountStatsEntity entity1) {
         boolean ownedItemsEqual = this.ownedItems == entity1.ownedItems || (
                 this.ownedItems != null && entity1.ownedItems != null &&
-                        this.ownedItems.size() == entity1.ownedItems.size() &&
-                        new HashSet<>(this.ownedItems).containsAll(entity1.ownedItems));
+                this.ownedItems.size() == entity1.ownedItems.size() &&
+                new HashSet<>(this.ownedItems).containsAll(entity1.ownedItems));
 
         boolean resaleLocksEqual = this.resaleLocks == entity1.resaleLocks || (
                 this.resaleLocks != null && entity1.resaleLocks != null &&
-                        this.resaleLocks.size() == entity1.resaleLocks.size() &&
-                        new HashSet<>(this.resaleLocks).containsAll(entity1.resaleLocks));
+                this.resaleLocks.size() == entity1.resaleLocks.size() &&
+                new HashSet<>(this.resaleLocks).containsAll(entity1.resaleLocks));
 
         boolean currentSellTradesEqual = this.currentSellTrades == entity1.currentSellTrades || (
                 this.currentSellTrades != null && entity1.currentSellTrades != null &&
-                        this.currentSellTrades.size() == entity1.currentSellTrades.size() &&
-                        new HashSet<>(this.currentSellTrades).containsAll(entity1.currentSellTrades));
+                this.currentSellTrades.size() == entity1.currentSellTrades.size() &&
+                new HashSet<>(this.currentSellTrades).containsAll(entity1.currentSellTrades));
 
         boolean currentBuyTradesEqual = this.currentBuyTrades == entity1.currentBuyTrades || (
                 this.currentBuyTrades != null && entity1.currentBuyTrades != null &&
-                        this.currentBuyTrades.size() == entity1.currentBuyTrades.size() &&
-                        new HashSet<>(this.currentBuyTrades).containsAll(entity1.currentBuyTrades));
+                this.currentBuyTrades.size() == entity1.currentBuyTrades.size() &&
+                new HashSet<>(this.currentBuyTrades).containsAll(entity1.currentBuyTrades));
 
         return Objects.equals(this.ubiProfileId, entity1.ubiProfileId) &&
-                Objects.equals(this.creditAmount, entity1.creditAmount) &&
-                Objects.equals(this.soldIn24h, entity1.soldIn24h) &&
-                Objects.equals(this.boughtIn24h, entity1.boughtIn24h) &&
-                ownedItemsEqual &&
-                resaleLocksEqual &&
-                currentSellTradesEqual &&
-                currentBuyTradesEqual;
+               Objects.equals(this.creditAmount, entity1.creditAmount) &&
+               Objects.equals(this.soldIn24h, entity1.soldIn24h) &&
+               Objects.equals(this.boughtIn24h, entity1.boughtIn24h) &&
+               ownedItemsEqual &&
+               resaleLocksEqual &&
+               currentSellTradesEqual &&
+               currentBuyTradesEqual;
     }
 }

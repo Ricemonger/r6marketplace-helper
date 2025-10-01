@@ -36,7 +36,7 @@ public class TelegramUserPostgresService implements TelegramUserDatabaseService 
         if (telegramUserRepository.existsById(chatId)) {
             throw new TelegramUserAlreadyExistsException("Telegram user with chatId " + chatId + " already exists");
         } else {
-            telegramUserRepository.save(telegramUserEntityMapper.createDefaultEntityForNewUser(chatId));
+            telegramUserRepository.save(telegramUserEntityMapper.createNewEntityForNewUser(chatId));
         }
     }
 

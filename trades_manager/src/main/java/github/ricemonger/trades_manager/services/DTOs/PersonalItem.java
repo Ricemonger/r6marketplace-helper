@@ -1,7 +1,6 @@
 package github.ricemonger.trades_manager.services.DTOs;
 
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeOperationType;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,7 @@ public class PersonalItem {
     private Boolean isOwned;
 
     private Boolean tradeAlreadyExists;
-    private UbiTrade existingTrade;
+    private Trade existingTrade;
 
     public String getItemId() {
         return item == null ? null : item.getItemId();
@@ -68,11 +67,11 @@ public class PersonalItem {
             return false;
         }
         return Objects.equals(item, itemForTradeDTO.item) &&
-                Objects.equals(tradeOperationType, itemForTradeDTO.tradeOperationType) &&
-                Objects.equals(sellBoundaryPrice, itemForTradeDTO.sellBoundaryPrice) &&
-                Objects.equals(buyBoundaryPrice, itemForTradeDTO.buyBoundaryPrice) &&
-                Objects.equals(minMedianPriceDifference, itemForTradeDTO.minMedianPriceDifference) &&
-                Objects.equals(minMedianPriceDifferencePercent, itemForTradeDTO.minMedianPriceDifferencePercent);
+               Objects.equals(tradeOperationType, itemForTradeDTO.tradeOperationType) &&
+               Objects.equals(sellBoundaryPrice, itemForTradeDTO.sellBoundaryPrice) &&
+               Objects.equals(buyBoundaryPrice, itemForTradeDTO.buyBoundaryPrice) &&
+               Objects.equals(minMedianPriceDifference, itemForTradeDTO.minMedianPriceDifference) &&
+               Objects.equals(minMedianPriceDifferencePercent, itemForTradeDTO.minMedianPriceDifferencePercent);
     }
 
     public boolean isFullyEqual(PersonalItem other) {
@@ -86,14 +85,14 @@ public class PersonalItem {
                 existingTrade == null && other.existingTrade == null || existingTrade != null && existingTrade.isFullyEqual(other.existingTrade);
 
         return itemsAreEqual &&
-                Objects.equals(sellBoundaryPrice, other.sellBoundaryPrice) &&
-                Objects.equals(buyBoundaryPrice, other.buyBoundaryPrice) &&
-                Objects.equals(minMedianPriceDifference, other.minMedianPriceDifference) &&
-                Objects.equals(minMedianPriceDifferencePercent, other.minMedianPriceDifferencePercent) &&
-                Objects.equals(tradeOperationType, other.tradeOperationType) &&
-                Objects.equals(priorityMultiplier, other.priorityMultiplier) &&
-                Objects.equals(isOwned, other.isOwned) &&
-                Objects.equals(tradeAlreadyExists, other.tradeAlreadyExists) &&
-                existingTradesAreEqual;
+               Objects.equals(sellBoundaryPrice, other.sellBoundaryPrice) &&
+               Objects.equals(buyBoundaryPrice, other.buyBoundaryPrice) &&
+               Objects.equals(minMedianPriceDifference, other.minMedianPriceDifference) &&
+               Objects.equals(minMedianPriceDifferencePercent, other.minMedianPriceDifferencePercent) &&
+               Objects.equals(tradeOperationType, other.tradeOperationType) &&
+               Objects.equals(priorityMultiplier, other.priorityMultiplier) &&
+               Objects.equals(isOwned, other.isOwned) &&
+               Objects.equals(tradeAlreadyExists, other.tradeAlreadyExists) &&
+               existingTradesAreEqual;
     }
 }

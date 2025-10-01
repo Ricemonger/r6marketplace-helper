@@ -32,56 +32,56 @@ class CommonQueryItemsPricesGraphQlDocumentBuilderTest {
         ));
 
         expected.setDocument("query GetSellableItems(\n" +
-                "    $spaceId: String!,\n" +
-                "    $sortBy: MarketableItemSort\n" +
-                ", $offset: Int, $limit: Int) {\n" +
-                "    game(spaceId: $spaceId) {\n" +
-                "marketableItems(\n" +
-                "                    limit: $limit\n" +
-                "                    offset: $offset\n" +
-                "                    sortBy: $sortBy\n" +
-                "                    withMarketData: true\n" +
-                "                ) {\n" +
-                "                    nodes {\n" +
-                "                        ...MarketableItemFragment\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    totalCount\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "               __typename\n" +
-                "      }\n" +
-                "      __typename\n" +
-                "  }\n" +
-                "\n" +
-                "  fragment MarketableItemFragment on MarketableItem {\n" +
-                "  item {\n" +
-                "  ...SecondaryStoreItemFragment\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  marketData {\n" +
-                "  ...MarketDataFragment\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "\n" +
-                "  fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
-                "  itemId\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "\n" +
-                "  fragment MarketDataFragment on MarketableItemMarketData {\n" +
-                "  sellStats {\n" +
-                "  lowestPrice\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  buyStats {\n" +
-                "  highestPrice\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  __typename\n" +
-                "  }\n");
+                             "    $spaceId: String!,\n" +
+                             "    $sortBy: MarketableItemSort\n" +
+                             ", $offset: Int, $limit: Int) {\n" +
+                             "    game(spaceId: $spaceId) {\n" +
+                             "marketableItems(\n" +
+                             "                    limit: $limit\n" +
+                             "                    offset: $offset\n" +
+                             "                    sortBy: $sortBy\n" +
+                             "                    withMarketData: true\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "               __typename\n" +
+                             "      }\n" +
+                             "      __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment MarketableItemFragment on MarketableItem {\n" +
+                             "  item {\n" +
+                             "  ...SecondaryStoreItemFragment\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  marketData {\n" +
+                             "  ...MarketDataFragment\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
+                             "  itemId\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment MarketDataFragment on MarketableItemMarketData {\n" +
+                             "  sellStats {\n" +
+                             "  lowestPrice\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  buyStats {\n" +
+                             "  highestPrice\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  __typename\n" +
+                             "  }\n");
 
         expected.setVariables(
                 Map.of(
@@ -117,69 +117,69 @@ class CommonQueryItemsPricesGraphQlDocumentBuilderTest {
         ));
 
         expected.setDocument("query GetSellableItems(\n" +
-                "    $spaceId: String!,\n" +
-                "    $sortBy: MarketableItemSort\n" +
-                ", $limit: Int, $offset0: Int, $offset1: Int, $lastQueryLimit: Int) {\n" +
-                "    game(spaceId: $spaceId) {\n" +
-                "marketableItems0: marketableItems(\n" +
-                "                    limit: $limit\n" +
-                "                    offset: $offset0\n" +
-                "                    sortBy: $sortBy\n" +
-                "                    withMarketData: true\n" +
-                "                ) {\n" +
-                "                    nodes {\n" +
-                "                        ...MarketableItemFragment\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    totalCount\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "marketableItems1: marketableItems(\n" +
-                "                    limit: $lastQueryLimit\n" +
-                "                    offset: $offset1\n" +
-                "                    sortBy: $sortBy\n" +
-                "                    withMarketData: true\n" +
-                "                ) {\n" +
-                "                    nodes {\n" +
-                "                        ...MarketableItemFragment\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    totalCount\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "               __typename\n" +
-                "      }\n" +
-                "      __typename\n" +
-                "  }\n" +
-                "\n" +
-                "  fragment MarketableItemFragment on MarketableItem {\n" +
-                "  item {\n" +
-                "  ...SecondaryStoreItemFragment\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  marketData {\n" +
-                "  ...MarketDataFragment\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "\n" +
-                "  fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
-                "  itemId\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "\n" +
-                "  fragment MarketDataFragment on MarketableItemMarketData {\n" +
-                "  sellStats {\n" +
-                "  lowestPrice\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  buyStats {\n" +
-                "  highestPrice\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  __typename\n" +
-                "  }\n");
+                             "    $spaceId: String!,\n" +
+                             "    $sortBy: MarketableItemSort\n" +
+                             ", $limit: Int, $offset0: Int, $offset1: Int, $lastQueryLimit: Int) {\n" +
+                             "    game(spaceId: $spaceId) {\n" +
+                             "marketableItems0: marketableItems(\n" +
+                             "                    limit: $limit\n" +
+                             "                    offset: $offset0\n" +
+                             "                    sortBy: $sortBy\n" +
+                             "                    withMarketData: true\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "marketableItems1: marketableItems(\n" +
+                             "                    limit: $lastQueryLimit\n" +
+                             "                    offset: $offset1\n" +
+                             "                    sortBy: $sortBy\n" +
+                             "                    withMarketData: true\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "               __typename\n" +
+                             "      }\n" +
+                             "      __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment MarketableItemFragment on MarketableItem {\n" +
+                             "  item {\n" +
+                             "  ...SecondaryStoreItemFragment\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  marketData {\n" +
+                             "  ...MarketDataFragment\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
+                             "  itemId\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment MarketDataFragment on MarketableItemMarketData {\n" +
+                             "  sellStats {\n" +
+                             "  lowestPrice\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  buyStats {\n" +
+                             "  highestPrice\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  __typename\n" +
+                             "  }\n");
 
         expected.setVariables(
                 Map.of(
@@ -220,82 +220,82 @@ class CommonQueryItemsPricesGraphQlDocumentBuilderTest {
 
         BuiltGraphQlDocument expected = new BuiltGraphQlDocument();
         expected.setDocument("query GetSellableItems(\n" +
-                "    $spaceId: String!,\n" +
-                "    $sortBy: MarketableItemSort\n" +
-                ", $limit: Int, $offset0: Int, $offset1: Int, $offset2: Int, $lastQueryLimit: Int) {\n" +
-                "    game(spaceId: $spaceId) {\n" +
-                "marketableItems0: marketableItems(\n" +
-                "                    limit: $limit\n" +
-                "                    offset: $offset0\n" +
-                "                    sortBy: $sortBy\n" +
-                "                    withMarketData: true\n" +
-                "                ) {\n" +
-                "                    nodes {\n" +
-                "                        ...MarketableItemFragment\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    totalCount\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "marketableItems1: marketableItems(\n" +
-                "                    limit: $limit\n" +
-                "                    offset: $offset1\n" +
-                "                    sortBy: $sortBy\n" +
-                "                    withMarketData: true\n" +
-                "                ) {\n" +
-                "                    nodes {\n" +
-                "                        ...MarketableItemFragment\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    totalCount\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "marketableItems2: marketableItems(\n" +
-                "                    limit: $lastQueryLimit\n" +
-                "                    offset: $offset2\n" +
-                "                    sortBy: $sortBy\n" +
-                "                    withMarketData: true\n" +
-                "                ) {\n" +
-                "                    nodes {\n" +
-                "                        ...MarketableItemFragment\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    totalCount\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "               __typename\n" +
-                "      }\n" +
-                "      __typename\n" +
-                "  }\n" +
-                "\n" +
-                "  fragment MarketableItemFragment on MarketableItem {\n" +
-                "  item {\n" +
-                "  ...SecondaryStoreItemFragment\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  marketData {\n" +
-                "  ...MarketDataFragment\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "\n" +
-                "  fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
-                "  itemId\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "\n" +
-                "  fragment MarketDataFragment on MarketableItemMarketData {\n" +
-                "  sellStats {\n" +
-                "  lowestPrice\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  buyStats {\n" +
-                "  highestPrice\n" +
-                "  __typename\n" +
-                "  }\n" +
-                "  __typename\n" +
-                "  }\n");
+                             "    $spaceId: String!,\n" +
+                             "    $sortBy: MarketableItemSort\n" +
+                             ", $limit: Int, $offset0: Int, $offset1: Int, $offset2: Int, $lastQueryLimit: Int) {\n" +
+                             "    game(spaceId: $spaceId) {\n" +
+                             "marketableItems0: marketableItems(\n" +
+                             "                    limit: $limit\n" +
+                             "                    offset: $offset0\n" +
+                             "                    sortBy: $sortBy\n" +
+                             "                    withMarketData: true\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "marketableItems1: marketableItems(\n" +
+                             "                    limit: $limit\n" +
+                             "                    offset: $offset1\n" +
+                             "                    sortBy: $sortBy\n" +
+                             "                    withMarketData: true\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "marketableItems2: marketableItems(\n" +
+                             "                    limit: $lastQueryLimit\n" +
+                             "                    offset: $offset2\n" +
+                             "                    sortBy: $sortBy\n" +
+                             "                    withMarketData: true\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "               __typename\n" +
+                             "      }\n" +
+                             "      __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment MarketableItemFragment on MarketableItem {\n" +
+                             "  item {\n" +
+                             "  ...SecondaryStoreItemFragment\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  marketData {\n" +
+                             "  ...MarketDataFragment\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
+                             "  itemId\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "\n" +
+                             "  fragment MarketDataFragment on MarketableItemMarketData {\n" +
+                             "  sellStats {\n" +
+                             "  lowestPrice\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  buyStats {\n" +
+                             "  highestPrice\n" +
+                             "  __typename\n" +
+                             "  }\n" +
+                             "  __typename\n" +
+                             "  }\n");
 
         expected.setVariables(Map.of(
                 "limit", 500,

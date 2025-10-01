@@ -47,6 +47,17 @@ public class Item implements ItemMainFieldsI, ItemHistoryFieldsI {
     private Integer dayMinPrice;
     private Integer daySales;
 
+    private Long priorityToSellByMaxBuyPrice; //updated with every item stats update, not recalculation
+    private Long priorityToSellByNextFancySellPrice; //updated with every item stats update, not recalculation
+
+    private Long priorityToBuyByMinSellPrice; //updated with every item stats update, not recalculation
+
+    private Long priorityToBuyIn1Hour;
+    private Long priorityToBuyIn6Hours;
+    private Long priorityToBuyIn24Hours;
+    private Long priorityToBuyIn168Hours;
+    private Long priorityToBuyIn720Hours;
+
     private Integer priceToBuyIn1Hour;
     private Integer priceToBuyIn6Hours;
     private Integer priceToBuyIn24Hours;

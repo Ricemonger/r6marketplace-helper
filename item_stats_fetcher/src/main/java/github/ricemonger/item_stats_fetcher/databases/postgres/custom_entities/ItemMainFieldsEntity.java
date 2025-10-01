@@ -81,21 +81,21 @@ public class ItemMainFieldsEntity {
 
             boolean tagsAreEqual = tags == null && itemMainFieldsEntity.tags == null || (
                     tags != null && itemMainFieldsEntity.tags != null &&
-                            this.tags.size() == itemMainFieldsEntity.tags.size() &&
-                            this.tags.stream().allMatch(tst -> itemMainFieldsEntity.tags.stream().anyMatch(tst::equals)));
+                    this.tags.size() == itemMainFieldsEntity.tags.size() &&
+                    this.tags.stream().allMatch(tst -> itemMainFieldsEntity.tags.stream().anyMatch(tst::equals)));
 
             return equals(itemMainFieldsEntity) &&
-                    Objects.equals(assetUrl, itemMainFieldsEntity.assetUrl) &&
-                    Objects.equals(name, itemMainFieldsEntity.name) &&
-                    tagsAreEqual &&
-                    rarity == itemMainFieldsEntity.rarity &&
-                    type == itemMainFieldsEntity.type &&
-                    Objects.equals(maxBuyPrice, itemMainFieldsEntity.maxBuyPrice) &&
-                    Objects.equals(buyOrdersCount, itemMainFieldsEntity.buyOrdersCount) &&
-                    Objects.equals(minSellPrice, itemMainFieldsEntity.minSellPrice) &&
-                    Objects.equals(sellOrdersCount, itemMainFieldsEntity.sellOrdersCount) &&
-                    Objects.equals(lastSoldAt, itemMainFieldsEntity.lastSoldAt) &&
-                    Objects.equals(lastSoldPrice, itemMainFieldsEntity.lastSoldPrice);
+                   Objects.equals(assetUrl, itemMainFieldsEntity.assetUrl) &&
+                   Objects.equals(name, itemMainFieldsEntity.name) &&
+                   tagsAreEqual &&
+                   rarity == itemMainFieldsEntity.rarity &&
+                   type == itemMainFieldsEntity.type &&
+                   Objects.equals(maxBuyPrice, itemMainFieldsEntity.maxBuyPrice) &&
+                   Objects.equals(buyOrdersCount, itemMainFieldsEntity.buyOrdersCount) &&
+                   Objects.equals(minSellPrice, itemMainFieldsEntity.minSellPrice) &&
+                   Objects.equals(sellOrdersCount, itemMainFieldsEntity.sellOrdersCount) &&
+                   Objects.equals(lastSoldAt, itemMainFieldsEntity.lastSoldAt) &&
+                   Objects.equals(lastSoldPrice, itemMainFieldsEntity.lastSoldPrice);
         }
         return false;
     }

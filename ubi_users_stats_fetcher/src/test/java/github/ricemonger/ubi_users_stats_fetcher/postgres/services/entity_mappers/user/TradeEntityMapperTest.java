@@ -2,7 +2,7 @@ package github.ricemonger.ubi_users_stats_fetcher.postgres.services.entity_mappe
 
 import github.ricemonger.ubi_users_stats_fetcher.postgres.repositories.CustomItemPostgresRepository;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.Trade;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
 import github.ricemonger.utils.exceptions.client.ItemDoesntExistException;
@@ -31,7 +31,7 @@ class TradeEntityMapperTest {
 
     @Test
     public void createEntity_should_return_expected_result_for_existing_item() {
-        UbiTrade ubiTrade = new UbiTrade();
+        Trade ubiTrade = new Trade();
         ubiTrade.setTradeId("tradeId");
         ubiTrade.setState(TradeState.Created);
         ubiTrade.setCategory(TradeCategory.Sell);
@@ -75,7 +75,7 @@ class TradeEntityMapperTest {
 
     @Test
     public void createEntity_should_throw_for_non_existing_item() {
-        UbiTrade ubiTrade = new UbiTrade();
+        Trade ubiTrade = new Trade();
         ubiTrade.setTradeId("tradeId");
         ubiTrade.setState(TradeState.Created);
         ubiTrade.setCategory(TradeCategory.Sell);

@@ -1,7 +1,7 @@
 package github.ricemonger.ubi_users_stats_fetcher.services.DTOs;
 
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
-import github.ricemonger.utils.DTOs.personal.UbiTradeI;
+import github.ricemonger.utils.DTOs.personal.Trade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,9 +27,9 @@ public class UbiAccountStats {
 
     private List<ItemResaleLock> resaleLocks = new ArrayList<>();
 
-    private List<? extends UbiTradeI> currentSellTrades = new ArrayList<>();
+    private List<Trade> currentSellTrades = new ArrayList<>();
 
-    private List<? extends UbiTradeI> currentBuyTrades = new ArrayList<>();
+    private List<Trade> currentBuyTrades = new ArrayList<>();
 
     @Override
     public int hashCode() {
@@ -52,32 +52,32 @@ public class UbiAccountStats {
 
             boolean ownedItemsIdsEqual = ownedItemsIds == null && ubiAccountStats.ownedItemsIds == null || (
                     ownedItemsIds != null && ubiAccountStats.ownedItemsIds != null &&
-                            ownedItemsIds.size() == ubiAccountStats.ownedItemsIds.size() &&
-                            new HashSet<>(ownedItemsIds).containsAll(ubiAccountStats.ownedItemsIds));
+                    ownedItemsIds.size() == ubiAccountStats.ownedItemsIds.size() &&
+                    new HashSet<>(ownedItemsIds).containsAll(ubiAccountStats.ownedItemsIds));
 
             boolean resaleLocksEqual = resaleLocks == null && ubiAccountStats.resaleLocks == null || (
                     resaleLocks != null && ubiAccountStats.resaleLocks != null &&
-                            resaleLocks.size() == ubiAccountStats.resaleLocks.size() &&
-                            new HashSet<>(resaleLocks).containsAll(ubiAccountStats.resaleLocks));
+                    resaleLocks.size() == ubiAccountStats.resaleLocks.size() &&
+                    new HashSet<>(resaleLocks).containsAll(ubiAccountStats.resaleLocks));
 
             boolean currentSellTradesEqual = currentSellTrades == null && ubiAccountStats.currentSellTrades == null || (
                     currentSellTrades != null && ubiAccountStats.currentSellTrades != null &&
-                            currentSellTrades.size() == ubiAccountStats.currentSellTrades.size() &&
-                            new HashSet<>(currentSellTrades).containsAll(ubiAccountStats.currentSellTrades));
+                    currentSellTrades.size() == ubiAccountStats.currentSellTrades.size() &&
+                    new HashSet<>(currentSellTrades).containsAll(ubiAccountStats.currentSellTrades));
 
             boolean currentBuyTradesEqual = currentBuyTrades == null && ubiAccountStats.currentBuyTrades == null || (
                     currentBuyTrades != null && ubiAccountStats.currentBuyTrades != null &&
-                            currentBuyTrades.size() == ubiAccountStats.currentBuyTrades.size() &&
-                            new HashSet<>(currentBuyTrades).containsAll(ubiAccountStats.currentBuyTrades));
+                    currentBuyTrades.size() == ubiAccountStats.currentBuyTrades.size() &&
+                    new HashSet<>(currentBuyTrades).containsAll(ubiAccountStats.currentBuyTrades));
 
             return Objects.equals(ubiProfileId, ubiAccountStats.ubiProfileId) &&
-                    Objects.equals(soldIn24h, ubiAccountStats.soldIn24h) &&
-                    Objects.equals(boughtIn24h, ubiAccountStats.boughtIn24h) &&
-                    Objects.equals(creditAmount, ubiAccountStats.creditAmount) &&
-                    ownedItemsIdsEqual &&
-                    resaleLocksEqual &&
-                    currentSellTradesEqual &&
-                    currentBuyTradesEqual;
+                   Objects.equals(soldIn24h, ubiAccountStats.soldIn24h) &&
+                   Objects.equals(boughtIn24h, ubiAccountStats.boughtIn24h) &&
+                   Objects.equals(creditAmount, ubiAccountStats.creditAmount) &&
+                   ownedItemsIdsEqual &&
+                   resaleLocksEqual &&
+                   currentSellTradesEqual &&
+                   currentBuyTradesEqual;
         } else {
             return false;
         }

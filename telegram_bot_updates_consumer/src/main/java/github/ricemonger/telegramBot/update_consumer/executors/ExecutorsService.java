@@ -17,8 +17,7 @@ public class ExecutorsService {
         try {
             T executorInstance = executor.getDeclaredConstructor().newInstance();
             executorInstance.initAndExecute(updateInfo, botInnerService);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                 InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

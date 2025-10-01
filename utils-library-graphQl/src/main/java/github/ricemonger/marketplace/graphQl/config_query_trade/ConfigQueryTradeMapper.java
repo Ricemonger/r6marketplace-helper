@@ -20,16 +20,16 @@ public class ConfigQueryTradeMapper {
         SellLimit sellLimit = tradesConfig.getSellLimit();
 
         if (tradesConfig.getSaleExpiresAfterMinutes() == null
-                || tradesConfig.getBuySlots() == null
-                || tradesConfig.getSellSlots() == null
-                || tradesConfig.getResaleLockDurationInMinutes() == null
-                || tradesConfig.getTwoFactorAuthenticationRule() == null
-                || tradesConfig.getGameOwnershipRule() == null
-                || tradesConfig.getBuyLimit() == null
-                || tradesConfig.getSellLimit() == null
-                || tradesConfig.getTransactionFeesConfig() == null || tradesConfig.getTransactionFeesConfig().length == 0
-                || tradesConfig.getTransactionFeesConfig()[0].getPaymentItemId() == null || tradesConfig.getTransactionFeesConfig()[0].getFeePercentage() == null
-                || buyLimit.getMaximumCount() == null || sellLimit.getMaximumCount() == null) {
+            || tradesConfig.getBuySlots() == null
+            || tradesConfig.getSellSlots() == null
+            || tradesConfig.getResaleLockDurationInMinutes() == null
+            || tradesConfig.getTwoFactorAuthenticationRule() == null
+            || tradesConfig.getGameOwnershipRule() == null
+            || tradesConfig.getBuyLimit() == null
+            || tradesConfig.getSellLimit() == null
+            || tradesConfig.getTransactionFeesConfig() == null || tradesConfig.getTransactionFeesConfig().length == 0
+            || tradesConfig.getTransactionFeesConfig()[0].getPaymentItemId() == null || tradesConfig.getTransactionFeesConfig()[0].getFeePercentage() == null
+            || buyLimit.getMaximumCount() == null || sellLimit.getMaximumCount() == null) {
             throw new GraphQlConfigTradeMappingException("One of trades config fields is null: " + tradesConfig);
         }
 

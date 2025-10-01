@@ -42,10 +42,10 @@ public class CommonQueryItemsMapper {
         Item result = new Item();
 
         if (item.getItemId() == null
-                || item.getAssetUrl() == null
-                || item.getName() == null
-                || item.getTags() == null
-                || item.getType() == null) {
+            || item.getAssetUrl() == null
+            || item.getName() == null
+            || item.getTags() == null
+            || item.getType() == null) {
             throw new GraphQlCommonItemMappingException("One of Item fields is null, item-" + item);
         }
 

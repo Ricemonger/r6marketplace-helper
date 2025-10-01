@@ -45,7 +45,7 @@ public class ItemSaleEntity {
             return false;
         }
         return Objects.equals(this.item, itemSaleEntity.item) &&
-                Objects.equals(this.soldAt, itemSaleEntity.soldAt);
+               Objects.equals(this.soldAt, itemSaleEntity.soldAt);
     }
 
     public String getItemId_() {

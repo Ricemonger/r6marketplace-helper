@@ -1,6 +1,6 @@
 package github.ricemonger.trades_manager.postgres.services;
 
-import github.ricemonger.trades_manager.postgres.repositories.ItemPostgresRepository;
+import github.ricemonger.trades_manager.postgres.repositories.CustomItemPostgresRepository;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.item.ItemEntityMapper;
 import github.ricemonger.trades_manager.services.abstractions.ItemDatabaseService;
 import github.ricemonger.utils.DTOs.common.Item;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemPostgresService implements ItemDatabaseService {
 
-    private final ItemPostgresRepository itemRepository;
+    private final CustomItemPostgresRepository itemRepository;
 
     private final ItemEntityMapper itemEntityMapper;
 

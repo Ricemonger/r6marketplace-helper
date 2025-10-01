@@ -170,18 +170,18 @@ public class ItemFilter {
         String maxPrice = String.valueOf(this.maxBuyPrice);
 
         String sb = "Name: " + name + "\n" +
-                "Filter type: " + filterType + "\n" +
-                "Item name pattern: " + itemNamePatterns + "\n" +
-                "Item types: " + itemTypes + "\n" +
-                "Rarity tags: " + rarityTags + "\n" +
-                "Season tags: " + seasonTags + "\n" +
-                "Operator tags: " + operatorTags + "\n" +
-                "Weapon tags: " + weaponTags + "\n" +
-                "Event tags: " + eventTags + "\n" +
-                "Esports tags: " + esportsTags + "\n" +
-                "Other tags: " + otherTags + "\n" +
-                "Min price: " + minPrice + "\n" +
-                "Max price: " + maxPrice + "\n";
+                    "Filter type: " + filterType + "\n" +
+                    "Item name pattern: " + itemNamePatterns + "\n" +
+                    "Item types: " + itemTypes + "\n" +
+                    "Rarity tags: " + rarityTags + "\n" +
+                    "Season tags: " + seasonTags + "\n" +
+                    "Operator tags: " + operatorTags + "\n" +
+                    "Weapon tags: " + weaponTags + "\n" +
+                    "Event tags: " + eventTags + "\n" +
+                    "Esports tags: " + esportsTags + "\n" +
+                    "Other tags: " + otherTags + "\n" +
+                    "Min price: " + minPrice + "\n" +
+                    "Max price: " + maxPrice + "\n";
         return sb;
     }
 }

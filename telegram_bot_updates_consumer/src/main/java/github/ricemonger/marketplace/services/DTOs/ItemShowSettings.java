@@ -69,9 +69,9 @@ public class ItemShowSettings {
         }
 
         return "Messages limit: " + itemShowMessagesLimit + "\n" +
-                "Few items in message: " + itemShowFewInMessageFlag + "\n" +
-                "Shown fields: \n" + shownFields + "\n" +
-                "Applied filters: " + appliedFilters;
+               "Few items in message: " + itemShowFewInMessageFlag + "\n" +
+               "Shown fields: \n" + shownFields + "\n" +
+               "Applied filters: " + appliedFilters;
     }
 
     public Boolean getItemShowNameFlag() {

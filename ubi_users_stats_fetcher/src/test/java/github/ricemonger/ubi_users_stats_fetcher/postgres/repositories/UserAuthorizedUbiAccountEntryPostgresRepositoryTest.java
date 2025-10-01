@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,7 +54,7 @@ class UserAuthorizedUbiAccountEntryPostgresRepositoryTest {
         UbiAccountStatsEntity ubiAccountStatsEntity1 = new UbiAccountStatsEntity();
         ubiAccountStatsEntity1.setUbiProfileId("ubiProfileId1");
         ubiAccountStatsEntity1.setCreditAmount(101);
-        ubiAccountStatsEntity1.setOwnedItems(new ArrayList<>(List.of(itemEntity1, itemEntity2)));
+        ubiAccountStatsEntity1.setOwnedItems(List.of(itemEntity1, itemEntity2));
         entityManager.persist(ubiAccountStatsEntity1);
 
         ubiAccountEntryEntity1.setUbiAccountStats(ubiAccountStatsEntity1);

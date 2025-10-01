@@ -13,8 +13,8 @@ import java.util.List;
 public interface CustomItemDaySalesUbiStatsPostgresRepository extends JpaRepository<ItemDaySalesUbiStatsEntity, ItemDaySalesUbiStatsEntityId> {
     @Transactional(readOnly = true)
     @Query(value = "SELECT s.item_id AS itemId, s.date AS date, s.lowest_price AS lowestPrice, " +
-            "s.average_price AS averagePrice, s.highest_price AS highestPrice, s.items_count AS itemsCount " +
-            "FROM item_day_sales_ubi_stats s WHERE s.date >= CURRENT_DATE-30", nativeQuery = true)
+                   "s.average_price AS averagePrice, s.highest_price AS highestPrice, s.items_count AS itemsCount " +
+                   "FROM item_day_sales_ubi_stats s WHERE s.date >= CURRENT_DATE-30", nativeQuery = true)
     List<ItemDaySalesUbiStatsProjectionI> findAllForLastMonth();
 }
 

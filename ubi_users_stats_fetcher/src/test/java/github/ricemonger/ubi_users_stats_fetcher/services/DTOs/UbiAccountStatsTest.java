@@ -1,7 +1,7 @@
 package github.ricemonger.ubi_users_stats_fetcher.services.DTOs;
 
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
+import github.ricemonger.utils.DTOs.personal.Trade;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,7 +19,7 @@ class UbiAccountStatsTest {
         stats1.setCreditAmount(3);
         stats1.setOwnedItemsIds(List.of("1"));
         stats1.setResaleLocks(List.of(new ItemResaleLock()));
-        stats1.setCurrentSellTrades(List.of(new UbiTrade()));
+        stats1.setCurrentSellTrades(List.of(new Trade()));
         stats1.setCurrentBuyTrades(List.of());
 
         UbiAccountStats stats2 = new UbiAccountStats();
@@ -44,7 +44,7 @@ class UbiAccountStatsTest {
         stats1.setCreditAmount(3);
         stats1.setOwnedItemsIds(List.of("1"));
         stats1.setResaleLocks(List.of(new ItemResaleLock()));
-        stats1.setCurrentSellTrades(List.of(new UbiTrade()));
+        stats1.setCurrentSellTrades(List.of(new Trade()));
         stats1.setCurrentBuyTrades(List.of());
 
         UbiAccountStats stats2 = new UbiAccountStats();
@@ -80,7 +80,7 @@ class UbiAccountStatsTest {
         stats1.setCreditAmount(3);
         stats1.setOwnedItemsIds(List.of("1"));
         stats1.setResaleLocks(List.of(new ItemResaleLock()));
-        stats1.setCurrentSellTrades(List.of(new UbiTrade()));
+        stats1.setCurrentSellTrades(List.of(new Trade()));
         stats1.setCurrentBuyTrades(List.of());
 
         UbiAccountStats stats2 = new UbiAccountStats();
@@ -90,7 +90,7 @@ class UbiAccountStatsTest {
         stats2.setCreditAmount(3);
         stats2.setOwnedItemsIds(List.of("1"));
         stats2.setResaleLocks(List.of(new ItemResaleLock()));
-        stats2.setCurrentSellTrades(List.of(new UbiTrade()));
+        stats2.setCurrentSellTrades(List.of(new Trade()));
         stats2.setCurrentBuyTrades(List.of());
 
         assertTrue(stats2.isFullyEqual(stats2));
@@ -105,7 +105,7 @@ class UbiAccountStatsTest {
         stats1.setCreditAmount(3);
         stats1.setOwnedItemsIds(List.of("1"));
         stats1.setResaleLocks(List.of(new ItemResaleLock()));
-        stats1.setCurrentSellTrades(List.of(new UbiTrade()));
+        stats1.setCurrentSellTrades(List.of(new Trade()));
         stats1.setCurrentBuyTrades(List.of());
 
         UbiAccountStats stats2 = new UbiAccountStats();
@@ -115,7 +115,7 @@ class UbiAccountStatsTest {
         stats2.setCreditAmount(3);
         stats2.setOwnedItemsIds(List.of("1"));
         stats2.setResaleLocks(List.of(new ItemResaleLock()));
-        stats2.setCurrentSellTrades(List.of(new UbiTrade()));
+        stats2.setCurrentSellTrades(List.of(new Trade()));
         stats2.setCurrentBuyTrades(List.of());
 
         stats1.setUbiProfileId("ubiProfileId1");
@@ -138,7 +138,7 @@ class UbiAccountStatsTest {
         stats1.setResaleLocks(List.of(new ItemResaleLock()));
         stats1.setCurrentSellTrades(null);
         assertFalse(stats2.isFullyEqual(stats1));
-        stats1.setCurrentSellTrades(List.of(new UbiTrade()));
+        stats1.setCurrentSellTrades(List.of(new Trade()));
         stats1.setCurrentBuyTrades(null);
         assertFalse(stats2.isFullyEqual(stats1));
     }

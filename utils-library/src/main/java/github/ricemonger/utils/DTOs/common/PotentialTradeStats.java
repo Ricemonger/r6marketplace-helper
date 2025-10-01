@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PotentialTradeStats {
     private Integer price;
-    private Integer time;
+    private Integer prognosedTradeSuccessMinutes;
+    private Long tradePriority;
 
     public boolean isValid() {
-        return price != null && time != null;
+        return price != null && prognosedTradeSuccessMinutes != null && tradePriority != null;
     }
 }

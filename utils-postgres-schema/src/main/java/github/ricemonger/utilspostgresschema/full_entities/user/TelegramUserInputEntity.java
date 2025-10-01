@@ -49,7 +49,7 @@ public class TelegramUserInputEntity {
             return false;
         }
         return Objects.equals(telegramUser, telegramUserInputEntity.telegramUser) &&
-                Objects.equals(inputState, telegramUserInputEntity.inputState);
+               Objects.equals(inputState, telegramUserInputEntity.inputState);
     }
 
     public boolean isFullyEqual(TelegramUserInputEntity entity) {

@@ -32,10 +32,10 @@ public class ItemsShowSettingsChangeAppliedFiltersStage1AskFilterNameCallback ex
 
         askFromInlineKeyboard(
                 "Current filters:\n"
-                        + appliedFiltersString
-                        + "\nAvailable filters:\n"
-                        + notAppliedFiltersString
-                        + "\nChoose filter to add or remove from current filters.",
+                + appliedFiltersString
+                + "\nAvailable filters:\n"
+                + notAppliedFiltersString
+                + "\nChoose filter to add or remove from current filters.",
                 1,
                 buttons);
     }

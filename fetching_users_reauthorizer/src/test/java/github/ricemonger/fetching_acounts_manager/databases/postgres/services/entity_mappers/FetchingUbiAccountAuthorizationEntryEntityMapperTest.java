@@ -40,21 +40,21 @@ class FetchingUbiAccountAuthorizationEntryEntityMapperTest {
         assertTrue(
                 entities.stream().anyMatch(
                         entity -> entity.getUbiProfileId().equals("profileId1") &&
-                                entity.getUbiAuthTicket().equals("ticket1") &&
-                                entity.getUbiSpaceId().equals("spaceId1") &&
-                                entity.getUbiSessionId().equals("sessionId1") &&
-                                entity.getUbiRememberDeviceTicket().equals("rememberDeviceTicket1") &&
-                                entity.getUbiRememberMeTicket().equals("rememberMeTicket1")
+                                  entity.getUbiAuthTicket().equals("ticket1") &&
+                                  entity.getUbiSpaceId().equals("spaceId1") &&
+                                  entity.getUbiSessionId().equals("sessionId1") &&
+                                  entity.getUbiRememberDeviceTicket().equals("rememberDeviceTicket1") &&
+                                  entity.getUbiRememberMeTicket().equals("rememberMeTicket1")
                 )
         );
         assertTrue(
                 entities.stream().anyMatch(
                         entity -> entity.getUbiProfileId().equals("profileId2") &&
-                                entity.getUbiAuthTicket().equals("ticket2") &&
-                                entity.getUbiSpaceId().equals("spaceId2") &&
-                                entity.getUbiSessionId().equals("sessionId2") &&
-                                entity.getUbiRememberDeviceTicket().equals("rememberDeviceTicket2") &&
-                                entity.getUbiRememberMeTicket().equals("rememberMeTicket2")
+                                  entity.getUbiAuthTicket().equals("ticket2") &&
+                                  entity.getUbiSpaceId().equals("spaceId2") &&
+                                  entity.getUbiSessionId().equals("sessionId2") &&
+                                  entity.getUbiRememberDeviceTicket().equals("rememberDeviceTicket2") &&
+                                  entity.getUbiRememberMeTicket().equals("rememberMeTicket2")
                 )
         );
     }

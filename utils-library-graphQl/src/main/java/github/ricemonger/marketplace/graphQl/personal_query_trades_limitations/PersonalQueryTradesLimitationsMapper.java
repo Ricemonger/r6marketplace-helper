@@ -62,10 +62,10 @@ public class PersonalQueryTradesLimitationsMapper {
 
     public UserTransactionsCount mapUserTransactionsCount(TradesLimitations tradesLimitations) throws GraphQlPersonalLockedItemsMappingException {
         if (tradesLimitations == null
-                || tradesLimitations.getBuy() == null
-                || tradesLimitations.getSell() == null
-                || tradesLimitations.getBuy().getActiveTransactionCount() == null || tradesLimitations.getBuy().getResolvedTransactionCount() == null
-                || tradesLimitations.getSell().getActiveTransactionCount() == null || tradesLimitations.getSell().getResolvedTransactionCount() == null) {
+            || tradesLimitations.getBuy() == null
+            || tradesLimitations.getSell() == null
+            || tradesLimitations.getBuy().getActiveTransactionCount() == null || tradesLimitations.getBuy().getResolvedTransactionCount() == null
+            || tradesLimitations.getSell().getActiveTransactionCount() == null || tradesLimitations.getSell().getResolvedTransactionCount() == null) {
             throw new GraphQlPersonalLockedItemsMappingException("Trade limitation or one of its fields is null:" + tradesLimitations);
         }
 

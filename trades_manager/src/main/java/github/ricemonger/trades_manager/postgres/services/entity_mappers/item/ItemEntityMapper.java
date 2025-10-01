@@ -1,8 +1,8 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.item;
 
+import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomItemEntity;
+import github.ricemonger.trades_manager.postgres.custom_entities.items.CustomTagValueEntity;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utilspostgresschema.full_entities.item.ItemEntity;
-import github.ricemonger.utilspostgresschema.full_entities.item.TagEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,10 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemEntityMapper {
 
-    public Item createDTO(ItemEntity itemEntity) {
+    public Item createDTO(CustomItemEntity itemEntity) {
         List<String> tags = new ArrayList<>();
         if (itemEntity.getTags() != null && !itemEntity.getTags().isEmpty()) {
-            tags = itemEntity.getTags().stream().map(TagEntity::getValue).toList();
+            tags = itemEntity.getTags().stream().map(CustomTagValueEntity::getValue).toList();
         }
         return new Item(
                 itemEntity.getItemId(),
@@ -44,6 +44,14 @@ public class ItemEntityMapper {
                 itemEntity.getDayMaxPrice(),
                 itemEntity.getDayMinPrice(),
                 itemEntity.getDaySales(),
+                itemEntity.getPriorityToSellByMaxBuyPrice(),
+                itemEntity.getPriorityToSellByNextFancySellPrice(),
+                itemEntity.getPriorityToBuyByMinSellPrice(),
+                itemEntity.getPriorityToBuyIn1Hour(),
+                itemEntity.getPriorityToBuyIn6Hours(),
+                itemEntity.getPriorityToBuyIn24Hours(),
+                itemEntity.getPriorityToBuyIn168Hours(),
+                itemEntity.getPriorityToBuyIn720Hours(),
                 itemEntity.getPriceToBuyIn1Hour(),
                 itemEntity.getPriceToBuyIn6Hours(),
                 itemEntity.getPriceToBuyIn24Hours(),

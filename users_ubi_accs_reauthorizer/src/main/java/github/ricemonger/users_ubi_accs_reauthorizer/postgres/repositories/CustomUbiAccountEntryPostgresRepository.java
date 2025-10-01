@@ -19,12 +19,12 @@ public interface CustomUbiAccountEntryPostgresRepository extends JpaRepository<U
     @Transactional
     @Modifying
     @Query("UPDATE UbiAccountEntryEntity u SET" +
-            " u.ubiSessionId = :#{#userUbiCredentials.ubiSessionId}," +
-            " u.ubiSpaceId = :#{#userUbiCredentials.ubiSpaceId}," +
-            " u.ubiAuthTicket = :#{#userUbiCredentials.ubiAuthTicket}," +
-            " u.ubiRememberMeTicket = :#{#userUbiCredentials.ubiRememberMeTicket}," +
-            " u.ubiRememberDeviceTicket = :#{#userUbiCredentials.ubiRememberDeviceTicket}" +
-            " WHERE u.user.id = :#{#userUbiCredentials.userId} AND u.email = :#{#userUbiCredentials.email}")
+           " u.ubiSessionId = :#{#userUbiCredentials.ubiSessionId}," +
+           " u.ubiSpaceId = :#{#userUbiCredentials.ubiSpaceId}," +
+           " u.ubiAuthTicket = :#{#userUbiCredentials.ubiAuthTicket}," +
+           " u.ubiRememberMeTicket = :#{#userUbiCredentials.ubiRememberMeTicket}," +
+           " u.ubiRememberDeviceTicket = :#{#userUbiCredentials.ubiRememberDeviceTicket}" +
+           " WHERE u.user.id = :#{#userUbiCredentials.userId} AND u.email = :#{#userUbiCredentials.email}")
     void updateUserUbiCredentials(UserUbiAccountAuthorizedProjection userUbiCredentials);
 
     @Transactional
@@ -46,12 +46,12 @@ public interface CustomUbiAccountEntryPostgresRepository extends JpaRepository<U
 
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.users_ubi_accs_reauthorizer.postgres.dto_projections.UserUbiAccountCredentialsProjection(" +
-            "u.user.id, " +
-            "u.email, " +
-            "u.encodedPassword, " +
-            "u.ubiAuthTicket, " +
-            "u.ubiRememberDeviceTicket) " +
-            "FROM UbiAccountEntryEntity u")
+           "u.user.id, " +
+           "u.email, " +
+           "u.encodedPassword, " +
+           "u.ubiAuthTicket, " +
+           "u.ubiRememberDeviceTicket) " +
+           "FROM UbiAccountEntryEntity u")
     List<UserUbiAccountCredentialsProjection> findAllUsersUbiCredentials();
 
     @Transactional(readOnly = true)

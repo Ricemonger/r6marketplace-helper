@@ -3,14 +3,10 @@ package github.ricemonger.trades_manager.services.factories;
 import github.ricemonger.trades_manager.services.DTOs.PersonalItem;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalBuyTrade;
 import github.ricemonger.trades_manager.services.DTOs.PotentialPersonalSellTrade;
-import github.ricemonger.trades_manager.services.DTOs.PrioritizedUbiTrade;
 import github.ricemonger.trades_manager.services.PotentialTradeStatsService;
 import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
-import github.ricemonger.utils.DTOs.common.PrioritizedPotentialTradeStats;
 import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.TradeOperationType;
-import github.ricemonger.utils.services.calculators.ItemTradePriorityByExpressionCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,17 +15,18 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import static github.ricemonger.utils.enums.TradeCategory.Buy;
+import static github.ricemonger.utils.enums.TradeCategory.Sell;
+
 @Component
 @RequiredArgsConstructor
 public class PotentialTradeFactory {
 
-    private final ItemTradePriorityByExpressionCalculator itemTradePriorityByExpressionCalculator;
-
     private final PotentialTradeStatsService potentialTradeStatsService;
 
-    public List<PotentialPersonalSellTrade> getResultingPersonalSellTrades(String sellTradePriorityExpression, Collection<PersonalItem> personalItems, Collection<? extends ItemResaleLock> resaleLocks, Integer soldIn24h, int sellSlots, int sellLimit) {
+    public List<PotentialPersonalSellTrade> getResultingPersonalSellTrades(Collection<PersonalItem> personalItems, Collection<? extends ItemResaleLock> resaleLocks, Integer soldIn24h, int sellSlots, int sellLimit) {
 
-        List<PotentialPersonalSellTrade> filteredPersonalSellTrades = getFilteredPotentialSellTradesForUser(sellTradePriorityExpression, personalItems, resaleLocks);
+        List<PotentialPersonalSellTrade> filteredPersonalSellTrades = getFilteredPotentialSellTradesForUser(personalItems, resaleLocks);
 
         List<PotentialPersonalSellTrade> resultingPersonalSellTrades = new LinkedList<>();
         int slotsLeft = sellSlots;
@@ -60,8 +57,7 @@ public class PotentialTradeFactory {
         return resultingPersonalSellTrades;
     }
 
-    public List<PotentialPersonalSellTrade> getFilteredPotentialSellTradesForUser(String sellTradePriorityExpression,
-                                                                                  Collection<PersonalItem> personalItems,
+    public List<PotentialPersonalSellTrade> getFilteredPotentialSellTradesForUser(Collection<PersonalItem> personalItems,
                                                                                   Collection<? extends ItemResaleLock> resaleLocks) {
         List<PotentialPersonalSellTrade> potentialPersonalSellTrades = new ArrayList<>();
         for (PersonalItem personalItem : personalItems) {
@@ -108,23 +104,27 @@ public class PotentialTradeFactory {
                     continue;
                 }
 
-                Long tradePriority = itemTradePriorityByExpressionCalculator.calculateTradePriority(sellTradePriorityExpression, personalItem.getItem(), potentialTradeStats.getPrice(), potentialTradeStats.getTime());
+                potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
+            }
 
-                potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, new PrioritizedPotentialTradeStats(potentialTradeStats, tradePriority)));
+            if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Sell) {
+                PotentialTradeStats potentialTradeStats = new PotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
+                if (potentialTradeStats.isValid()) {
+                    potentialPersonalSellTrades.add(new PotentialPersonalSellTrade(personalItem, potentialTradeStats));
+                }
             }
         }
 
         return potentialPersonalSellTrades;
     }
 
-    public List<PotentialPersonalBuyTrade> getResultingPersonalBuyTrades(String buyTradePriorityExpression, Collection<PersonalItem> personalItems,
-                                                                         Integer creditAmount, Integer boughtIn24h, int buySlots, int buyLimit) {
+    public List<PotentialPersonalBuyTrade> getResultingPersonalBuyTrades(Collection<PersonalItem> personalItems, Integer creditAmount, Integer boughtIn24h, int buySlots, int buyLimit) {
         List<PotentialPersonalBuyTrade> resultingPersonalBuyTrades = new LinkedList<>();
         int slotsLeft = buySlots;
         int limitLeft = buyLimit - boughtIn24h;
         int creditLeft = creditAmount;
 
-        List<PotentialPersonalBuyTrade> filteredPersonalBuyTrades = getFilteredPotentialBuyTradesForUser(buyTradePriorityExpression, personalItems);
+        List<PotentialPersonalBuyTrade> filteredPersonalBuyTrades = getFilteredPotentialBuyTradesForUser(personalItems);
 
         for (PotentialPersonalBuyTrade buyTrade : filteredPersonalBuyTrades.stream().sorted().toList()) {
 
@@ -161,8 +161,7 @@ public class PotentialTradeFactory {
         return resultingPersonalBuyTrades;
     }
 
-    public List<PotentialPersonalBuyTrade> getFilteredPotentialBuyTradesForUser(String buyTradePriorityExpression,
-                                                                                Collection<PersonalItem> personalItems) {
+    public List<PotentialPersonalBuyTrade> getFilteredPotentialBuyTradesForUser(Collection<PersonalItem> personalItems) {
         List<PotentialPersonalBuyTrade> potentialPersonalBuyTrades = new ArrayList<>();
         for (PersonalItem personalItem : personalItems) {
             boolean itemIsOwned = personalItem.getIsOwned();
@@ -200,25 +199,17 @@ public class PotentialTradeFactory {
                     continue;
                 }
 
-                Long tradePriority = itemTradePriorityByExpressionCalculator.calculateTradePriority(buyTradePriorityExpression, personalItem.getItem(), potentialTradeStats.getPrice(), potentialTradeStats.getTime());
+                potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
+            }
 
-                potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, new PrioritizedPotentialTradeStats(potentialTradeStats, tradePriority)));
+            if (personalItem.getTradeAlreadyExists() && personalItem.getExistingTrade().getCategory() == Buy) {
+                PotentialTradeStats potentialTradeStats = new PotentialTradeStats(personalItem.getExistingTrade().getProposedPaymentPrice(), personalItem.getExistingTrade().getMinutesToTrade(), personalItem.getExistingTrade().getTradePriority());
+                if (potentialTradeStats.isValid()) {
+                    potentialPersonalBuyTrades.add(new PotentialPersonalBuyTrade(personalItem, potentialTradeStats));
+                }
             }
         }
 
         return potentialPersonalBuyTrades;
-    }
-
-    public List<PrioritizedUbiTrade> prioritizeCurrentTrades(String tradePriorityExpression, List<UbiTrade> currentSellTrades) {
-        List<PrioritizedUbiTrade> prioritizedCurrentTrades = new ArrayList<>();
-
-        for (UbiTrade ubiTrade : currentSellTrades) {
-            Integer minutesToTrade = potentialTradeStatsService.calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade);
-
-            Long tradePriority = itemTradePriorityByExpressionCalculator.calculateTradePriority(tradePriorityExpression, ubiTrade.getItem(), ubiTrade.getProposedPaymentPrice(), minutesToTrade);
-            prioritizedCurrentTrades.add(new PrioritizedUbiTrade(ubiTrade, minutesToTrade, tradePriority));
-        }
-
-        return prioritizedCurrentTrades;
     }
 }

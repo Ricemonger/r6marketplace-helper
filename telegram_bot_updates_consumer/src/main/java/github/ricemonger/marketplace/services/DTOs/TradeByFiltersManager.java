@@ -21,17 +21,17 @@ public class TradeByFiltersManager {
 
     public String toHandsomeString() {
         String sb = "Trade By Item Filter Manager: \n" +
-                "Name: " + name + "\n" +
-                "Enabled: " + enabled + "\n" +
-                "Trade type: " + tradeOperationType + "\n";
+                    "Name: " + name + "\n" +
+                    "Enabled: " + enabled + "\n" +
+                    "Trade type: " + tradeOperationType + "\n";
         if (appliedFilters != null) {
             sb = sb + "Applied filters' names: " + appliedFilters.stream().reduce((a, b) -> a + ", " + b).orElse("") + "\n";
         } else {
             sb = sb + "Applied filters: null\n";
         }
         sb = sb + "Min difference from median price: " + minDifferenceFromMedianPrice + "\n" +
-                "Min difference from median price percent: " + minDifferenceFromMedianPricePercent + "\n" +
-                "Priority: " + priorityMultiplier + "\n";
+             "Min difference from median price percent: " + minDifferenceFromMedianPricePercent + "\n" +
+             "Priority: " + priorityMultiplier + "\n";
         return sb;
     }
 

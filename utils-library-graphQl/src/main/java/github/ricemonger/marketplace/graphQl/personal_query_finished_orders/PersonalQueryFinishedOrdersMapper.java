@@ -43,13 +43,13 @@ public class PersonalQueryFinishedOrdersMapper {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(graphQlCommonValuesService.getDateFormat());
 
         if (node.getTradeId() == null
-                || node.getState() == null
-                || node.getCategory() == null
-                || node.getLastModifiedAt() == null
-                || node.getTradeItems() == null || node.getTradeItems().length == 0
-                || node.getTradeItems()[0].getItem() == null
-                || node.getTradeItems()[0].getItem().getItemId() == null
-                || node.getTradeItems()[0].getItem().getName() == null) {
+            || node.getState() == null
+            || node.getCategory() == null
+            || node.getLastModifiedAt() == null
+            || node.getTradeItems() == null || node.getTradeItems().length == 0
+            || node.getTradeItems()[0].getItem() == null
+            || node.getTradeItems()[0].getItem().getItemId() == null
+            || node.getTradeItems()[0].getItem().getName() == null) {
             throw new GraphQlPersonalFinishedOrdersMappingException("One of node fields is null-" + node);
         }
 

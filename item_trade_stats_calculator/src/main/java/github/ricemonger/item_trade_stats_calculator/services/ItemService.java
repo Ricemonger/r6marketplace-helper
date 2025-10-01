@@ -1,13 +1,11 @@
 package github.ricemonger.item_trade_stats_calculator.services;
 
+import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemCurrentPricesRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemDatabaseService;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemSaleDatabaseService;
 import github.ricemonger.item_trade_stats_calculator.services.abstractions.ItemSaleUbiStatsDatabaseService;
-import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.common.ItemDaySalesStatsByItemId;
-import github.ricemonger.utils.DTOs.common.ItemDaySalesUbiStats;
-import github.ricemonger.utils.DTOs.common.ItemSale;
+import github.ricemonger.utils.DTOs.common.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -56,13 +54,52 @@ public class ItemService {
             item.setMonthMinPrice(lastMonthStats.minPrice());
             item.setMonthMedianPrice(lastMonthStats.medianPrice());
 
-            item.setPriceToBuyIn1Hour(potentialTradeStatsService.calculatePotentialBuyTradePriceForTime(item, resultingPerDayStats, 60));
-            item.setPriceToBuyIn6Hours(potentialTradeStatsService.calculatePotentialBuyTradePriceForTime(item, resultingPerDayStats, 360));
-            item.setPriceToBuyIn24Hours(potentialTradeStatsService.calculatePotentialBuyTradePriceForTime(item, resultingPerDayStats, 1440));
-            item.setPriceToBuyIn168Hours(potentialTradeStatsService.calculatePotentialBuyTradePriceForTime(item, resultingPerDayStats, 10080));
-            item.setPriceToBuyIn720Hours(potentialTradeStatsService.calculatePotentialBuyTradePriceForTime(item, resultingPerDayStats, 43200));
+            PotentialTradeStats potentialTradeToBuyIn1Hour = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 60);
+            PotentialTradeStats potentialTradeToBuyIn6Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 360);
+            PotentialTradeStats potentialTradeToBuyIn24Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 1440);
+            PotentialTradeStats potentialTradeToBuyIn168Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 10080);
+            PotentialTradeStats potentialTradeToBuyIn720Hours = potentialTradeStatsService.calculatePotentialBuyTradeStatsForTime(item, resultingPerDayStats, 43200);
+
+            PotentialTradeStats potentialTradeToBuyInstantlyByMinSellPrice = potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(item);
+
+            PotentialTradeStats potentialTradeToSellInstantlyByMaxBuyPrice = potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(item);
+            PotentialTradeStats potentialTradeToSellByNextFancySellPrice = potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(item);
+
+            item.setPriorityToSellByMaxBuyPrice(potentialTradeToSellInstantlyByMaxBuyPrice.getTradePriority());
+
+            item.setPriorityToSellByNextFancySellPrice(potentialTradeToSellByNextFancySellPrice.getTradePriority());
+            item.setPriorityToBuyByMinSellPrice(potentialTradeToBuyInstantlyByMinSellPrice.getTradePriority());
+
+            item.setPriorityToBuyIn1Hour(potentialTradeToBuyIn1Hour.getTradePriority());
+            item.setPriorityToBuyIn6Hours(potentialTradeToBuyIn6Hours.getTradePriority());
+            item.setPriorityToBuyIn24Hours(potentialTradeToBuyIn24Hours.getTradePriority());
+            item.setPriorityToBuyIn168Hours(potentialTradeToBuyIn168Hours.getTradePriority());
+            item.setPriorityToBuyIn720Hours(potentialTradeToBuyIn720Hours.getTradePriority());
+
+            item.setPriceToBuyIn1Hour(potentialTradeToBuyIn1Hour.getPrice());
+            item.setPriceToBuyIn6Hours(potentialTradeToBuyIn6Hours.getPrice());
+            item.setPriceToBuyIn24Hours(potentialTradeToBuyIn24Hours.getPrice());
+            item.setPriceToBuyIn168Hours(potentialTradeToBuyIn168Hours.getPrice());
+            item.setPriceToBuyIn720Hours(potentialTradeToBuyIn720Hours.getPrice());
         }
         itemDatabaseService.updateAllItemsHistoryFields(itemWithRequiredFields);
+    }
+
+    public void recalculateAndSaveAllItemsPotentialTradeStatsByCurrentPrices() {
+        Set<Item> itemWithRequiredFields = itemDatabaseService.findAllItemsCurrentPricesRecalculationRequiredFields().stream().map(ItemCurrentPricesRecalculationRequiredFields::toItem).collect(Collectors.toSet());
+
+        for (Item item : itemWithRequiredFields) {
+            PotentialTradeStats potentialTradeToBuyInstantlyByMinSellPrice = potentialTradeStatsService.calculatePotentialBuyTradeStatsByMinSellPrice(item);
+
+            PotentialTradeStats potentialTradeToSellInstantlyByMaxBuyPrice = potentialTradeStatsService.calculatePotentialSellTradeStatsByMaxBuyPrice(item);
+            PotentialTradeStats potentialTradeToSellByNextFancySellPrice = potentialTradeStatsService.calculatePotentialSellTradeStatsByNextFancySellPrice(item);
+
+            item.setPriorityToBuyByMinSellPrice(potentialTradeToBuyInstantlyByMinSellPrice.getTradePriority());
+
+            item.setPriorityToSellByMaxBuyPrice(potentialTradeToSellInstantlyByMaxBuyPrice.getTradePriority());
+            item.setPriorityToSellByNextFancySellPrice(potentialTradeToSellByNextFancySellPrice.getTradePriority());
+        }
+        itemDatabaseService.updateAllItemsCurrentPricesHistoryFields(itemWithRequiredFields);
     }
 
     private TodayPriceStats recalculateTodayItemPriceStats(ItemDaySalesStatsByItemId todayStats) {
@@ -165,8 +202,7 @@ public class ItemService {
         return itemDaySalesUbiStatEntityDTOS.stream().filter(ubiStats -> ubiStats.getItemId().equals(itemId)).toList();
     }
 
-    private record LastMonthPriceStats(int sales, int salesPerDay, int averagePrice, int maxPrice, int minPrice,
-                                       int medianPrice) {
+    private record LastMonthPriceStats(int sales, int salesPerDay, int averagePrice, int maxPrice, int minPrice, int medianPrice) {
     }
 
     private record TodayPriceStats(int quantity, int averagePrice, int maxPrice, int minPrice, int medianPrice) {

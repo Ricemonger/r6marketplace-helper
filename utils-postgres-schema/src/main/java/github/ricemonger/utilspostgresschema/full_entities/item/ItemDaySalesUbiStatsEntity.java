@@ -50,6 +50,6 @@ public class ItemDaySalesUbiStatsEntity {
             return false;
         }
         return Objects.equals(this.item, itemDaySalesUbiStatsEntity.item) &&
-                Objects.equals(this.date, itemDaySalesUbiStatsEntity.date);
+               Objects.equals(this.date, itemDaySalesUbiStatsEntity.date);
     }
 }

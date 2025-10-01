@@ -25,7 +25,7 @@ public class ScheduledAllUbiUsersReauthorization {
         Collection<UserUnauthorizedUbiAccount> toNotify = userUbiAccountEntryAuthorizationService.reauthorizeAllUbiUsersAndGetUnauthorizedList();
         for (UserUnauthorizedUbiAccount user : toNotify) {
             telegramBotService.sendAuthorizationNotification(user.getId(), String.format("Your Ubisoft account with email :%s could no be authorized. " +
-                    "Please reauthorize it in /credentials tab.", user.getEmail()));
+                                                                                         "Please reauthorize it in /credentials tab.", user.getEmail()));
         }
     }
 }

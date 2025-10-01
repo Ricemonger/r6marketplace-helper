@@ -43,14 +43,14 @@ public class UbiTrade implements UbiTradeI {
         boolean itemsAreEqual = item == null ? other.item == null : Objects.equals(item.getItemId(), other.item.getItemId());
 
         return Objects.equals(tradeId, other.tradeId) &&
-                state == other.state &&
-                category == other.category &&
-                Objects.equals(expiresAt, other.expiresAt) &&
-                Objects.equals(lastModifiedAt, other.lastModifiedAt) &&
-                itemsAreEqual &&
-                Objects.equals(successPaymentPrice, other.successPaymentPrice) &&
-                Objects.equals(successPaymentFee, other.successPaymentFee) &&
-                Objects.equals(proposedPaymentPrice, other.proposedPaymentPrice) &&
-                Objects.equals(proposedPaymentFee, other.proposedPaymentFee);
+               state == other.state &&
+               category == other.category &&
+               Objects.equals(expiresAt, other.expiresAt) &&
+               Objects.equals(lastModifiedAt, other.lastModifiedAt) &&
+               itemsAreEqual &&
+               Objects.equals(successPaymentPrice, other.successPaymentPrice) &&
+               Objects.equals(successPaymentFee, other.successPaymentFee) &&
+               Objects.equals(proposedPaymentPrice, other.proposedPaymentPrice) &&
+               Objects.equals(proposedPaymentFee, other.proposedPaymentFee);
     }
 }

@@ -1,7 +1,7 @@
 package github.ricemonger.utils.services.calculators;
 
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.common.PotentialTradePriceAndTimeStats;
 import github.ricemonger.utils.DTOs.personal.UbiTrade;
 import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.TradeCategory;
@@ -23,7 +23,7 @@ class ItemTradeTimeCalculatorTest {
     private final ItemTradeTimeCalculator itemTradeTimeCalculator = spy(new ItemTradeTimeCalculator(commonValuesService, itemFancyPriceCalculator));
 
     @Test
-    public void calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull_should_return_expected_result() {
+    public void getExpectedPaymentsSuccessMinutesForExistingTradeOrNull_should_return_expected_result() {
         UbiTrade ubiTrade = new UbiTrade();
         LocalDateTime now = LocalDateTime.now();
         ubiTrade.setLastModifiedAt(now.minusDays(10));
@@ -33,15 +33,15 @@ class ItemTradeTimeCalculatorTest {
 
         int expectedTradeTime = 12600; //27000 - 1440 x 10
 
-        int result = Math.abs(itemTradeTimeCalculator.calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade) - expectedTradeTime);
+        int result = Math.abs(itemTradeTimeCalculator.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade) - expectedTradeTime);
 
         assertTrue(result > 5 && result < 15);
 
         doReturn(10).when(itemTradeTimeCalculator).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
-        assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, itemTradeTimeCalculator.calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
+        assertEquals(TRADE_MANAGER_FIXED_RATE_MINUTES, itemTradeTimeCalculator.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
 
         doReturn(null).when(itemTradeTimeCalculator).getPrognosedTradeSuccessMinutesByPriceOrNull(any(), any(), any());
-        assertNull(itemTradeTimeCalculator.calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
+        assertNull(itemTradeTimeCalculator.getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(ubiTrade));
     }
 
     @Test
@@ -103,13 +103,13 @@ class ItemTradeTimeCalculatorTest {
 
         int price = 999;
         int minutesToTrade = 1;
-        PotentialTradeStats expected = new PotentialTradeStats(price, minutesToTrade);
+        PotentialTradePriceAndTimeStats expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
         assertEquals(expected, itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item));
 
         item.setMonthSalesPerDay(1);
         price = 999;
         minutesToTrade = 1440;
-        expected = new PotentialTradeStats(price, minutesToTrade);
+        expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
         assertEquals(expected, itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item));
 
         when(itemFancyPriceCalculator.getNextFancySellPrice(item)).thenReturn(10);
@@ -119,7 +119,7 @@ class ItemTradeTimeCalculatorTest {
         item.setSellOrdersCount(10);
         price = 10;
         minutesToTrade = 144;
-        expected = new PotentialTradeStats(price, minutesToTrade);
+        expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
         assertEquals(expected, itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item));
 
         item.setMinSellPrice(10);
@@ -127,7 +127,7 @@ class ItemTradeTimeCalculatorTest {
         item.setSellOrdersCount(null);
         price = 10;
         minutesToTrade = 1440;
-        expected = new PotentialTradeStats(price, minutesToTrade);
+        expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
         assertEquals(expected, itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item));
 
         item.setMinSellPrice(10);
@@ -135,7 +135,7 @@ class ItemTradeTimeCalculatorTest {
         item.setSellOrdersCount(0);
         price = 10;
         minutesToTrade = 1440;
-        expected = new PotentialTradeStats(price, minutesToTrade);
+        expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
         assertEquals(expected, itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item));
 
         item.setMinSellPrice(10);
@@ -143,7 +143,7 @@ class ItemTradeTimeCalculatorTest {
         item.setSellOrdersCount(-1);
         price = 10;
         minutesToTrade = 1440;
-        expected = new PotentialTradeStats(price, minutesToTrade);
+        expected = new PotentialTradePriceAndTimeStats(price, minutesToTrade);
         assertEquals(expected, itemTradeTimeCalculator.calculatePriceAndTimeForNextFancySellPriceSale(item));
     }
 

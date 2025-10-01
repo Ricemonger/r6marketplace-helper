@@ -1,11 +1,11 @@
 package github.ricemonger.trades_manager.postgres.services.entity_mappers.user;
 
+import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomItemFilterEntity;
 import github.ricemonger.trades_manager.postgres.services.entity_mappers.item.TagEntityMapper;
 import github.ricemonger.utils.DTOs.common.Tag;
 import github.ricemonger.utils.DTOs.personal.ItemFilter;
 import github.ricemonger.utils.enums.FilterType;
 import github.ricemonger.utils.enums.ItemType;
-import github.ricemonger.utilspostgresschema.full_entities.user.ItemFilterEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class ItemFilterEntityMapper {
 
     private final TagEntityMapper tagEntityMapper;
 
-    public ItemFilter createDTO(ItemFilterEntity entity) {
+    public ItemFilter createDTO(CustomItemFilterEntity entity) {
         String name = entity.getName();
         FilterType filterType = entity.getFilterType();
 

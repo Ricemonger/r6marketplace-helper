@@ -1,7 +1,10 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item;
 
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemCurrentPricesHistoryFieldsProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemCurrentPricesRecalculationRequiredFieldsProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsProjection;
+import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemCurrentPricesRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.utils.DTOs.common.Item;
 import github.ricemonger.utils.DTOs.common.ItemHistoryFieldsI;
@@ -43,6 +46,14 @@ public class ItemEntitiesMapper {
                 item.getDayMaxPrice(),
                 item.getDayMinPrice(),
                 item.getDaySales(),
+                item.getPriorityToSellByMaxBuyPrice(),
+                item.getPriorityToSellByNextFancySellPrice(),
+                item.getPriorityToBuyByMinSellPrice(),
+                item.getPriorityToBuyIn1Hour(),
+                item.getPriorityToBuyIn6Hours(),
+                item.getPriorityToBuyIn24Hours(),
+                item.getPriorityToBuyIn168Hours(),
+                item.getPriorityToBuyIn720Hours(),
                 item.getPriceToBuyIn1Hour(),
                 item.getPriceToBuyIn6Hours(),
                 item.getPriceToBuyIn24Hours(),
@@ -79,10 +90,39 @@ public class ItemEntitiesMapper {
                 itemEntity.getDayMaxPrice(),
                 itemEntity.getDayMinPrice(),
                 itemEntity.getDaySales(),
+                itemEntity.getPriorityToSellByMaxBuyPrice(),
+                itemEntity.getPriorityToSellByNextFancySellPrice(),
+                itemEntity.getPriorityToBuyByMinSellPrice(),
+                itemEntity.getPriorityToBuyIn1Hour(),
+                itemEntity.getPriorityToBuyIn6Hours(),
+                itemEntity.getPriorityToBuyIn24Hours(),
+                itemEntity.getPriorityToBuyIn168Hours(),
+                itemEntity.getPriorityToBuyIn720Hours(),
                 itemEntity.getPriceToBuyIn1Hour(),
                 itemEntity.getPriceToBuyIn6Hours(),
                 itemEntity.getPriceToBuyIn24Hours(),
                 itemEntity.getPriceToBuyIn168Hours(),
                 itemEntity.getPriceToBuyIn720Hours());
+    }
+
+    public ItemCurrentPricesHistoryFieldsProjection createCurrentPricesHistoryFieldsProjection(ItemHistoryFieldsI itemHistoryFieldsI) {
+        return new ItemCurrentPricesHistoryFieldsProjection(
+                itemHistoryFieldsI.getItemId(),
+                itemHistoryFieldsI.getPriorityToSellByMaxBuyPrice(),
+                itemHistoryFieldsI.getPriorityToSellByNextFancySellPrice(),
+                itemHistoryFieldsI.getPriorityToBuyByMinSellPrice());
+    }
+
+    public ItemCurrentPricesRecalculationRequiredFields createCurrentPricesRecalculationRequiredFields(ItemCurrentPricesRecalculationRequiredFieldsProjection projection) {
+        return new ItemCurrentPricesRecalculationRequiredFields(
+                projection.getItemId(),
+                projection.getRarity(),
+                projection.getMaxBuyPrice(),
+                projection.getMinSellPrice(),
+                projection.getSellOrdersCount(),
+                projection.getMonthMedianPrice(),
+                projection.getMonthSalesPerDay(),
+                projection.getMonthSales()
+        );
     }
 }

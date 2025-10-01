@@ -1,7 +1,7 @@
 package github.ricemonger.utils.services.calculators;
 
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.common.PotentialTradeStats;
+import github.ricemonger.utils.DTOs.common.PotentialTradePriceAndTimeStats;
 import github.ricemonger.utils.DTOs.personal.UbiTradeI;
 import github.ricemonger.utils.enums.TradeCategory;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class ItemTradeTimeCalculator {
 
     private final ItemFancyPriceCalculator itemFancyPriceCalculator;
 
-    public Integer calculateExpectedPaymentsSuccessMinutesForExistingTradeOrNull(UbiTradeI ubiTrade) {
+    public Integer getExpectedPaymentsSuccessMinutesForExistingTradeOrNull(UbiTradeI ubiTrade) {
         int minutesTradeExists = (int) Duration.between(ubiTrade.getLastModifiedAt(), LocalDateTime.now().plusMinutes(10)).toMinutes();
 
         Integer prognosedTradeSuccessMinutes = getPrognosedTradeSuccessMinutesByPriceOrNull(ubiTrade.getItem(), ubiTrade.getProposedPaymentPrice(), ubiTrade.getCategory());
@@ -66,11 +66,11 @@ public class ItemTradeTimeCalculator {
         }
     }
 
-    public PotentialTradeStats calculatePriceAndTimeForNextFancySellPriceSale(Item item) {
+    public PotentialTradePriceAndTimeStats calculatePriceAndTimeForNextFancySellPriceSale(Item item) {
         int nextFancySellPrice = itemFancyPriceCalculator.getNextFancySellPrice(item);
         int timeToSellByNextFancySellPrice = calculatePrognosedTimeToSellItemByNextSellPrice(item);
 
-        return new PotentialTradeStats(nextFancySellPrice, timeToSellByNextFancySellPrice);
+        return new PotentialTradePriceAndTimeStats(nextFancySellPrice, timeToSellByNextFancySellPrice);
     }
 
     public Integer calculatePrognosedTimeToSellItemByNextSellPrice(Item item) {

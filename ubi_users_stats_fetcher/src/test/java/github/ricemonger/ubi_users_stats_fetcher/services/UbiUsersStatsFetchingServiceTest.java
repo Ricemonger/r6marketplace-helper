@@ -4,10 +4,7 @@ import github.ricemonger.marketplace.graphQl.personal_query_user_stats.PersonalQ
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UbiAccountStats;
 import github.ricemonger.ubi_users_stats_fetcher.services.DTOs.UserAuthorizedUbiAccount;
 import github.ricemonger.utils.DTOs.common.Item;
-import github.ricemonger.utils.DTOs.personal.ItemResaleLock;
-import github.ricemonger.utils.DTOs.personal.UbiTrade;
-import github.ricemonger.utils.DTOs.personal.UbiUserStats;
-import github.ricemonger.utils.DTOs.personal.UserTradesLimitations;
+import github.ricemonger.utils.DTOs.personal.*;
 import github.ricemonger.utils.DTOs.personal.auth.AuthorizationDTO;
 import github.ricemonger.utils.enums.TradeCategory;
 import github.ricemonger.utils.enums.TradeState;
@@ -35,6 +32,8 @@ class UbiUsersStatsFetchingServiceTest {
     private PersonalQueryUserStatsGraphQlClientService personalQueryUserStatsGraphQlClientService;
     @MockBean
     private CommonValuesService commonValuesService;
+    @MockBean
+    private TradeService tradeService;
 
     @Test
     public void fetchAllUbiUsersStatsAndManageTrades_should_update_Authorized_ubiStats() {
@@ -76,6 +75,18 @@ class UbiUsersStatsFetchingServiceTest {
         finishedBuyTrade1.setState(TradeState.Succeeded);
         finishedBuyTrade1.setCategory(TradeCategory.Buy);
         finishedBuyTrade1.setLastModifiedAt(LocalDateTime.now().minusMinutes(15));
+
+        Trade currentSellTrade11Prioritized = new Trade();
+        currentSellTrade11Prioritized.setTradeId("currentSellTrade11");
+        Trade currentSellTrade12Prioritized = new Trade();
+        currentSellTrade12Prioritized.setTradeId("currentSellTrade12");
+        when(tradeService.calculateTradeStatsForUbiTrades(List.of(currentSellTrade11, currentSellTrade12))).thenReturn(List.of(currentSellTrade11Prioritized, currentSellTrade12Prioritized));
+
+        Trade currentBuyTrade11Prioritized = new Trade();
+        currentBuyTrade11Prioritized.setTradeId("currentBuyTrade11");
+        Trade currentBuyTrade12Prioritized = new Trade();
+        currentBuyTrade12Prioritized.setTradeId("currentBuyTrade12");
+        when(tradeService.calculateTradeStatsForUbiTrades(List.of(currentBuyTrade11, currentBuyTrade12))).thenReturn(List.of(currentBuyTrade11Prioritized, currentBuyTrade12Prioritized));
 
         List<String> ownedItemsIds1 = List.of("ownedItemId1", "ownedItemId2");
 
@@ -142,6 +153,18 @@ class UbiUsersStatsFetchingServiceTest {
         finishedBuyTrade2.setCategory(TradeCategory.Buy);
         finishedBuyTrade2.setLastModifiedAt(LocalDateTime.now().minusMinutes(15));
 
+        Trade currentSellTrade21Prioritized = new Trade();
+        currentSellTrade21Prioritized.setTradeId("currentSellTrade21");
+        Trade currentSellTrade22Prioritized = new Trade();
+        currentSellTrade22Prioritized.setTradeId("currentSellTrade22");
+        when(tradeService.calculateTradeStatsForUbiTrades(List.of(currentSellTrade21, currentSellTrade22))).thenReturn(List.of(currentSellTrade21Prioritized, currentSellTrade22Prioritized));
+
+        Trade currentBuyTrade21Prioritized = new Trade();
+        currentBuyTrade21Prioritized.setTradeId("currentBuyTrade21");
+        Trade currentBuyTrade22Prioritized = new Trade();
+        currentBuyTrade22Prioritized.setTradeId("currentBuyTrade22");
+        when(tradeService.calculateTradeStatsForUbiTrades(List.of(currentBuyTrade21, currentBuyTrade22))).thenReturn(List.of(currentBuyTrade21Prioritized, currentBuyTrade22Prioritized));
+
         List<String> ownedItemsIds2 = List.of("ownedItemId3", "ownedItemId4");
 
         ItemResaleLock resaleLock21 = new ItemResaleLock();
@@ -200,6 +223,14 @@ class UbiUsersStatsFetchingServiceTest {
         finishedBuyTrade3.setCategory(TradeCategory.Buy);
         finishedBuyTrade3.setLastModifiedAt(LocalDateTime.now().minusMinutes(15));
 
+        Trade currentSellTrade3Prioritized = new Trade();
+        currentSellTrade3Prioritized.setTradeId("currentSellTrade31");
+        when(tradeService.calculateTradeStatsForUbiTrades(List.of(currentSellTrade3))).thenReturn(List.of(currentSellTrade3Prioritized));
+
+        Trade currentBuyTrade3Prioritized = new Trade();
+        currentBuyTrade3Prioritized.setTradeId("currentBuyTrade31");
+        when(tradeService.calculateTradeStatsForUbiTrades(List.of(currentBuyTrade3))).thenReturn(List.of(currentBuyTrade3Prioritized));
+
         List<String> ownedItemsIds3 = List.of("ownedItemId5", "ownedItemId6");
 
         ItemResaleLock resaleLock3 = new ItemResaleLock();
@@ -252,6 +283,14 @@ class UbiUsersStatsFetchingServiceTest {
         finishedBuyTrade4.setItem(new Item());
         finishedBuyTrade4.setLastModifiedAt(LocalDateTime.now().minusMinutes(8));
 
+        Trade currentSellTrade4Prioritized = new Trade();
+        currentSellTrade4Prioritized.setTradeId("currentSellTrade41");
+        when(tradeService.calculateTradeStatsForUbiTrades(List.of(currentSellTrade4))).thenReturn(List.of(currentSellTrade4Prioritized));
+
+        Trade currentBuyTrade4Prioritized = new Trade();
+        currentBuyTrade4Prioritized.setTradeId("currentBuyTrade41");
+        when(tradeService.calculateTradeStatsForUbiTrades(List.of(currentBuyTrade4))).thenReturn(List.of(currentBuyTrade4Prioritized));
+
         List<String> ownedItemsIds4 = List.of("ownedItemId7", "ownedItemId8");
 
         ItemResaleLock resaleLock4 = new ItemResaleLock();
@@ -286,8 +325,8 @@ class UbiUsersStatsFetchingServiceTest {
         noNotificationUbiAccountStats.setCreditAmount(100);
         noNotificationUbiAccountStats.setOwnedItemsIds(ownedItemsIds1);
         noNotificationUbiAccountStats.setResaleLocks(resaleLocks1);
-        noNotificationUbiAccountStats.setCurrentSellTrades(List.of(currentSellTrade11, currentSellTrade12));
-        noNotificationUbiAccountStats.setCurrentBuyTrades(List.of(currentBuyTrade11, currentBuyTrade12));
+        noNotificationUbiAccountStats.setCurrentSellTrades(List.of(currentSellTrade11Prioritized, currentSellTrade12Prioritized));
+        noNotificationUbiAccountStats.setCurrentBuyTrades(List.of(currentBuyTrade11Prioritized, currentBuyTrade12Prioritized));
 
         UbiAccountStats creditAmountNotificationUbiAccountStats = new UbiAccountStats();
         creditAmountNotificationUbiAccountStats.setUbiProfileId("profileId2");
@@ -296,8 +335,8 @@ class UbiUsersStatsFetchingServiceTest {
         creditAmountNotificationUbiAccountStats.setCreditAmount(201);
         creditAmountNotificationUbiAccountStats.setOwnedItemsIds(ownedItemsIds2);
         creditAmountNotificationUbiAccountStats.setResaleLocks(resaleLocks2);
-        creditAmountNotificationUbiAccountStats.setCurrentSellTrades(List.of(currentSellTrade21, currentSellTrade22));
-        creditAmountNotificationUbiAccountStats.setCurrentBuyTrades(List.of(currentBuyTrade21, currentBuyTrade22));
+        creditAmountNotificationUbiAccountStats.setCurrentSellTrades(List.of(currentSellTrade21Prioritized, currentSellTrade22Prioritized));
+        creditAmountNotificationUbiAccountStats.setCurrentBuyTrades(List.of(currentBuyTrade21Prioritized, currentBuyTrade22Prioritized));
 
         UbiAccountStats soldIn24hNotificationUbiAccountStats = new UbiAccountStats();
         soldIn24hNotificationUbiAccountStats.setUbiProfileId("profileId3");
@@ -306,8 +345,8 @@ class UbiUsersStatsFetchingServiceTest {
         soldIn24hNotificationUbiAccountStats.setCreditAmount(300);
         soldIn24hNotificationUbiAccountStats.setOwnedItemsIds(ownedItemsIds3);
         soldIn24hNotificationUbiAccountStats.setResaleLocks(List.of(resaleLock3));
-        soldIn24hNotificationUbiAccountStats.setCurrentSellTrades(List.of(currentSellTrade3));
-        soldIn24hNotificationUbiAccountStats.setCurrentBuyTrades(List.of(currentBuyTrade3));
+        soldIn24hNotificationUbiAccountStats.setCurrentSellTrades(List.of(currentSellTrade3Prioritized));
+        soldIn24hNotificationUbiAccountStats.setCurrentBuyTrades(List.of(currentBuyTrade3Prioritized));
 
         UbiAccountStats boughtIn24hNotificationUbiAccountStats = new UbiAccountStats();
         boughtIn24hNotificationUbiAccountStats.setUbiProfileId("profileId4");
@@ -316,8 +355,8 @@ class UbiUsersStatsFetchingServiceTest {
         boughtIn24hNotificationUbiAccountStats.setCreditAmount(400);
         boughtIn24hNotificationUbiAccountStats.setOwnedItemsIds(ownedItemsIds4);
         boughtIn24hNotificationUbiAccountStats.setResaleLocks(List.of(resaleLock4));
-        boughtIn24hNotificationUbiAccountStats.setCurrentSellTrades(List.of(currentSellTrade4));
-        boughtIn24hNotificationUbiAccountStats.setCurrentBuyTrades(List.of(currentBuyTrade4));
+        boughtIn24hNotificationUbiAccountStats.setCurrentSellTrades(List.of(currentSellTrade4Prioritized));
+        boughtIn24hNotificationUbiAccountStats.setCurrentBuyTrades(List.of(currentBuyTrade4Prioritized));
 
         List<UbiAccountStats> expectedUpdatedUbiAccountsStats = List.of(noNotificationUbiAccountStats, creditAmountNotificationUbiAccountStats, soldIn24hNotificationUbiAccountStats, boughtIn24hNotificationUbiAccountStats);
 

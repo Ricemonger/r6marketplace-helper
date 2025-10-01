@@ -52,6 +52,14 @@ class ItemMainFieldsPostgresMapperTest {
         item1.setDayMaxPrice(14);
         item1.setDayMinPrice(15);
         item1.setDaySales(16);
+        item1.setPriorityToSellByMaxBuyPrice(17L);
+        item1.setPriorityToSellByNextFancySellPrice(18L);
+        item1.setPriorityToBuyByMinSellPrice(19L);
+        item1.setPriorityToBuyIn1Hour(20L);
+        item1.setPriorityToBuyIn6Hours(21L);
+        item1.setPriorityToBuyIn24Hours(22L);
+        item1.setPriorityToBuyIn168Hours(23L);
+        item1.setPriorityToBuyIn720Hours(24L);
         item1.setPriceToBuyIn1Hour(25);
         item1.setPriceToBuyIn6Hours(26);
         item1.setPriceToBuyIn24Hours(27);

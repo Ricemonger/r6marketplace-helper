@@ -23,6 +23,17 @@ public class ItemHistoryFieldsProjection {
     private Integer dayMinPrice;
     private Integer daySales;
 
+    private Long priorityToSellByMaxBuyPrice;
+    private Long priorityToSellByNextFancySellPrice;
+
+    private Long priorityToBuyByMinSellPrice;
+
+    private Long priorityToBuyIn1Hour;
+    private Long priorityToBuyIn6Hours;
+    private Long priorityToBuyIn24Hours;
+    private Long priorityToBuyIn168Hours;
+    private Long priorityToBuyIn720Hours;
+
     private Integer priceToBuyIn1Hour;
     private Integer priceToBuyIn6Hours;
     private Integer priceToBuyIn24Hours;

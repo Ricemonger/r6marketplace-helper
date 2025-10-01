@@ -69,25 +69,25 @@ public interface ItemMainFieldsI extends SoldItemDetails {
         if (o instanceof ItemMainFieldsI item) {
             boolean tagsAreEqual = getTags() == null && item.getTags() == null || (
                     getTags() != null && item.getTags() != null &&
-                            getTags().size() == item.getTags().size() &&
-                            new HashSet<>(getTags()).containsAll(item.getTags()));
+                    getTags().size() == item.getTags().size() &&
+                    new HashSet<>(getTags()).containsAll(item.getTags()));
 
             boolean lastSoldAtAreEqual = getLastSoldAt() == null && item.getLastSoldAt() == null || (
                     getLastSoldAt() != null && item.getLastSoldAt() != null &&
-                            getLastSoldAt().withNano(0).equals(item.getLastSoldAt().withNano(0)));
+                    getLastSoldAt().withNano(0).equals(item.getLastSoldAt().withNano(0)));
 
             return Objects.equals(item.getItemId(), this.getItemId()) &&
-                    Objects.equals(item.getName(), this.getName()) &&
-                    Objects.equals(item.getRarity(), this.getRarity()) &&
-                    Objects.equals(item.getType(), this.getType()) &&
-                    Objects.equals(item.getMaxBuyPrice(), this.getMaxBuyPrice()) &&
-                    Objects.equals(item.getBuyOrdersCount(), this.getBuyOrdersCount()) &&
-                    Objects.equals(item.getMinSellPrice(), this.getMinSellPrice()) &&
-                    Objects.equals(item.getSellOrdersCount(), this.getSellOrdersCount()) &&
-                    tagsAreEqual &&
-                    Objects.equals(item.getAssetUrl(), this.getAssetUrl()) &&
-                    lastSoldAtAreEqual &&
-                    Objects.equals(item.getLastSoldPrice(), this.getLastSoldPrice());
+                   Objects.equals(item.getName(), this.getName()) &&
+                   Objects.equals(item.getRarity(), this.getRarity()) &&
+                   Objects.equals(item.getType(), this.getType()) &&
+                   Objects.equals(item.getMaxBuyPrice(), this.getMaxBuyPrice()) &&
+                   Objects.equals(item.getBuyOrdersCount(), this.getBuyOrdersCount()) &&
+                   Objects.equals(item.getMinSellPrice(), this.getMinSellPrice()) &&
+                   Objects.equals(item.getSellOrdersCount(), this.getSellOrdersCount()) &&
+                   tagsAreEqual &&
+                   Objects.equals(item.getAssetUrl(), this.getAssetUrl()) &&
+                   lastSoldAtAreEqual &&
+                   Objects.equals(item.getLastSoldPrice(), this.getLastSoldPrice());
         }
         return false;
     }

@@ -83,14 +83,12 @@ public class CallbackCommandListener {
 
 //--------------------------------------------------------------------------------------------------
 
-            case Callbacks.ITEM_FILTER_EDIT ->
-                    executorsService.execute(FilterEditStage1AskNameCallback.class, updateInfo);
+            case Callbacks.ITEM_FILTER_EDIT -> executorsService.execute(FilterEditStage1AskNameCallback.class, updateInfo);
 
             case Callbacks.ITEM_FILTER_EDIT_FINISH_CONFIRMED ->
                     executorsService.execute(FilterEditStage15FinishConfirmedFinishCallback.class, updateInfo);
 
-            case Callbacks.ITEM_FILTERS_SHOW_ALL ->
-                    executorsService.execute(FiltersShowAllNamesStage1AskNameCallback.class, updateInfo);
+            case Callbacks.ITEM_FILTERS_SHOW_ALL -> executorsService.execute(FiltersShowAllNamesStage1AskNameCallback.class, updateInfo);
 
             case Callbacks.ITEM_FILTER_REMOVE_FINISH_CONFIRMED ->
                     executorsService.execute(FilterRemoveStage3ConfirmedFinishCallback.class, updateInfo);
@@ -151,8 +149,7 @@ public class CallbackCommandListener {
 
 //--------------------------------------------------------------------------------------------------
 
-            case Callbacks.TRADE_MANAGERS_EDIT ->
-                    executorsService.execute(TradeManagersEditAskManagerTypeCallback.class, updateInfo);
+            case Callbacks.TRADE_MANAGERS_EDIT -> executorsService.execute(TradeManagersEditAskManagerTypeCallback.class, updateInfo);
 
 
             case Callbacks.TRADE_BY_FILTERS_MANAGER_EDIT ->
@@ -162,8 +159,7 @@ public class CallbackCommandListener {
                     executorsService.execute(TradeByFiltersManagerEditStage8ConfirmedFinishCallback.class, updateInfo);
 
 
-            case Callbacks.TRADE_BY_ITEM_ID_MANAGER_EDIT ->
-                    executorsService.execute(TradeByItemIdManagerEditAskTradeTypeCallback.class, updateInfo);
+            case Callbacks.TRADE_BY_ITEM_ID_MANAGER_EDIT -> executorsService.execute(TradeByItemIdManagerEditAskTradeTypeCallback.class, updateInfo);
 
             case Callbacks.TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_EDIT ->
                     executorsService.execute(TradeByItemIdManagerBuyEditStage1AskItemIdCallback.class, updateInfo);
@@ -185,8 +181,7 @@ public class CallbackCommandListener {
                             updateInfo);
 
 
-            case Callbacks.TRADE_MANAGERS_SETTINGS ->
-                    executorsService.execute(TradeManagersSettingsCallback.class, updateInfo);
+            case Callbacks.TRADE_MANAGERS_SETTINGS -> executorsService.execute(TradeManagersSettingsCallback.class, updateInfo);
 
 
             case Callbacks.TRADE_MANAGERS_SETTINGS_CHANGE_NEW_MANAGERS_ARE_ACTIVE_FLAG ->
@@ -249,14 +244,11 @@ public class CallbackCommandListener {
                     executorsService.execute(TradeManagersSettingsChangeBuyTradePriorityExpressionConfirmCallback.class, updateInfo);
 
 
-            case Callbacks.TRADE_MANAGERS_SHOW_CHOOSE_TYPE ->
-                    executorsService.execute(TradeManagersChooseTypeCallback.class, updateInfo);
+            case Callbacks.TRADE_MANAGERS_SHOW_CHOOSE_TYPE -> executorsService.execute(TradeManagersChooseTypeCallback.class, updateInfo);
 
-            case Callbacks.TRADE_BY_FILTERS_MANAGERS_SHOW_ALL ->
-                    executorsService.execute(TradeByFiltersManagersShowAllCallback.class, updateInfo);
+            case Callbacks.TRADE_BY_FILTERS_MANAGERS_SHOW_ALL -> executorsService.execute(TradeByFiltersManagersShowAllCallback.class, updateInfo);
 
-            case Callbacks.TRADE_BY_ITEM_ID_MANAGERS_SHOW_ALL ->
-                    executorsService.execute(TradeByItemIdManagersShowAllCallback.class, updateInfo);
+            case Callbacks.TRADE_BY_ITEM_ID_MANAGERS_SHOW_ALL -> executorsService.execute(TradeByItemIdManagersShowAllCallback.class, updateInfo);
 
 
             case Callbacks.TRADE_BY_FILTERS_MANAGER_REMOVE_OR_ENABLED_CHANGE ->
@@ -280,14 +272,11 @@ public class CallbackCommandListener {
 
 //--------------------------------------------------------------------------------------------------
 
-            case Callbacks.UBI_ACCOUNT_ENTRY_LINK ->
-                    executorsService.execute(UbiAccountEntryAuthorizeStage1AskEmailCallback.class, updateInfo);
+            case Callbacks.UBI_ACCOUNT_ENTRY_LINK -> executorsService.execute(UbiAccountEntryAuthorizeStage1AskEmailCallback.class, updateInfo);
 
-            case Callbacks.UBI_ACCOUNT_ENTRY_SHOW ->
-                    executorsService.execute(UbiAccountEntryShowCallback.class, updateInfo);
+            case Callbacks.UBI_ACCOUNT_ENTRY_SHOW -> executorsService.execute(UbiAccountEntryShowCallback.class, updateInfo);
 
-            case Callbacks.UBI_ACCOUNT_ENTRY_UNLINK_REQUEST ->
-                    executorsService.execute(UbiAccountEntryUnlinkRequestCallback.class, updateInfo);
+            case Callbacks.UBI_ACCOUNT_ENTRY_UNLINK_REQUEST -> executorsService.execute(UbiAccountEntryUnlinkRequestCallback.class, updateInfo);
 
             case Callbacks.UBI_ACCOUNT_ENTRY_UNLINK_FINISH_CONFIRMED ->
                     executorsService.execute(UbiAccountEntryUnlinkConfirmedFinishCallback.class, updateInfo);

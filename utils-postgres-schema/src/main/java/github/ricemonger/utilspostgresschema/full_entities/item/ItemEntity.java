@@ -80,6 +80,25 @@ public class ItemEntity {
     @Column(name = "day_sales")
     private Integer daySales;
 
+    @Column(name = "priority_to_sell_by_max_buy_price")
+    private Long priorityToSellByMaxBuyPrice;
+    @Column(name = "priority_to_sell_by_next_fancy_sell_price")
+    private Long priorityToSellByNextFancySellPrice;
+
+    @Column(name = "priority_to_buy_by_min_sell_price")
+    private Long priorityToBuyByMinSellPrice;
+
+    @Column(name = "priority_to_buy_in_1_hour")
+    private Long priorityToBuyIn1Hour;
+    @Column(name = "priority_to_buy_in_6_hours")
+    private Long priorityToBuyIn6Hours;
+    @Column(name = "priority_to_buy_in_24_hours")
+    private Long priorityToBuyIn24Hours;
+    @Column(name = "priority_to_buy_in_168_hours")
+    private Long priorityToBuyIn168Hours;
+    @Column(name = "priority_to_buy_in_720_hours")
+    private Long priorityToBuyIn720Hours;
+
     @Column(name = "price_to_buy_in_1_hour")
     private Integer priceToBuyIn1Hour;
     @Column(name = "price_to_buy_in_6_hours")
@@ -114,37 +133,45 @@ public class ItemEntity {
     public boolean isFullyEqual(ItemEntity itemEntity) {
 
         boolean tagsAreEqual = this.tags == null && itemEntity.tags == null ||
-                this.tags != null && itemEntity.tags != null &&
-                        this.tags.size() == itemEntity.tags.size() &&
-                        new HashSet<>(this.tags).containsAll(itemEntity.tags);
+                               this.tags != null && itemEntity.tags != null &&
+                               this.tags.size() == itemEntity.tags.size() &&
+                               new HashSet<>(this.tags).containsAll(itemEntity.tags);
 
         return equals(itemEntity) &&
-                Objects.equals(assetUrl, itemEntity.assetUrl) &&
-                Objects.equals(name, itemEntity.name) &&
-                tagsAreEqual &&
-                rarity == itemEntity.rarity &&
-                type == itemEntity.type &&
-                Objects.equals(maxBuyPrice, itemEntity.maxBuyPrice) &&
-                Objects.equals(buyOrdersCount, itemEntity.buyOrdersCount) &&
-                Objects.equals(minSellPrice, itemEntity.minSellPrice) &&
-                Objects.equals(sellOrdersCount, itemEntity.sellOrdersCount) &&
-                Objects.equals(lastSoldAt, itemEntity.lastSoldAt) &&
-                Objects.equals(lastSoldPrice, itemEntity.lastSoldPrice) &&
-                Objects.equals(monthAveragePrice, itemEntity.monthAveragePrice) &&
-                Objects.equals(monthMedianPrice, itemEntity.monthMedianPrice) &&
-                Objects.equals(monthMaxPrice, itemEntity.monthMaxPrice) &&
-                Objects.equals(monthMinPrice, itemEntity.monthMinPrice) &&
-                Objects.equals(monthSalesPerDay, itemEntity.monthSalesPerDay) &&
-                Objects.equals(monthSales, itemEntity.monthSales) &&
-                Objects.equals(dayAveragePrice, itemEntity.dayAveragePrice) &&
-                Objects.equals(dayMedianPrice, itemEntity.dayMedianPrice) &&
-                Objects.equals(dayMaxPrice, itemEntity.dayMaxPrice) &&
-                Objects.equals(dayMinPrice, itemEntity.dayMinPrice) &&
-                Objects.equals(daySales, itemEntity.daySales) &&
-                Objects.equals(priceToBuyIn1Hour, itemEntity.priceToBuyIn1Hour) &&
-                Objects.equals(priceToBuyIn6Hours, itemEntity.priceToBuyIn6Hours) &&
-                Objects.equals(priceToBuyIn24Hours, itemEntity.priceToBuyIn24Hours) &&
-                Objects.equals(priceToBuyIn168Hours, itemEntity.priceToBuyIn168Hours) &&
-                Objects.equals(priceToBuyIn720Hours, itemEntity.priceToBuyIn720Hours);
+               Objects.equals(assetUrl, itemEntity.assetUrl) &&
+               Objects.equals(name, itemEntity.name) &&
+               tagsAreEqual &&
+               rarity == itemEntity.rarity &&
+               type == itemEntity.type &&
+               Objects.equals(maxBuyPrice, itemEntity.maxBuyPrice) &&
+               Objects.equals(buyOrdersCount, itemEntity.buyOrdersCount) &&
+               Objects.equals(minSellPrice, itemEntity.minSellPrice) &&
+               Objects.equals(sellOrdersCount, itemEntity.sellOrdersCount) &&
+               Objects.equals(lastSoldAt, itemEntity.lastSoldAt) &&
+               Objects.equals(lastSoldPrice, itemEntity.lastSoldPrice) &&
+               Objects.equals(monthAveragePrice, itemEntity.monthAveragePrice) &&
+               Objects.equals(monthMedianPrice, itemEntity.monthMedianPrice) &&
+               Objects.equals(monthMaxPrice, itemEntity.monthMaxPrice) &&
+               Objects.equals(monthMinPrice, itemEntity.monthMinPrice) &&
+               Objects.equals(monthSalesPerDay, itemEntity.monthSalesPerDay) &&
+               Objects.equals(monthSales, itemEntity.monthSales) &&
+               Objects.equals(dayAveragePrice, itemEntity.dayAveragePrice) &&
+               Objects.equals(dayMedianPrice, itemEntity.dayMedianPrice) &&
+               Objects.equals(dayMaxPrice, itemEntity.dayMaxPrice) &&
+               Objects.equals(dayMinPrice, itemEntity.dayMinPrice) &&
+               Objects.equals(daySales, itemEntity.daySales) &&
+               Objects.equals(priorityToSellByMaxBuyPrice, itemEntity.priorityToSellByMaxBuyPrice) &&
+               Objects.equals(priorityToSellByNextFancySellPrice, itemEntity.priorityToSellByNextFancySellPrice) &&
+               Objects.equals(priorityToBuyByMinSellPrice, itemEntity.priorityToBuyByMinSellPrice) &&
+               Objects.equals(priorityToBuyIn1Hour, itemEntity.priorityToBuyIn1Hour) &&
+               Objects.equals(priorityToBuyIn6Hours, itemEntity.priorityToBuyIn6Hours) &&
+               Objects.equals(priorityToBuyIn24Hours, itemEntity.priorityToBuyIn24Hours) &&
+               Objects.equals(priorityToBuyIn168Hours, itemEntity.priorityToBuyIn168Hours) &&
+               Objects.equals(priorityToBuyIn720Hours, itemEntity.priorityToBuyIn720Hours) &&
+               Objects.equals(priceToBuyIn1Hour, itemEntity.priceToBuyIn1Hour) &&
+               Objects.equals(priceToBuyIn6Hours, itemEntity.priceToBuyIn6Hours) &&
+               Objects.equals(priceToBuyIn24Hours, itemEntity.priceToBuyIn24Hours) &&
+               Objects.equals(priceToBuyIn168Hours, itemEntity.priceToBuyIn168Hours) &&
+               Objects.equals(priceToBuyIn720Hours, itemEntity.priceToBuyIn720Hours);
     }
 }

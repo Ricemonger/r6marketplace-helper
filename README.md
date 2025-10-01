@@ -122,8 +122,8 @@ Link Managed Ubisoft Account
 Configure Notifications  
 
 
-* **Trades Manager** - manages trades for all Users in DB, who have linked Ubisoft Account, have trade managers and enabled trade management setting.
-Uses Users and Items stats from DB. User can specify Expression for calculating Trade Priority, by item's stats, himself.  
+* **Trades Manager** - manages trades for all Users in DB, who have linked Ubisoft Account, have trade managers and enabled trade management in settings.
+Uses Users and Items stats from DB.  
 Notifies Users via Notifications Service about performed operations.  
 
 

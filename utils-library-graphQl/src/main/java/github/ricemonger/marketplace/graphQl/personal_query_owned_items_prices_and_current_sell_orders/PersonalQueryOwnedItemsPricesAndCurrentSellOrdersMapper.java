@@ -59,9 +59,9 @@ public class PersonalQueryOwnedItemsPricesAndCurrentSellOrdersMapper {
         SellTrade result = new SellTrade();
 
         if (node.getTradeId() == null
-                || node.getTradeItems() == null || node.getTradeItems().length == 0
-                || node.getTradeItems()[0].getItem() == null
-                || node.getTradeItems()[0].getItem().getItemId() == null) {
+            || node.getTradeItems() == null || node.getTradeItems().length == 0
+            || node.getTradeItems()[0].getItem() == null
+            || node.getTradeItems()[0].getItem().getItemId() == null) {
             throw new GraphQlPersonalOwnedItemPricesAndCurrentSellOrdersMappingException("One of node fields is null-" + node);
         }
 

@@ -188,8 +188,7 @@ public class AuthorizationService {
         }
     }
 
-    private record TwoFaAuthorizationBodyValue(boolean rememberMe,
-                                               TwoFaAuthorizationBodyValueTrustedDevice trustedDevice) {
+    private record TwoFaAuthorizationBodyValue(boolean rememberMe, TwoFaAuthorizationBodyValueTrustedDevice trustedDevice) {
     }
 
     private record TwoFaAuthorizationBodyValueTrustedDevice(String id, String friendlyName) {

@@ -12,7 +12,7 @@ public class TradeByFiltersManagerEditStage7AskConfirmationFinishInput extends A
         TradeByFiltersManager manager = botInnerService.generateTradeByFiltersManagerByUserInput(updateInfo.getChatId());
 
         String text = "Your trade manager is:\n\n" + manager.toHandsomeString() + "\n\n" +
-                "Would you like to save it?";
+                      "Would you like to save it?";
 
         askYesOrNoFromInlineKeyboard(text, Callbacks.TRADE_BY_FILTERS_MANAGER_EDIT_FINISH_CONFIRMED, Callbacks.CANCEL);
     }

@@ -11,9 +11,9 @@ import java.util.List;
 public interface CustomUbiAccountStatsPostgresRepository extends JpaRepository<UbiAccountStatsEntity, String> {
     @Transactional(readOnly = true)
     @Query(value = "SELECT i.item_id AS itemId, i.rarity AS rarity, i.month_median_price AS monthMedianPrice " +
-            "FROM item i " +
-            "JOIN ubi_account_owned_items uoi ON i.item_id = uoi.item_id " +
-            "WHERE uoi.ubi_profile_id = :ubiProfileId", nativeQuery = true)
+                   "FROM item i " +
+                   "JOIN ubi_account_owned_items uoi ON i.item_id = uoi.item_id " +
+                   "WHERE uoi.ubi_profile_id = :ubiProfileId", nativeQuery = true)
     List<ItemMedianPriceAndRarityProjectionI> findOwnedItemsMedianPriceAndRarity(String ubiProfileId);
 
     @Transactional(readOnly = true)

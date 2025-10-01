@@ -20,17 +20,17 @@ public interface CustomTelegramUserInputPostgresRepository extends JpaRepository
 
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.TelegramUserInputProjection(" +
-            "t.telegramUser.chatId," +
-            " t.inputState," +
-            " t.value) " +
-            "FROM TelegramUserInputEntity t WHERE t.telegramUser.chatId = :chatId AND t.inputState = :inputState")
+           "t.telegramUser.chatId," +
+           " t.inputState," +
+           " t.value) " +
+           "FROM TelegramUserInputEntity t WHERE t.telegramUser.chatId = :chatId AND t.inputState = :inputState")
     Optional<TelegramUserInputProjection> findInputById(String chatId, InputState inputState);
 
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.marketplace.databases.postgres.dto_projections.TelegramUserInputProjection(" +
-            "t.telegramUser.chatId," +
-            " t.inputState," +
-            " t.value) " +
-            "FROM TelegramUserInputEntity t WHERE t.telegramUser.chatId = :chatId")
+           "t.telegramUser.chatId," +
+           " t.inputState," +
+           " t.value) " +
+           "FROM TelegramUserInputEntity t WHERE t.telegramUser.chatId = :chatId")
     List<TelegramUserInputProjection> findAllByChatId(String chatId);
 }

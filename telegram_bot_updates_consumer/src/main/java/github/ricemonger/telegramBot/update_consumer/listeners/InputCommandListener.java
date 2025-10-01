@@ -56,11 +56,9 @@ public class InputCommandListener {
 
                 case ITEM_FILTER_SHOW_OR_REMOVE -> itemFilterShowOrRemoveInputGroup(updateInfo);
 
-                case ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS ->
-                        itemShowSettingsChangeAppliedFiltersInputGroup(updateInfo);
+                case ITEMS_SHOW_SETTING_CHANGE_APPLIED_FILTERS -> itemShowSettingsChangeAppliedFiltersInputGroup(updateInfo);
 
-                case ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT ->
-                        itemShowSettingsChangeMessageLimitInputGroup(updateInfo);
+                case ITEMS_SHOW_SETTINGS_CHANGE_MESSAGE_LIMIT -> itemShowSettingsChangeMessageLimitInputGroup(updateInfo);
 
                 case ITEMS_SHOW_SETTING_CHANGE_SHOWN_FIELDS -> itemShowSettingsChangeShownFieldsInputGroup(updateInfo);
 
@@ -72,8 +70,7 @@ public class InputCommandListener {
 
                 case TRADE_BY_ITEM_ID_MANAGER_TYPE_SELL_EDIT -> tradeByItemIdManagerTypeSellInputGroup(updateInfo);
 
-                case TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT ->
-                        tradeByItemIdManagerTypeBuyAndSellInputGroup(updateInfo);
+                case TRADE_BY_ITEM_ID_MANAGER_TYPE_BUY_AND_SELL_EDIT -> tradeByItemIdManagerTypeBuyAndSellInputGroup(updateInfo);
 
                 case TRADE_BY_FILTERS_MANAGER_SHOW_OR_REMOVE -> tradeByFiltersManagerRemoveInputGroup(updateInfo);
 
@@ -96,14 +93,14 @@ public class InputCommandListener {
 
     private boolean cancelMessageTextOrCallbackQueryText(UpdateInfo updateInfo) {
         return (updateInfo.isHasMessage() && updateInfo.getMessageText().equals("/cancel"))
-                ||
-                updateInfo.isHasCallBackQuery() && updateInfo.getCallbackQueryData().equals(Callbacks.CANCEL);
+               ||
+               updateInfo.isHasCallBackQuery() && updateInfo.getCallbackQueryData().equals(Callbacks.CANCEL);
     }
 
     private boolean silentCancelMessageTextOrCallbackQueryText(UpdateInfo updateInfo) {
         return (updateInfo.isHasMessage() && updateInfo.getMessageText().equals("/silentCancel"))
-                ||
-                updateInfo.isHasCallBackQuery() && updateInfo.getCallbackQueryData().equals(Callbacks.CANCEL_SILENT);
+               ||
+               updateInfo.isHasCallBackQuery() && updateInfo.getCallbackQueryData().equals(Callbacks.CANCEL_SILENT);
     }
 
     private void itemFilterEditInputGroup(UpdateInfo updateInfo) {
@@ -112,40 +109,29 @@ public class InputCommandListener {
         switch (inputState) {
             case ITEM_FILTER_NAME -> executorsService.execute(FilterEditStage2AskFilterTypeInput.class, updateInfo);
 
-            case ITEM_FILTER_TYPE ->
-                    executorsService.execute(FilterEditStage3AskItemNamePatternsInput.class, updateInfo);
+            case ITEM_FILTER_TYPE -> executorsService.execute(FilterEditStage3AskItemNamePatternsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_NAME_PATTERNS ->
-                    executorsService.execute(FilterEditStage4AskItemTypesInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_NAME_PATTERNS -> executorsService.execute(FilterEditStage4AskItemTypesInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TYPES ->
-                    executorsService.execute(FilterEditStage5AskItemTagsRarityInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TYPES -> executorsService.execute(FilterEditStage5AskItemTagsRarityInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_RARITY ->
-                    executorsService.execute(FilterEditStage6AskItemTagsSeasonsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_RARITY -> executorsService.execute(FilterEditStage6AskItemTagsSeasonsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_SEASONS ->
-                    executorsService.execute(FilterEditStage7AskItemTagsOperatorsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_SEASONS -> executorsService.execute(FilterEditStage7AskItemTagsOperatorsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_OPERATORS ->
-                    executorsService.execute(FilterEditStage8AskItemTagsWeaponsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_OPERATORS -> executorsService.execute(FilterEditStage8AskItemTagsWeaponsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_WEAPONS ->
-                    executorsService.execute(FilterEditStage9AskItemTagsEventsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_WEAPONS -> executorsService.execute(FilterEditStage9AskItemTagsEventsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_EVENTS ->
-                    executorsService.execute(FilterEditStage10AskItemTagsEsportsInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_EVENTS -> executorsService.execute(FilterEditStage10AskItemTagsEsportsInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_ESPORTS ->
-                    executorsService.execute(FilterEditStage11AskItemTagsOtherInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_ESPORTS -> executorsService.execute(FilterEditStage11AskItemTagsOtherInput.class, updateInfo);
 
-            case ITEM_FILTER_ITEM_TAGS_OTHER ->
-                    executorsService.execute(FilterEditStage12AskMinPriceInput.class, updateInfo);
+            case ITEM_FILTER_ITEM_TAGS_OTHER -> executorsService.execute(FilterEditStage12AskMinPriceInput.class, updateInfo);
 
             case ITEM_FILTER_MIN_PRICE -> executorsService.execute(FilterEditStage13AskMaxPriceInput.class, updateInfo);
 
-            case ITEM_FILTER_MAX_PRICE ->
-                    executorsService.execute(FilterEditStage14FinishRequestInput.class, updateInfo);
+            case ITEM_FILTER_MAX_PRICE -> executorsService.execute(FilterEditStage14FinishRequestInput.class, updateInfo);
 
             default ->
                     throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
@@ -166,8 +152,7 @@ public class InputCommandListener {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
-            case ITEM_FILTER_NAME ->
-                    executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput.class, updateInfo);
+            case ITEM_FILTER_NAME -> executorsService.execute(ItemsShowSettingsChangeAppliedFiltersStage2AskActionInput.class, updateInfo);
 
             default ->
                     throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());
@@ -232,11 +217,9 @@ public class InputCommandListener {
         InputState inputState = updateInfo.getInputState();
 
         switch (inputState) {
-            case TRADE_BY_FILTERS_MANAGER_NAME ->
-                    executorsService.execute(TradeByFiltersManagerEditStage2AskTypeInput.class, updateInfo);
+            case TRADE_BY_FILTERS_MANAGER_NAME -> executorsService.execute(TradeByFiltersManagerEditStage2AskTypeInput.class, updateInfo);
 
-            case TRADE_BY_FILTERS_MANAGER_TRADE_TYPE ->
-                    executorsService.execute(TradeByFiltersManagerEditStage3AskFiltersInput.class, updateInfo);
+            case TRADE_BY_FILTERS_MANAGER_TRADE_TYPE -> executorsService.execute(TradeByFiltersManagerEditStage3AskFiltersInput.class, updateInfo);
 
             case TRADE_BY_FILTERS_MANAGER_FILTERS_NAMES ->
                     executorsService.execute(TradeByFiltersManagerEditStage4AskMinBuySellProfitInput.class, updateInfo);
@@ -364,14 +347,11 @@ public class InputCommandListener {
 
         switch (inputState) {
 
-            case UBI_ACCOUNT_ENTRY_EMAIL ->
-                    executorsService.execute(UbiAccountEntryAuthorizeStage2AskPasswordInput.class, updateInfo);
+            case UBI_ACCOUNT_ENTRY_EMAIL -> executorsService.execute(UbiAccountEntryAuthorizeStage2AskPasswordInput.class, updateInfo);
 
-            case UBI_ACCOUNT_ENTRY_PASSWORD ->
-                    executorsService.execute(UbiAccountEntryAuthorizeStage3Ask2FaCodeInput.class, updateInfo);
+            case UBI_ACCOUNT_ENTRY_PASSWORD -> executorsService.execute(UbiAccountEntryAuthorizeStage3Ask2FaCodeInput.class, updateInfo);
 
-            case UBI_ACCOUNT_ENTRY_2FA_CODE ->
-                    executorsService.execute(UbiAccountEntryAuthorizeStage4FinishInput.class, updateInfo);
+            case UBI_ACCOUNT_ENTRY_2FA_CODE -> executorsService.execute(UbiAccountEntryAuthorizeStage4FinishInput.class, updateInfo);
 
             default ->
                     throw new UnexpectedUserInputStateAndGroupConjunctionException(updateInfo.getInputState().name() + " - state:group - " + updateInfo.getInputGroup().name());

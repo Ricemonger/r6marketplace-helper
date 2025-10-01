@@ -15,12 +15,12 @@ public class TradeStatsCalculatorUtilsConfiguration {
     }
 
     @Bean
-    public ItemPotentialTradeStatsCalculator itemPotentialTradeStatsCalculator(ItemFancyPriceCalculator itemFancyPriceCalculator, ItemTradeTimeCalculator itemTradeTimeCalculator) {
-        return new ItemPotentialTradeStatsCalculator(itemFancyPriceCalculator, itemTradeTimeCalculator);
+    ItemTradePriorityCalculator itemTradePriorityCalculator(PricesCommonValuesService pricesCommonValuesService) {
+        return new ItemTradePriorityCalculator(pricesCommonValuesService);
     }
 
     @Bean
-    public ItemTradePriorityByExpressionCalculator itemTradePriorityByExpressionCalculator() {
-        return new ItemTradePriorityByExpressionCalculator();
+    public ItemTradeStatsCalculator itemTradeStatsCalculator(ItemFancyPriceCalculator itemFancyPriceCalculator, ItemTradeTimeCalculator itemTradeTimeCalculator, ItemTradePriorityCalculator itemTradePriorityCalculator) {
+        return new ItemTradeStatsCalculator(itemFancyPriceCalculator, itemTradeTimeCalculator, itemTradePriorityCalculator);
     }
 }

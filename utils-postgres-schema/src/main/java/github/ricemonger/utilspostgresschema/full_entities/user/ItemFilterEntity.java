@@ -66,7 +66,7 @@ public class ItemFilterEntity {
             return false;
         }
         return Objects.equals(this.user, itemFilterEntity.user) &&
-                Objects.equals(this.name, itemFilterEntity.name);
+               Objects.equals(this.name, itemFilterEntity.name);
     }
 
     public boolean isFullyEqual(ItemFilterEntity filter) {
@@ -78,14 +78,14 @@ public class ItemFilterEntity {
 
         boolean tagsAreEqual = tags == null && filter.tags == null || (
                 tags != null && filter.tags != null &&
-                        tags.size() == filter.tags.size() && tags.containsAll(filter.tags));
+                tags.size() == filter.tags.size() && tags.containsAll(filter.tags));
 
         return equals(filter) &&
-                Objects.equals(this.filterType, filter.filterType) &&
-                Objects.equals(this.itemNamePatterns, filter.itemNamePatterns) &&
-                Objects.equals(this.itemTypes, filter.itemTypes) &&
-                tagsAreEqual &&
-                Objects.equals(this.minSellPrice, filter.minSellPrice) &&
-                Objects.equals(this.maxBuyPrice, filter.maxBuyPrice);
+               Objects.equals(this.filterType, filter.filterType) &&
+               Objects.equals(this.itemNamePatterns, filter.itemNamePatterns) &&
+               Objects.equals(this.itemTypes, filter.itemTypes) &&
+               tagsAreEqual &&
+               Objects.equals(this.minSellPrice, filter.minSellPrice) &&
+               Objects.equals(this.maxBuyPrice, filter.maxBuyPrice);
     }
 }

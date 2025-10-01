@@ -12,23 +12,23 @@ import java.util.Optional;
 public interface CustomUserPostgresRepository extends JpaRepository<UserEntity, Long> {
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.notifications_service.postgres.dto_projections.ToBeNotifiedUserProjection(" +
-            "u.telegramUser.chatId," +
-            "u.privateNotificationsEnabledFlag," +
-            "u.publicNotificationsEnabledFlag," +
-            "u.ubiStatsUpdatedNotificationsEnabledFlag," +
-            "u.tradeManagerNotificationsEnabledFlag," +
-            "u.authorizationNotificationsEnabledFlag)" +
-            "FROM UserEntity u WHERE u.id = :id")
+           "u.telegramUser.chatId," +
+           "u.privateNotificationsEnabledFlag," +
+           "u.publicNotificationsEnabledFlag," +
+           "u.ubiStatsUpdatedNotificationsEnabledFlag," +
+           "u.tradeManagerNotificationsEnabledFlag," +
+           "u.authorizationNotificationsEnabledFlag)" +
+           "FROM UserEntity u WHERE u.id = :id")
     Optional<ToBeNotifiedUserProjection> findToBeNotifiedUserIdById(Long id);
 
     @Transactional(readOnly = true)
     @Query("SELECT new github.ricemonger.notifications_service.postgres.dto_projections.ToBeNotifiedUserProjection(" +
-            "u.telegramUser.chatId," +
-            "u.privateNotificationsEnabledFlag," +
-            "u.publicNotificationsEnabledFlag," +
-            "u.ubiStatsUpdatedNotificationsEnabledFlag," +
-            "u.tradeManagerNotificationsEnabledFlag," +
-            "u.authorizationNotificationsEnabledFlag)" +
-            "FROM UserEntity u")
+           "u.telegramUser.chatId," +
+           "u.privateNotificationsEnabledFlag," +
+           "u.publicNotificationsEnabledFlag," +
+           "u.ubiStatsUpdatedNotificationsEnabledFlag," +
+           "u.tradeManagerNotificationsEnabledFlag," +
+           "u.authorizationNotificationsEnabledFlag)" +
+           "FROM UserEntity u")
     List<ToBeNotifiedUserProjection> findAllToBeNotifiedUsers();
 }

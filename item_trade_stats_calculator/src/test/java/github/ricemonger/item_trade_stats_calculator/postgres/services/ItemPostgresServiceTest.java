@@ -1,9 +1,13 @@
 package github.ricemonger.item_trade_stats_calculator.postgres.services;
 
+
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemCurrentPricesHistoryFieldsProjection;
+import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemCurrentPricesRecalculationRequiredFieldsProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemHistoryFieldsProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.dto_projections.ItemRecalculationRequiredFieldsProjection;
 import github.ricemonger.item_trade_stats_calculator.postgres.repositories.CustomItemPostgresRepository;
 import github.ricemonger.item_trade_stats_calculator.postgres.services.entity_mappers.item.ItemEntitiesMapper;
+import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemCurrentPricesRecalculationRequiredFields;
 import github.ricemonger.item_trade_stats_calculator.services.DTOs.ItemRecalculationRequiredFields;
 import github.ricemonger.utils.DTOs.common.ItemHistoryFieldsI;
 import org.junit.jupiter.api.Test;
@@ -62,6 +66,45 @@ class ItemPostgresServiceTest {
         when(itemEntitiesMapper.createRecalculationRequiredFieldsDTO(proj2)).thenReturn(dto2);
 
         List<ItemRecalculationRequiredFields> result = itemPostgresService.findAllItemsRecalculationRequiredFields();
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains(dto1));
+        assertTrue(result.contains(dto2));
+    }
+
+    @Test
+    public void updateAllItemsCurrentPricesHistoryFields_should_handle_to_repository_mapped_projections() {
+        ItemHistoryFieldsI item1 = Mockito.mock(ItemHistoryFieldsI.class);
+        ItemHistoryFieldsI item2 = Mockito.mock(ItemHistoryFieldsI.class);
+
+        ItemCurrentPricesHistoryFieldsProjection proj1 = Mockito.mock(ItemCurrentPricesHistoryFieldsProjection.class);
+        ItemCurrentPricesHistoryFieldsProjection proj2 = Mockito.mock(ItemCurrentPricesHistoryFieldsProjection.class);
+
+        when(itemEntitiesMapper.createCurrentPricesHistoryFieldsProjection(item1)).thenReturn(proj1);
+        when(itemEntitiesMapper.createCurrentPricesHistoryFieldsProjection(item2)).thenReturn(proj2);
+
+        itemPostgresService.updateAllItemsCurrentPricesHistoryFields(List.of(item1, item2));
+
+        verify(customItemPostgresRepository).updateAllItemsCurrentPricesHistoryFields(argThat(iterable -> {
+            List arg = (List) iterable;
+
+            return arg.size() == 2 && arg.contains(proj1) && arg.contains(proj2);
+        }));
+    }
+
+    @Test
+    public void findAllItemsCurrentPricesRecalculationRequiredFields_should_return_mapped_dtos() {
+        ItemCurrentPricesRecalculationRequiredFieldsProjection proj1 = Mockito.mock(ItemCurrentPricesRecalculationRequiredFieldsProjection.class);
+        ItemCurrentPricesRecalculationRequiredFieldsProjection proj2 = Mockito.mock(ItemCurrentPricesRecalculationRequiredFieldsProjection.class);
+
+        ItemCurrentPricesRecalculationRequiredFields dto1 = Mockito.mock(ItemCurrentPricesRecalculationRequiredFields.class);
+        ItemCurrentPricesRecalculationRequiredFields dto2 = Mockito.mock(ItemCurrentPricesRecalculationRequiredFields.class);
+
+        when(customItemPostgresRepository.findAllItemsCurrentPricesRecalculationRequiredFields()).thenReturn(List.of(proj1, proj2));
+        when(itemEntitiesMapper.createCurrentPricesRecalculationRequiredFields(proj1)).thenReturn(dto1);
+        when(itemEntitiesMapper.createCurrentPricesRecalculationRequiredFields(proj2)).thenReturn(dto2);
+
+        List<ItemCurrentPricesRecalculationRequiredFields> result = itemPostgresService.findAllItemsCurrentPricesRecalculationRequiredFields();
 
         assertEquals(2, result.size());
         assertTrue(result.contains(dto1));

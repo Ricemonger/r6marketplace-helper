@@ -12,7 +12,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PersonalQueryUserStatsGraphQlDocumentBuilder {
 
-    private final static String QUERY_PART_BEFORE_VARS =
+    private final static String personalQueryFetchUserStatsPartBeforeOwnedItemsOffsetVariables =
             """
                     query GetUserStats(
                      $spaceId: String!,
@@ -23,14 +23,14 @@ public class PersonalQueryUserStatsGraphQlDocumentBuilder {
                      $ownedItemsLimit: Int!
                     """;
 
-    private final static String QUERY_PART_AFTER_VARS_BEFORE_ADDITIONAL_QUERIES = """ 
+    private final static String personalQueryFetchUserStatsPartAfterOwnedItemsOffsetVariablesBeforeQueries = """ 
             ) {
             game(spaceId: $spaceId) {
                 viewer {
                     meta { 
             """;
 
-    private final static String QUERY_PART_AFTER_ADDITIONAL_QUERIES = """ 
+    private final static String personalQueryFetchUserStatsPartAfterQueries = """ 
                             tradesLimitations {
                                 ...TradesLimitationsFragment
                                 __typename
@@ -140,9 +140,9 @@ public class PersonalQueryUserStatsGraphQlDocumentBuilder {
             }
             """;
 
-    private final static String ADDITIONAL_QUERY_NAME = "marketableItems";
+    private final static String ownedItemsQueryName = "marketableItems";
 
-    private final static String ADDITIONAL_QUERY_TEMPLATE = """
+    private final static String ownedItemsQuery = """
             marketableItems(
                                 limit: $ownedItemsLimit
                                 offset: $defaultVarKey
@@ -183,24 +183,24 @@ public class PersonalQueryUserStatsGraphQlDocumentBuilder {
             variablesSection.append(", ");
             variablesSection.append(createOwnedItemsOffsetVariableSection(varKey));
 
-            String alias = ADDITIONAL_QUERY_NAME + i;
+            String alias = ownedItemsQueryName + i;
 
-            aliasesToFields.put(alias, ADDITIONAL_QUERY_NAME);
+            aliasesToFields.put(alias, ownedItemsQueryName);
 
             queriesSection.append(createAliasedOwnedItemsQuerySection(alias, varKey));
 
-            aliasesToFields.put(ADDITIONAL_QUERY_NAME + i, ADDITIONAL_QUERY_NAME);
+            aliasesToFields.put(ownedItemsQueryName + i, ownedItemsQueryName);
         }
 
-        document.append(QUERY_PART_BEFORE_VARS);
+        document.append(personalQueryFetchUserStatsPartBeforeOwnedItemsOffsetVariables);
 
         document.append(variablesSection);
 
-        document.append(QUERY_PART_AFTER_VARS_BEFORE_ADDITIONAL_QUERIES);
+        document.append(personalQueryFetchUserStatsPartAfterOwnedItemsOffsetVariablesBeforeQueries);
 
         document.append(queriesSection);
 
-        document.append(QUERY_PART_AFTER_ADDITIONAL_QUERIES);
+        document.append(personalQueryFetchUserStatsPartAfterQueries);
 
         resultingVariables.putAll(variables);
 
@@ -216,6 +216,6 @@ public class PersonalQueryUserStatsGraphQlDocumentBuilder {
     }
 
     private String createAliasedOwnedItemsQuerySection(String alias, String varKey) {
-        return alias + ": " + ADDITIONAL_QUERY_TEMPLATE.replace("$defaultVarKey", "$" + varKey);
+        return alias + ": " + ownedItemsQuery.replace("$defaultVarKey", "$" + varKey);
     }
 }

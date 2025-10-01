@@ -49,7 +49,7 @@ public class ItemDaySalesUbiStatsEntity {
             return false;
         }
         return Objects.equals(this.item, itemDaySalesUbiStatsEntity.item) &&
-                Objects.equals(this.date, itemDaySalesUbiStatsEntity.date);
+               Objects.equals(this.date, itemDaySalesUbiStatsEntity.date);
     }
 
     public String getItemId_() {
@@ -60,10 +60,10 @@ public class ItemDaySalesUbiStatsEntity {
         if (this == o) return true;
         if (o instanceof ItemDaySalesUbiStatsEntity entity) {
             return equals(entity) &&
-                    Objects.equals(lowestPrice, entity.lowestPrice) &&
-                    Objects.equals(averagePrice, entity.averagePrice) &&
-                    Objects.equals(highestPrice, entity.highestPrice) &&
-                    Objects.equals(itemsCount, entity.itemsCount);
+                   Objects.equals(lowestPrice, entity.lowestPrice) &&
+                   Objects.equals(averagePrice, entity.averagePrice) &&
+                   Objects.equals(highestPrice, entity.highestPrice) &&
+                   Objects.equals(itemsCount, entity.itemsCount);
         }
         return false;
     }
@@ -71,6 +71,6 @@ public class ItemDaySalesUbiStatsEntity {
     @Override
     public String toString() {
         return "ItemDaySalesUbiStatsEntity(itemId=" + getItemId_() + ", date=" + date + ", lowestPrice=" + lowestPrice + ", averagePrice=" + averagePrice +
-                ", highestPrice=" + highestPrice + ", itemsCount=" + itemsCount + ")";
+               ", highestPrice=" + highestPrice + ", itemsCount=" + itemsCount + ")";
     }
 }

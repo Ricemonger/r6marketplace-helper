@@ -43,13 +43,13 @@ public class PersonalQueryCurrentOrdersMapper {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(graphQlCommonValuesService.getDateFormat());
 
         if (node.getTradeId() == null
-                || node.getState() == null
-                || node.getCategory() == null
-                || node.getExpiresAt() == null
-                || node.getLastModifiedAt() == null
-                || node.getTradeItems() == null || node.getTradeItems().length == 0
-                || node.getTradeItems()[0].getItem() == null
-                || node.getTradeItems()[0].getItem().getItemId() == null) {
+            || node.getState() == null
+            || node.getCategory() == null
+            || node.getExpiresAt() == null
+            || node.getLastModifiedAt() == null
+            || node.getTradeItems() == null || node.getTradeItems().length == 0
+            || node.getTradeItems()[0].getItem() == null
+            || node.getTradeItems()[0].getItem().getItemId() == null) {
             throw new GraphQlPersonalCurrentOrderMappingException("One of node fields is null-" + node);
         }
 

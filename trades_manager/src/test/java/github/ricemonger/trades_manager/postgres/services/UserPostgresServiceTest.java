@@ -1,9 +1,9 @@
 package github.ricemonger.trades_manager.postgres.services;
 
-import github.ricemonger.trades_manager.postgres.repositories.CustomUserPostgresRepository;
-import github.ricemonger.trades_manager.postgres.services.entity_mappers.user.ManageableUserFactory;
+import github.ricemonger.trades_manager.postgres.custom_entities.manageable_users.CustomManageableUserEntity;
+import github.ricemonger.trades_manager.postgres.repositories.CustomManageableUserPostgresRepository;
+import github.ricemonger.trades_manager.postgres.services.entity_mappers.user.UserEntityMapper;
 import github.ricemonger.trades_manager.services.DTOs.ManageableUser;
-import github.ricemonger.utilspostgresschema.full_entities.user.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +20,22 @@ class UserPostgresServiceTest {
     @Autowired
     private UserPostgresService userPostgresService;
     @MockBean
-    private CustomUserPostgresRepository userRepository;
+    private CustomManageableUserPostgresRepository userRepository;
     @MockBean
-    private ManageableUserFactory manageableUserFactory;
+    private UserEntityMapper userEntityMapper;
 
     @Test
     public void getAllManageableUsers_should_return_mapped_repository_result() {
-        UserEntity projection1 = Mockito.mock(UserEntity.class);
-        UserEntity projection2 = Mockito.mock(UserEntity.class);
+        CustomManageableUserEntity entity1 = Mockito.mock(CustomManageableUserEntity.class);
+        CustomManageableUserEntity entity2 = Mockito.mock(CustomManageableUserEntity.class);
 
-        Mockito.when(userRepository.findAllManageableUsers()).thenReturn(List.of(projection1, projection2));
+        Mockito.when(userRepository.findAllManageableUsers()).thenReturn(List.of(entity1, entity2));
 
         ManageableUser dto1 = Mockito.mock(ManageableUser.class);
         ManageableUser dto2 = Mockito.mock(ManageableUser.class);
 
-        Mockito.when(manageableUserFactory.createManageableUserFromPostgresEntity(projection1)).thenReturn(dto1);
-        Mockito.when(manageableUserFactory.createManageableUserFromPostgresEntity(projection2)).thenReturn(dto2);
+        Mockito.when(userEntityMapper.createManageableUser(entity1)).thenReturn(dto1);
+        Mockito.when(userEntityMapper.createManageableUser(entity2)).thenReturn(dto2);
 
         List<ManageableUser> result = userPostgresService.getAllManageableUsers();
 

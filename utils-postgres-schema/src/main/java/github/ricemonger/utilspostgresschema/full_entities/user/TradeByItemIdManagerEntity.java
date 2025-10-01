@@ -62,15 +62,15 @@ public class TradeByItemIdManagerEntity {
             return false;
         }
         return Objects.equals(user, tradeByItemIdManagerEntity.user) &&
-                Objects.equals(item, tradeByItemIdManagerEntity.item);
+               Objects.equals(item, tradeByItemIdManagerEntity.item);
     }
 
     public boolean isFullyEqual(TradeByItemIdManagerEntity manager) {
         return equals(manager) &&
-                Objects.equals(enabled, manager.enabled) &&
-                Objects.equals(tradeOperationType, manager.tradeOperationType) &&
-                Objects.equals(sellBoundaryPrice, manager.sellBoundaryPrice) &&
-                Objects.equals(buyBoundaryPrice, manager.buyBoundaryPrice) &&
-                Objects.equals(priorityMultiplier, manager.priorityMultiplier);
+               Objects.equals(enabled, manager.enabled) &&
+               Objects.equals(tradeOperationType, manager.tradeOperationType) &&
+               Objects.equals(sellBoundaryPrice, manager.sellBoundaryPrice) &&
+               Objects.equals(buyBoundaryPrice, manager.buyBoundaryPrice) &&
+               Objects.equals(priorityMultiplier, manager.priorityMultiplier);
     }
 }

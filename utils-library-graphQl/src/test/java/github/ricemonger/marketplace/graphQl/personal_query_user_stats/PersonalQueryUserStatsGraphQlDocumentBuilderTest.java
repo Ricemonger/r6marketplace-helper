@@ -35,136 +35,136 @@ class PersonalQueryUserStatsGraphQlDocumentBuilderTest {
         ));
 
         expected.setDocument("query GetUserStats(\n" +
-                " $spaceId: String!,\n" +
-                " $tradesLimit: Int!,\n" +
-                " $tradesOffset: Int,\n" +
-                " $paymentItemId: String!,\n" +
-                " $ownedItemsSortBy: MarketableItemSort,\n" +
-                " $ownedItemsLimit: Int!\n" +
-                ", $ownedItemsOffset0: Int) {\n" +
-                "game(spaceId: $spaceId) {\n" +
-                "    viewer {\n" +
-                "        meta {\n" +
-                "marketableItems0: marketableItems(\n" +
-                "                    limit: $ownedItemsLimit\n" +
-                "                    offset: $ownedItemsOffset0\n" +
-                "                    sortBy: $ownedItemsSortBy\n" +
-                "                    withMarketData: false\n" +
-                "                ) {\n" +
-                "                    nodes {\n" +
-                "                        ...MarketableItemFragment\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    totalCount\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "                tradesLimitations {\n" +
-                "                    ...TradesLimitationsFragment\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "\n" +
-                "                secondaryStoreItem(itemId: $paymentItemId) {\n" +
-                "                    meta {\n" +
-                "                        quantity\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "\n" +
-                "                currentTrades: trades(\n" +
-                "                                     limit: $tradesLimit\n" +
-                "                                     offset: $tradesOffset\n" +
-                "                                     filterBy: {states: [Created]}\n" +
-                "                                     sortBy: {field: LAST_MODIFIED_AT}\n" +
-                "                                 ) {\n" +
-                "                                     nodes {\n" +
-                "                                         ...TradeFragment\n" +
-                "                                         __typename\n" +
-                "                                     }\n" +
-                "                                     __typename\n" +
-                "                                 }\n" +
-                "\n" +
-                "                finishedTrades: trades(\n" +
-                "                                     limit: $tradesLimit\n" +
-                "                                     offset: $tradesOffset\n" +
-                "                                     filterBy: {states: [Succeeded, Failed]}\n" +
-                "                                     sortBy: {field: LAST_MODIFIED_AT}\n" +
-                "                                 ) {\n" +
-                "                                     nodes {\n" +
-                "                                         ...TradeFragment\n" +
-                "                                         __typename\n" +
-                "                                     }\n" +
-                "                                     __typename\n" +
-                "                                 }\n" +
-                "\n" +
-                "                __typename\n" +
-                "            }\n" +
-                "            __typename\n" +
-                "        }\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "}\n" +
-                "\n" +
-                "fragment TradesLimitationsFragment on UserGameTradesLimitations {\n" +
-                "    buy {\n" +
-                "        resolvedTransactionCount\n" +
-                "        activeTransactionCount\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    sell {\n" +
-                "        resolvedTransactionCount\n" +
-                "        activeTransactionCount\n" +
-                "        resaleLocks {\n" +
-                "            itemId\n" +
-                "            expiresAt\n" +
-                "            __typename\n" +
-                "        }\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    __typename\n" +
-                "}\n" +
-                "\n" +
-                "fragment MarketableItemFragment on MarketableItem {\n" +
-                "    item {\n" +
-                "        ...SecondaryStoreItemFragment\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    __typename\n" +
-                "}\n" +
-                "\n" +
-                "fragment TradeFragment on Trade {\n" +
-                "    tradeId\n" +
-                "    state\n" +
-                "    category\n" +
-                "    expiresAt\n" +
-                "    lastModifiedAt\n" +
-                "    tradeItems {\n" +
-                "        item {\n" +
-                "            itemId\n" +
-                "            name\n" +
-                "            __typename\n" +
-                "        }\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    payment {\n" +
-                "        price\n" +
-                "        transactionFee\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    paymentOptions {\n" +
-                "        price\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    paymentProposal {\n" +
-                "        price\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    __typename\n" +
-                "}\n" +
-                "\n" +
-                "fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
-                "     itemId\n" +
-                "}\n");
+                             " $spaceId: String!,\n" +
+                             " $tradesLimit: Int!,\n" +
+                             " $tradesOffset: Int,\n" +
+                             " $paymentItemId: String!,\n" +
+                             " $ownedItemsSortBy: MarketableItemSort,\n" +
+                             " $ownedItemsLimit: Int!\n" +
+                             ", $ownedItemsOffset0: Int) {\n" +
+                             "game(spaceId: $spaceId) {\n" +
+                             "    viewer {\n" +
+                             "        meta {\n" +
+                             "marketableItems0: marketableItems(\n" +
+                             "                    limit: $ownedItemsLimit\n" +
+                             "                    offset: $ownedItemsOffset0\n" +
+                             "                    sortBy: $ownedItemsSortBy\n" +
+                             "                    withMarketData: false\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "                tradesLimitations {\n" +
+                             "                    ...TradesLimitationsFragment\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "\n" +
+                             "                secondaryStoreItem(itemId: $paymentItemId) {\n" +
+                             "                    meta {\n" +
+                             "                        quantity\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "\n" +
+                             "                currentTrades: trades(\n" +
+                             "                                     limit: $tradesLimit\n" +
+                             "                                     offset: $tradesOffset\n" +
+                             "                                     filterBy: {states: [Created]}\n" +
+                             "                                     sortBy: {field: LAST_MODIFIED_AT}\n" +
+                             "                                 ) {\n" +
+                             "                                     nodes {\n" +
+                             "                                         ...TradeFragment\n" +
+                             "                                         __typename\n" +
+                             "                                     }\n" +
+                             "                                     __typename\n" +
+                             "                                 }\n" +
+                             "\n" +
+                             "                finishedTrades: trades(\n" +
+                             "                                     limit: $tradesLimit\n" +
+                             "                                     offset: $tradesOffset\n" +
+                             "                                     filterBy: {states: [Succeeded, Failed]}\n" +
+                             "                                     sortBy: {field: LAST_MODIFIED_AT}\n" +
+                             "                                 ) {\n" +
+                             "                                     nodes {\n" +
+                             "                                         ...TradeFragment\n" +
+                             "                                         __typename\n" +
+                             "                                     }\n" +
+                             "                                     __typename\n" +
+                             "                                 }\n" +
+                             "\n" +
+                             "                __typename\n" +
+                             "            }\n" +
+                             "            __typename\n" +
+                             "        }\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "}\n" +
+                             "\n" +
+                             "fragment TradesLimitationsFragment on UserGameTradesLimitations {\n" +
+                             "    buy {\n" +
+                             "        resolvedTransactionCount\n" +
+                             "        activeTransactionCount\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    sell {\n" +
+                             "        resolvedTransactionCount\n" +
+                             "        activeTransactionCount\n" +
+                             "        resaleLocks {\n" +
+                             "            itemId\n" +
+                             "            expiresAt\n" +
+                             "            __typename\n" +
+                             "        }\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    __typename\n" +
+                             "}\n" +
+                             "\n" +
+                             "fragment MarketableItemFragment on MarketableItem {\n" +
+                             "    item {\n" +
+                             "        ...SecondaryStoreItemFragment\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    __typename\n" +
+                             "}\n" +
+                             "\n" +
+                             "fragment TradeFragment on Trade {\n" +
+                             "    tradeId\n" +
+                             "    state\n" +
+                             "    category\n" +
+                             "    expiresAt\n" +
+                             "    lastModifiedAt\n" +
+                             "    tradeItems {\n" +
+                             "        item {\n" +
+                             "            itemId\n" +
+                             "            name\n" +
+                             "            __typename\n" +
+                             "        }\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    payment {\n" +
+                             "        price\n" +
+                             "        transactionFee\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    paymentOptions {\n" +
+                             "        price\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    paymentProposal {\n" +
+                             "        price\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    __typename\n" +
+                             "}\n" +
+                             "\n" +
+                             "fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
+                             "     itemId\n" +
+                             "}\n");
 
         expected.setVariables(
                 Map.of(
@@ -199,162 +199,162 @@ class PersonalQueryUserStatsGraphQlDocumentBuilderTest {
 
         BuiltGraphQlDocument expected = new BuiltGraphQlDocument();
         expected.setDocument("query GetUserStats(\n" +
-                " $spaceId: String!,\n" +
-                " $tradesLimit: Int!,\n" +
-                " $tradesOffset: Int,\n" +
-                " $paymentItemId: String!,\n" +
-                " $ownedItemsSortBy: MarketableItemSort,\n" +
-                " $ownedItemsLimit: Int!\n" +
-                ", $ownedItemsOffset0: Int, $ownedItemsOffset1: Int, $ownedItemsOffset2: Int) {\n" +
-                "game(spaceId: $spaceId) {\n" +
-                "    viewer {\n" +
-                "        meta {\n" +
-                "marketableItems0: marketableItems(\n" +
-                "                    limit: $ownedItemsLimit\n" +
-                "                    offset: $ownedItemsOffset0\n" +
-                "                    sortBy: $ownedItemsSortBy\n" +
-                "                    withMarketData: false\n" +
-                "                ) {\n" +
-                "                    nodes {\n" +
-                "                        ...MarketableItemFragment\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    totalCount\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "marketableItems1: marketableItems(\n" +
-                "                    limit: $ownedItemsLimit\n" +
-                "                    offset: $ownedItemsOffset1\n" +
-                "                    sortBy: $ownedItemsSortBy\n" +
-                "                    withMarketData: false\n" +
-                "                ) {\n" +
-                "                    nodes {\n" +
-                "                        ...MarketableItemFragment\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    totalCount\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "marketableItems2: marketableItems(\n" +
-                "                    limit: $ownedItemsLimit\n" +
-                "                    offset: $ownedItemsOffset2\n" +
-                "                    sortBy: $ownedItemsSortBy\n" +
-                "                    withMarketData: false\n" +
-                "                ) {\n" +
-                "                    nodes {\n" +
-                "                        ...MarketableItemFragment\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    totalCount\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "                tradesLimitations {\n" +
-                "                    ...TradesLimitationsFragment\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "\n" +
-                "                secondaryStoreItem(itemId: $paymentItemId) {\n" +
-                "                    meta {\n" +
-                "                        quantity\n" +
-                "                        __typename\n" +
-                "                    }\n" +
-                "                    __typename\n" +
-                "                }\n" +
-                "\n" +
-                "                currentTrades: trades(\n" +
-                "                                     limit: $tradesLimit\n" +
-                "                                     offset: $tradesOffset\n" +
-                "                                     filterBy: {states: [Created]}\n" +
-                "                                     sortBy: {field: LAST_MODIFIED_AT}\n" +
-                "                                 ) {\n" +
-                "                                     nodes {\n" +
-                "                                         ...TradeFragment\n" +
-                "                                         __typename\n" +
-                "                                     }\n" +
-                "                                     __typename\n" +
-                "                                 }\n" +
-                "\n" +
-                "                finishedTrades: trades(\n" +
-                "                                     limit: $tradesLimit\n" +
-                "                                     offset: $tradesOffset\n" +
-                "                                     filterBy: {states: [Succeeded, Failed]}\n" +
-                "                                     sortBy: {field: LAST_MODIFIED_AT}\n" +
-                "                                 ) {\n" +
-                "                                     nodes {\n" +
-                "                                         ...TradeFragment\n" +
-                "                                         __typename\n" +
-                "                                     }\n" +
-                "                                     __typename\n" +
-                "                                 }\n" +
-                "\n" +
-                "                __typename\n" +
-                "            }\n" +
-                "            __typename\n" +
-                "        }\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "}\n" +
-                "\n" +
-                "fragment TradesLimitationsFragment on UserGameTradesLimitations {\n" +
-                "    buy {\n" +
-                "        resolvedTransactionCount\n" +
-                "        activeTransactionCount\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    sell {\n" +
-                "        resolvedTransactionCount\n" +
-                "        activeTransactionCount\n" +
-                "        resaleLocks {\n" +
-                "            itemId\n" +
-                "            expiresAt\n" +
-                "            __typename\n" +
-                "        }\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    __typename\n" +
-                "}\n" +
-                "\n" +
-                "fragment MarketableItemFragment on MarketableItem {\n" +
-                "    item {\n" +
-                "        ...SecondaryStoreItemFragment\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    __typename\n" +
-                "}\n" +
-                "\n" +
-                "fragment TradeFragment on Trade {\n" +
-                "    tradeId\n" +
-                "    state\n" +
-                "    category\n" +
-                "    expiresAt\n" +
-                "    lastModifiedAt\n" +
-                "    tradeItems {\n" +
-                "        item {\n" +
-                "            itemId\n" +
-                "            name\n" +
-                "            __typename\n" +
-                "        }\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    payment {\n" +
-                "        price\n" +
-                "        transactionFee\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    paymentOptions {\n" +
-                "        price\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    paymentProposal {\n" +
-                "        price\n" +
-                "        __typename\n" +
-                "    }\n" +
-                "    __typename\n" +
-                "}\n" +
-                "\n" +
-                "fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
-                "     itemId\n" +
-                "}\n");
+                             " $spaceId: String!,\n" +
+                             " $tradesLimit: Int!,\n" +
+                             " $tradesOffset: Int,\n" +
+                             " $paymentItemId: String!,\n" +
+                             " $ownedItemsSortBy: MarketableItemSort,\n" +
+                             " $ownedItemsLimit: Int!\n" +
+                             ", $ownedItemsOffset0: Int, $ownedItemsOffset1: Int, $ownedItemsOffset2: Int) {\n" +
+                             "game(spaceId: $spaceId) {\n" +
+                             "    viewer {\n" +
+                             "        meta {\n" +
+                             "marketableItems0: marketableItems(\n" +
+                             "                    limit: $ownedItemsLimit\n" +
+                             "                    offset: $ownedItemsOffset0\n" +
+                             "                    sortBy: $ownedItemsSortBy\n" +
+                             "                    withMarketData: false\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "marketableItems1: marketableItems(\n" +
+                             "                    limit: $ownedItemsLimit\n" +
+                             "                    offset: $ownedItemsOffset1\n" +
+                             "                    sortBy: $ownedItemsSortBy\n" +
+                             "                    withMarketData: false\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "marketableItems2: marketableItems(\n" +
+                             "                    limit: $ownedItemsLimit\n" +
+                             "                    offset: $ownedItemsOffset2\n" +
+                             "                    sortBy: $ownedItemsSortBy\n" +
+                             "                    withMarketData: false\n" +
+                             "                ) {\n" +
+                             "                    nodes {\n" +
+                             "                        ...MarketableItemFragment\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    totalCount\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "                tradesLimitations {\n" +
+                             "                    ...TradesLimitationsFragment\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "\n" +
+                             "                secondaryStoreItem(itemId: $paymentItemId) {\n" +
+                             "                    meta {\n" +
+                             "                        quantity\n" +
+                             "                        __typename\n" +
+                             "                    }\n" +
+                             "                    __typename\n" +
+                             "                }\n" +
+                             "\n" +
+                             "                currentTrades: trades(\n" +
+                             "                                     limit: $tradesLimit\n" +
+                             "                                     offset: $tradesOffset\n" +
+                             "                                     filterBy: {states: [Created]}\n" +
+                             "                                     sortBy: {field: LAST_MODIFIED_AT}\n" +
+                             "                                 ) {\n" +
+                             "                                     nodes {\n" +
+                             "                                         ...TradeFragment\n" +
+                             "                                         __typename\n" +
+                             "                                     }\n" +
+                             "                                     __typename\n" +
+                             "                                 }\n" +
+                             "\n" +
+                             "                finishedTrades: trades(\n" +
+                             "                                     limit: $tradesLimit\n" +
+                             "                                     offset: $tradesOffset\n" +
+                             "                                     filterBy: {states: [Succeeded, Failed]}\n" +
+                             "                                     sortBy: {field: LAST_MODIFIED_AT}\n" +
+                             "                                 ) {\n" +
+                             "                                     nodes {\n" +
+                             "                                         ...TradeFragment\n" +
+                             "                                         __typename\n" +
+                             "                                     }\n" +
+                             "                                     __typename\n" +
+                             "                                 }\n" +
+                             "\n" +
+                             "                __typename\n" +
+                             "            }\n" +
+                             "            __typename\n" +
+                             "        }\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "}\n" +
+                             "\n" +
+                             "fragment TradesLimitationsFragment on UserGameTradesLimitations {\n" +
+                             "    buy {\n" +
+                             "        resolvedTransactionCount\n" +
+                             "        activeTransactionCount\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    sell {\n" +
+                             "        resolvedTransactionCount\n" +
+                             "        activeTransactionCount\n" +
+                             "        resaleLocks {\n" +
+                             "            itemId\n" +
+                             "            expiresAt\n" +
+                             "            __typename\n" +
+                             "        }\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    __typename\n" +
+                             "}\n" +
+                             "\n" +
+                             "fragment MarketableItemFragment on MarketableItem {\n" +
+                             "    item {\n" +
+                             "        ...SecondaryStoreItemFragment\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    __typename\n" +
+                             "}\n" +
+                             "\n" +
+                             "fragment TradeFragment on Trade {\n" +
+                             "    tradeId\n" +
+                             "    state\n" +
+                             "    category\n" +
+                             "    expiresAt\n" +
+                             "    lastModifiedAt\n" +
+                             "    tradeItems {\n" +
+                             "        item {\n" +
+                             "            itemId\n" +
+                             "            name\n" +
+                             "            __typename\n" +
+                             "        }\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    payment {\n" +
+                             "        price\n" +
+                             "        transactionFee\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    paymentOptions {\n" +
+                             "        price\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    paymentProposal {\n" +
+                             "        price\n" +
+                             "        __typename\n" +
+                             "    }\n" +
+                             "    __typename\n" +
+                             "}\n" +
+                             "\n" +
+                             "fragment SecondaryStoreItemFragment on SecondaryStoreItem {\n" +
+                             "     itemId\n" +
+                             "}\n");
 
         expected.setVariables(Map.of(
                 "ownedItemsOffset0", 0,

@@ -38,7 +38,7 @@ spring:
   application:
     name: r6s-helper-users-ubi-accs-reauthorizer
   liquibase:
-    enabled: true
+    enabled: false
     change-log: db/changelog/master-changelog.xml
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -49,7 +49,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
   kafka:
     admin:
       auto-create: true

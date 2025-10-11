@@ -4,7 +4,7 @@ LOG_FILE_DIRECTORY: test
 
 spring:
   liquibase:
-    enabled: true
+    enabled: false
     change-log: db/changelog/master-changelog.xml
   datasource:
     driver-class-name: org.h2.Driver
@@ -14,7 +14,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
     show-sql: true
 
 

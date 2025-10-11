@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="002-rename-sell-orders-count-column" author="ricemonger">
+        <renameColumn tableName="helper_user" 
+                      oldColumnName="items_show_sell_orders_count_flag" 
+                      newColumnName="item_show_sell_orders_count_flag"/>
+    </changeSet>
+
+</databaseChangeLog>

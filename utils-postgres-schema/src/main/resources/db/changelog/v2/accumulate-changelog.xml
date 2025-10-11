@@ -4,5 +4,6 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <include file="001-remove-tag-group-nonnull-constraint.xml" relativeToChangelogFile="true"/>
+    <include file="002-rename-sell-orders-count-column.xml" relativeToChangelogFile="true"/>
    
 </databaseChangeLog>

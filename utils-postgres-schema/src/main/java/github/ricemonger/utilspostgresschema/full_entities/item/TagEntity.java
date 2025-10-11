@@ -21,7 +21,7 @@ public class TagEntity {
     private String name;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "tag_group")
-    private TagGroup tagGroup;
+    private TagGroup tagGroup = TagGroup.Unknown;
 
     @Override
     public int hashCode() {

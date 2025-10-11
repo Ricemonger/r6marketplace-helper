@@ -41,7 +41,6 @@ spring:
       repositories:
         enabled: false
       url: redis://${REDIS_SERVER_HOST:localhost}:${REDIS_SERVER_PORT:6379}
-
   config:
     import:
       - auth-values.yaml

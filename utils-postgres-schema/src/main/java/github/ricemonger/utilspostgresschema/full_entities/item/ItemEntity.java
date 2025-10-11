@@ -35,11 +35,11 @@ public class ItemEntity {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "rarity")
-    private ItemRarity rarity;
+    private ItemRarity rarity = ItemRarity.UNKNOWN;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "type")
-    private ItemType type;
+    private ItemType type = ItemType.Unknown;
 
     @Column(name = "max_buy_price")
     private Integer maxBuyPrice;

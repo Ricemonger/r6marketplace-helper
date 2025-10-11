@@ -49,6 +49,9 @@ spring:
       repositories:
         enabled: false
       url: redis://${REDIS_SERVER_HOST:localhost}:${REDIS_SERVER_PORT:6379}
+  liquibase:
+    enabled: true
+    change-log: db/changelog/master-changelog.xml
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${POSTGRES_SERVER_HOST:localhost}:${POSTGRES_SERVER_PORT:5432}/${POSTGRES_DB:postgres}
@@ -58,7 +61,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 
   config:
     import:

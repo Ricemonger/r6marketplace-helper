@@ -25,10 +25,10 @@ public class TradeEntity {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "state")
-    private TradeState state;
+    private TradeState state = TradeState.Unknown;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "category")
-    private TradeCategory category;
+    private TradeCategory category = TradeCategory.Unknown;
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
     @Column(name = "last_modified_at")

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="001-create-user-sequence" author="ricemonger">
+        <createSequence sequenceName="user_sequence" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="002-create-helper-user-table" author="ricemonger">
+        <createTable tableName="helper_user">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="new_managers_are_active_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="managing_enabled_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ignore_unmanaged_items_trades_flag" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sell_trades_managing_enabled_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sell_trade_priority_expression" type="TEXT"/>
+            <column name="buy_trades_managing_enabled_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="buy_trade_priority_expression" type="TEXT"/>
+            <column name="public_notifications_enabled_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="private_notifications_enabled_flag" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ubi_stats_updated_notifications_enabled_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="trade_manager_notifications_enabled_flag" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorization_notifications_enabled_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_show_name_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_show_item_type_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_show_max_buy_price" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_show_buy_orders_count_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_show_min_sell_price_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="items_show_sell_orders_count_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_show_picture_flag" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="003-create-tag-table" author="ricemonger">
+        <createTable tableName="tag">
+            <column name="tag_value" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="tag_group" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="004-create-item-table" author="ricemonger">
+        <createTable tableName="item">
+            <column name="item_id" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="asset_url" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="rarity" type="INTEGER" defaultValueNumeric="0"/>
+            <column name="type" type="INTEGER" defaultValueNumeric="0"/>
+            <column name="max_buy_price" type="INTEGER"/>
+            <column name="buy_orders_count" type="INTEGER"/>
+            <column name="min_sell_price" type="INTEGER"/>
+            <column name="sell_orders_count" type="INTEGER"/>
+            <column name="last_sold_at" type="TIMESTAMP"/>
+            <column name="last_sold_price" type="INTEGER"/>
+            <column name="month_average_price" type="INTEGER"/>
+            <column name="month_median_price" type="INTEGER"/>
+            <column name="month_max_price" type="INTEGER"/>
+            <column name="month_min_price" type="INTEGER"/>
+            <column name="month_sales_per_day" type="INTEGER"/>
+            <column name="month_sales" type="INTEGER"/>
+            <column name="day_average_price" type="INTEGER"/>
+            <column name="day_median_price" type="INTEGER"/>
+            <column name="day_max_price" type="INTEGER"/>
+            <column name="day_min_price" type="INTEGER"/>
+            <column name="day_sales" type="INTEGER"/>
+            <column name="priority_to_sell_by_max_buy_price" type="BIGINT"/>
+            <column name="priority_to_sell_by_next_fancy_sell_price" type="BIGINT"/>
+            <column name="priority_to_buy_by_min_sell_price" type="BIGINT"/>
+            <column name="priority_to_buy_in_1_hour" type="BIGINT"/>
+            <column name="priority_to_buy_in_6_hours" type="BIGINT"/>
+            <column name="priority_to_buy_in_24_hours" type="BIGINT"/>
+            <column name="priority_to_buy_in_168_hours" type="BIGINT"/>
+            <column name="priority_to_buy_in_720_hours" type="BIGINT"/>
+            <column name="price_to_buy_in_1_hour" type="INTEGER"/>
+            <column name="price_to_buy_in_6_hours" type="INTEGER"/>
+            <column name="price_to_buy_in_24_hours" type="INTEGER"/>
+            <column name="price_to_buy_in_168_hours" type="INTEGER"/>
+            <column name="price_to_buy_in_720_hours" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="005-create-trade-table" author="ricemonger">
+        <createTable tableName="trade">
+            <column name="trade_id" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="state" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMP"/>
+            <column name="last_modified_at" type="TIMESTAMP"/>
+            <column name="item_id" type="VARCHAR(255)"/>
+            <column name="success_payment_price" type="INTEGER"/>
+            <column name="success_payment_fee" type="INTEGER"/>
+            <column name="proposed_payment_price" type="INTEGER"/>
+            <column name="proposed_payment_fee" type="INTEGER"/>
+            <column name="minutes_to_trade" type="INTEGER"/>
+            <column name="trade_priority" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="trade" baseColumnNames="item_id" 
+                                 referencedTableName="item" referencedColumnNames="item_id"
+                                 constraintName="fk_trade_item"/>
+    </changeSet>
+
+    <changeSet id="006-create-ubi-account-stats-table" author="ricemonger">
+        <createTable tableName="ubi_account_stats">
+            <column name="ubi_profile_id" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="credit_amount" type="INTEGER"/>
+            <column name="sold_in_24h" type="INTEGER"/>
+            <column name="bought_in_24h" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="007-create-telegram-user-table" author="ricemonger">
+        <createTable tableName="telegram_user">
+            <column name="chat_id" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT"/>
+            <column name="input_state" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="input_group" type="INTEGER" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_show_messages_limit" type="INTEGER" defaultValueNumeric="50">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_show_few_in_message_flag" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="telegram_user" baseColumnNames="user_id" 
+                                 referencedTableName="helper_user" referencedColumnNames="id"
+                                 constraintName="fk_telegram_user_user"/>
+    </changeSet>
+
+    <changeSet id="008-create-fetching-ubi-account-auth-table" author="ricemonger">
+        <createTable tableName="fetching_ubi_acount_authorization_entry">
+            <column name="ubi_profile_id" type="VARCHAR(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ubi_session_id" type="VARCHAR(255)"/>
+            <column name="ubi_space_id" type="VARCHAR(255)"/>
+            <column name="ubi_auth_ticket" type="TEXT"/>
+            <column name="ubi_remember_device_ticket" type="TEXT"/>
+            <column name="ubi_remember_me_ticket" type="TEXT"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

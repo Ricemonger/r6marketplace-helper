@@ -1,5 +1,102 @@
 services:
 
+  pgadmin:
+    profiles: ["test"]
+    container_name: r6helper-pgadmin
+    image: dpage/pgadmin4:8.12
+    ports:
+      - "5050:80"
+    networks:
+      - postgres-net
+    env_file:
+      - auth_constants.env
+    environment:
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    restart: unless-stopped
+
+  redis-test:
+    profiles: ["test"]
+    container_name: r6helper-redis-test
+    image: redis:7.2.4-bookworm
+    ports:
+      - "6380:6379"
+    volumes:
+      - test-redis-data:/data
+    networks:
+      - redis-net
+    restart: unless-stopped
+
+  fast_sell_trades_manager:
+    profiles: ["manual"]
+    container_name: r6helper-fast-sell-trades-manager
+    build:
+      context: .
+      dockerfile: fast_sell_trades_manager/Dockerfile
+    image: r6helper-fast-sell-trades-manager
+    ports:
+      - "8101:8079"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_UPDATE: 325
+      SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_UPDATE: 10500
+      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH: 60 # should be bigger or equal to 300/(Amount of provided fetching accounts)
+      # to avoid too many requests error
+      SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH: 12500
+      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE: 5
+      SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE: 10800
+      SCHEDULING_FIXED_DELAY_KEEP_UNUSED_SLOT: 600000
+      SCHEDULING_INITIAL_DELAY_KEEP_UNUSED_SLOT: 7500
+      SCHEDULING_FIXED_DELAY_MEDIAN_PRICES_FETCH: 600000
+      SCHEDULING_INITIAL_MEDIAN_PRICES_FETCH: 5000
+      SCHEDULING_FIXED_DELAY_USER_FETCH: 600000
+      SCHEDULING_INITIAL_DELAY_USER_FETCH: 0
+
+      LOGGING_LEVEL: info
+
+      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE: 300
+      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENTAGE: 100
+      FAST_SELL_OWNED_ITEMS_LIMIT: 350 # recommended to be <= 500, takes 360ms for 300
+      FAST_SELL_FETCH_USERS_ITEMS_OFFSET: 75
+      FAST_SELL_FETCH_USERS_ITEMS_LIMIT: 2000 # takes 300ms, 170 owned items for 1500, 390ms and 250 items for 2000
+      FAST_SELL_SLEEP_AFTER_EXECUTION_TIME_MS: 1000 
+    networks:
+      - postgres-net
+      - redis-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+
+  fetching_users_reauthorizer:
+    profiles: ["manual"]
+    container_name: r6helper-fetching-users-reauthorizer
+    build:
+      context: .
+      dockerfile: fetching_users_reauthorizer/Dockerfile
+    image: r6helper-fetching-users-reauthorizer
+    ports:
+      - "8102:8078"
+    env_file:
+      - ubi_constants.env
+      - containers_constants.env
+      - auth_constants.env
+    environment:
+      SCHEDULING_ENABLED: true
+      SCHEDULING_FIXED_DELAY: 9000000
+      SCHEDULING_INITIAL_DELAY: 0
+    #volumes: you should provide your own fetching_accounts_credentials.json with list of ubi account credentials to fetch info from db, now is
+    #used only for fast sell trades management
+     # - ./src/main/resources/fetching_accounts_credentials.json:/app/resources/fetching_accounts_credentials.json
+    networks:
+      - postgres-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
   configs_fetcher:
     container_name: r6helper-configs-fetcher
     build:
@@ -202,78 +299,6 @@ services:
       - postgres
       - redis
 
-  fast_sell_trades_manager:
-    container_name: r6helper-fast-sell-trades-manager
-    build:
-      context: .
-      dockerfile: fast_sell_trades_manager/Dockerfile
-    image: r6helper-fast-sell-trades-manager
-    ports:
-      - "8101:8079"
-    env_file:
-      - ubi_constants.env
-      - containers_constants.env
-      - auth_constants.env
-    environment:
-      SCHEDULING_ENABLED: true
-      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_UPDATE: 325
-      SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_UPDATE: 10500
-      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH: 60 # should be bigger or equal to 300/(Amount of provided fetching accounts)
-      # to avoid too many requests error
-      SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_FETCH: 12500
-      SCHEDULING_FIXED_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE: 5
-      SCHEDULING_INITIAL_DELAY_ONE_USER_FAST_SELL_MANAGEMENT_EXECUTE: 10800
-      SCHEDULING_FIXED_DELAY_KEEP_UNUSED_SLOT: 600000
-      SCHEDULING_INITIAL_DELAY_KEEP_UNUSED_SLOT: 7500
-      SCHEDULING_FIXED_DELAY_MEDIAN_PRICES_FETCH: 600000
-      SCHEDULING_INITIAL_MEDIAN_PRICES_FETCH: 5000
-      SCHEDULING_FIXED_DELAY_USER_FETCH: 600000
-      SCHEDULING_INITIAL_DELAY_USER_FETCH: 0
-
-      LOGGING_LEVEL: info
-
-      FAST_SELL_USER_ID: 1
-      FAST_SELL_EMAIL: leskotr23@gmail.com
-
-      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE: 300
-      FAST_SELL_MIN_MEDIAN_PRICE_DIFFERENCE_PERCENTAGE: 100
-      FAST_SELL_OWNED_ITEMS_LIMIT: 350 # recommended to be <= 500, takes 360ms for 300
-      FAST_SELL_FETCH_USERS_ITEMS_OFFSET: 75
-      FAST_SELL_FETCH_USERS_ITEMS_LIMIT: 2000 # takes 300ms, 170 owned items for 1500, 390ms and 250 items for 2000
-      FAST_SELL_SLEEP_AFTER_EXECUTION_TIME_MS: 0 # not needed for now
-    networks:
-      - postgres-net
-      - redis-net
-    restart: unless-stopped
-    depends_on:
-      - postgres
-      - redis
-
-  fetching_users_reauthorizer:
-    container_name: r6helper-fetching-users-reauthorizer
-    build:
-      context: .
-      dockerfile: fetching_users_reauthorizer/Dockerfile
-    image: r6helper-fetching-users-reauthorizer
-    ports:
-      - "8102:8078"
-    env_file:
-      - ubi_constants.env
-      - containers_constants.env
-      - auth_constants.env
-    environment:
-      SCHEDULING_ENABLED: true
-      SCHEDULING_FIXED_DELAY: 9000000
-      SCHEDULING_INITIAL_DELAY: 0
-    #volumes: you should provide your own fetching_accounts_credentials.json with list of ubi account credentials to fetch info from db, now is
-    #used only for fast sell trades management
-     # - ./src/main/resources/fetching_accounts_credentials.json:/app/resources/fetching_accounts_credentials.json
-    networks:
-      - postgres-net
-    restart: unless-stopped
-    depends_on:
-      - postgres
-
   ubi_users_stats_fetcher:
     container_name: r6helper-ubi-users-stats-fetcher
     build:
@@ -339,19 +364,6 @@ services:
       - postgres-net
     restart: unless-stopped
 
-  pgadmin:
-    container_name: r6helper-pgadmin
-    image: dpage/pgadmin4:8.12
-    ports:
-      - "5050:80"
-    networks:
-      - postgres-net
-    env_file:
-      - auth_constants.env
-    environment:
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    restart: unless-stopped
-
   redis:
     container_name: r6helper-redis
     image: redis:7.2.4-bookworm
@@ -359,18 +371,6 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
-    networks:
-      - redis-net
-    restart: unless-stopped
-
-  redis-test:
-    profiles: ["manual"]
-    container_name: r6helper-redis-test
-    image: redis:7.2.4-bookworm
-    ports:
-      - "6380:6379"
-    volumes:
-      - test-redis-data:/data
     networks:
       - redis-net
     restart: unless-stopped

@@ -1,6 +1,7 @@
 package github.ricemonger.utils.enums;
 
 public enum ItemType {
+    Unknown,
     WeaponSkin,
     CharacterHeadgear,
     CharacterUniform,
@@ -10,5 +11,5 @@ public enum ItemType {
     OperatorCardBackground,
     DroneSkin,
     GadgetSkin,
-    Unknown
+    LootCrate
 }

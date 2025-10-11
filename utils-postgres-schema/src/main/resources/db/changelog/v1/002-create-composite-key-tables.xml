@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="009-create-item-day-sales-ubi-stats-table" author="ricemonger">
+        <createTable tableName="item_day_sales_ubi_stats">
+            <column name="item_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lowest_price" type="INTEGER"/>
+            <column name="average_price" type="INTEGER"/>
+            <column name="highest_price" type="INTEGER"/>
+            <column name="items_count" type="INTEGER"/>
+        </createTable>
+        <addPrimaryKey tableName="item_day_sales_ubi_stats" columnNames="item_id, date"/>
+        <addForeignKeyConstraint baseTableName="item_day_sales_ubi_stats" baseColumnNames="item_id" 
+                                 referencedTableName="item" referencedColumnNames="item_id"
+                                 constraintName="fk_item_day_sales_ubi_stats_item"/>
+    </changeSet>
+
+    <changeSet id="010-create-item-sale-table" author="ricemonger">
+        <createTable tableName="item_sale">
+            <column name="item_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sold_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="INTEGER"/>
+        </createTable>
+        <addPrimaryKey tableName="item_sale" columnNames="item_id, sold_at"/>
+        <addForeignKeyConstraint baseTableName="item_sale" baseColumnNames="item_id" 
+                                 referencedTableName="item" referencedColumnNames="item_id"
+                                 constraintName="fk_item_sale_item"/>
+    </changeSet>
+
+    <changeSet id="011-create-item-filter-table" author="ricemonger">
+        <createTable tableName="item_filter">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="filter_type" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_name_patterns" type="TEXT"/>
+            <column name="item_types" type="TEXT"/>
+            <column name="min_sell_price" type="INTEGER"/>
+            <column name="max_buy_price" type="INTEGER"/>
+        </createTable>
+        <addPrimaryKey tableName="item_filter" columnNames="user_id, name"/>
+        <addForeignKeyConstraint baseTableName="item_filter" baseColumnNames="user_id" 
+                                 referencedTableName="helper_user" referencedColumnNames="id"
+                                 constraintName="fk_item_filter_user"/>
+    </changeSet>
+
+    <changeSet id="012-create-item-resale-lock-table" author="ricemonger">
+        <createTable tableName="item_resale_lock">
+            <column name="ubi_profile_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMP"/>
+        </createTable>
+        <addPrimaryKey tableName="item_resale_lock" columnNames="ubi_profile_id, item_id"/>
+        <addForeignKeyConstraint baseTableName="item_resale_lock" baseColumnNames="ubi_profile_id" 
+                                 referencedTableName="ubi_account_stats" referencedColumnNames="ubi_profile_id"
+                                 constraintName="fk_item_resale_lock_ubi_account"/>
+        <addForeignKeyConstraint baseTableName="item_resale_lock" baseColumnNames="item_id" 
+                                 referencedTableName="item" referencedColumnNames="item_id"
+                                 constraintName="fk_item_resale_lock_item"/>
+    </changeSet>
+
+    <changeSet id="013-create-telegram-user-input-table" author="ricemonger">
+        <createTable tableName="telegram_user_input">
+            <column name="chat_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="input_state" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="input_value" type="TEXT"/>
+        </createTable>
+        <addPrimaryKey tableName="telegram_user_input" columnNames="chat_id, input_state"/>
+        <addForeignKeyConstraint baseTableName="telegram_user_input" baseColumnNames="chat_id" 
+                                 referencedTableName="telegram_user" referencedColumnNames="chat_id"
+                                 constraintName="fk_telegram_user_input_telegram_user"/>
+    </changeSet>
+
+    <changeSet id="014-create-trade-manager-by-filters-table" author="ricemonger">
+        <createTable tableName="trade_manager_by_item_filters">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BOOLEAN"/>
+            <column name="trade_operation_type" type="INTEGER"/>
+            <column name="min_difference_from_median_price" type="INTEGER"/>
+            <column name="min_difference_from_median_price_percent" type="INTEGER"/>
+            <column name="priority_multiplier" type="INTEGER"/>
+        </createTable>
+        <addPrimaryKey tableName="trade_manager_by_item_filters" columnNames="user_id, name"/>
+        <addForeignKeyConstraint baseTableName="trade_manager_by_item_filters" baseColumnNames="user_id" 
+                                 referencedTableName="helper_user" referencedColumnNames="id"
+                                 constraintName="fk_trade_manager_by_filters_user"/>
+    </changeSet>
+
+    <changeSet id="015-create-trade-manager-by-item-id-table" author="ricemonger">
+        <createTable tableName="trade_manager_by_item_id">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BOOLEAN"/>
+            <column name="trade_operation_type" type="INTEGER"/>
+            <column name="sell_boundary_price" type="INTEGER"/>
+            <column name="buy_boundary_price" type="INTEGER"/>
+            <column name="priority_multiplier" type="INTEGER"/>
+        </createTable>
+        <addPrimaryKey tableName="trade_manager_by_item_id" columnNames="user_id, item_id"/>
+        <addForeignKeyConstraint baseTableName="trade_manager_by_item_id" baseColumnNames="user_id" 
+                                 referencedTableName="helper_user" referencedColumnNames="id"
+                                 constraintName="fk_trade_manager_by_item_id_user"/>
+        <addForeignKeyConstraint baseTableName="trade_manager_by_item_id" baseColumnNames="item_id" 
+                                 referencedTableName="item" referencedColumnNames="item_id"
+                                 constraintName="fk_trade_manager_by_item_id_item"/>
+    </changeSet>
+
+    <changeSet id="016-create-ubi-account-authorization-entry-table" author="ricemonger">
+        <createTable tableName="ubi_account_authorization_entry">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="encoded_password" type="VARCHAR(255)"/>
+            <column name="ubi_session_id" type="VARCHAR(255)"/>
+            <column name="ubi_space_id" type="VARCHAR(255)"/>
+            <column name="ubi_auth_ticket" type="TEXT"/>
+            <column name="ubi_remember_device_ticket" type="TEXT"/>
+            <column name="ubi_remember_me_ticket" type="TEXT"/>
+            <column name="ubi_profile_id" type="VARCHAR(255)"/>
+        </createTable>
+        <addPrimaryKey tableName="ubi_account_authorization_entry" columnNames="user_id, email"/>
+        <addForeignKeyConstraint baseTableName="ubi_account_authorization_entry" baseColumnNames="user_id" 
+                                 referencedTableName="helper_user" referencedColumnNames="id"
+                                 constraintName="fk_ubi_account_auth_entry_user"/>
+        <addForeignKeyConstraint baseTableName="ubi_account_authorization_entry" baseColumnNames="ubi_profile_id" 
+                                 referencedTableName="ubi_account_stats" referencedColumnNames="ubi_profile_id"
+                                 constraintName="fk_ubi_account_auth_entry_ubi_account"/>
+    </changeSet>
+
+</databaseChangeLog>

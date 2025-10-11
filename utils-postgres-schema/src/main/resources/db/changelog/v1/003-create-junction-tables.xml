@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="017-create-item-tags-junction-table" author="ricemonger">
+        <createTable tableName="item_tags">
+            <column name="item_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tag_value" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="item_tags" columnNames="item_id, tag_value"/>
+        <addForeignKeyConstraint baseTableName="item_tags" baseColumnNames="item_id" 
+                                 referencedTableName="item" referencedColumnNames="item_id"
+                                 constraintName="fk_item_tags_item"/>
+        <addForeignKeyConstraint baseTableName="item_tags" baseColumnNames="tag_value" 
+                                 referencedTableName="tag" referencedColumnNames="tag_value"
+                                 constraintName="fk_item_tags_tag"/>
+    </changeSet>
+
+    <changeSet id="018-create-item-filter-tags-junction-table" author="ricemonger">
+        <createTable tableName="item_filter_tags">
+            <column name="item_filter_user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_filter_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tag_value" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="item_filter_tags" columnNames="item_filter_user_id, item_filter_name, tag_value"/>
+        <addForeignKeyConstraint baseTableName="item_filter_tags" 
+                                 baseColumnNames="item_filter_user_id, item_filter_name" 
+                                 referencedTableName="item_filter" referencedColumnNames="user_id, name"
+                                 constraintName="fk_item_filter_tags_filter"/>
+        <addForeignKeyConstraint baseTableName="item_filter_tags" baseColumnNames="tag_value" 
+                                 referencedTableName="tag" referencedColumnNames="tag_value"
+                                 constraintName="fk_item_filter_tags_tag"/>
+    </changeSet>
+
+    <changeSet id="019-create-trade-manager-filters-applied-filters-junction-table" author="ricemonger">
+        <createTable tableName="trade_manager_by_item_filters_applied_filters">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_filter_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="trade_manager_by_item_filters_applied_filters" 
+                       columnNames="user_id, name, item_filter_name"/>
+        <addForeignKeyConstraint baseTableName="trade_manager_by_item_filters_applied_filters" 
+                                 baseColumnNames="user_id, name" 
+                                 referencedTableName="trade_manager_by_item_filters" referencedColumnNames="user_id, name"
+                                 constraintName="fk_trade_manager_filters_applied_filters_manager"/>
+        <addForeignKeyConstraint baseTableName="trade_manager_by_item_filters_applied_filters" 
+                                 baseColumnNames="user_id, item_filter_name" 
+                                 referencedTableName="item_filter" referencedColumnNames="user_id, name"
+                                 constraintName="fk_trade_manager_filters_applied_filters_filter"/>
+    </changeSet>
+
+    <changeSet id="020-create-ubi-account-owned-items-junction-table" author="ricemonger">
+        <createTable tableName="ubi_account_owned_items">
+            <column name="ubi_profile_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="ubi_account_owned_items" columnNames="ubi_profile_id, item_id"/>
+        <addForeignKeyConstraint baseTableName="ubi_account_owned_items" baseColumnNames="ubi_profile_id" 
+                                 referencedTableName="ubi_account_stats" referencedColumnNames="ubi_profile_id"
+                                 constraintName="fk_ubi_account_owned_items_account"/>
+        <addForeignKeyConstraint baseTableName="ubi_account_owned_items" baseColumnNames="item_id" 
+                                 referencedTableName="item" referencedColumnNames="item_id"
+                                 constraintName="fk_ubi_account_owned_items_item"/>
+    </changeSet>
+
+    <changeSet id="021-create-ubi-account-current-sell-trades-junction-table" author="ricemonger">
+        <createTable tableName="ubi_account_current_sell_trades">
+            <column name="ubi_profile_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="trade_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="ubi_account_current_sell_trades" columnNames="ubi_profile_id, trade_id"/>
+        <addForeignKeyConstraint baseTableName="ubi_account_current_sell_trades" baseColumnNames="ubi_profile_id" 
+                                 referencedTableName="ubi_account_stats" referencedColumnNames="ubi_profile_id"
+                                 constraintName="fk_ubi_account_sell_trades_account"/>
+        <addForeignKeyConstraint baseTableName="ubi_account_current_sell_trades" baseColumnNames="trade_id" 
+                                 referencedTableName="trade" referencedColumnNames="trade_id"
+                                 constraintName="fk_ubi_account_sell_trades_trade"/>
+    </changeSet>
+
+    <changeSet id="022-create-ubi-account-current-buy-trades-junction-table" author="ricemonger">
+        <createTable tableName="ubi_account_current_buy_trades">
+            <column name="ubi_profile_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="trade_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="ubi_account_current_buy_trades" columnNames="ubi_profile_id, trade_id"/>
+        <addForeignKeyConstraint baseTableName="ubi_account_current_buy_trades" baseColumnNames="ubi_profile_id" 
+                                 referencedTableName="ubi_account_stats" referencedColumnNames="ubi_profile_id"
+                                 constraintName="fk_ubi_account_buy_trades_account"/>
+        <addForeignKeyConstraint baseTableName="ubi_account_current_buy_trades" baseColumnNames="trade_id" 
+                                 referencedTableName="trade" referencedColumnNames="trade_id"
+                                 constraintName="fk_ubi_account_buy_trades_trade"/>
+    </changeSet>
+
+    <changeSet id="023-create-user-item-show-applied-filter-junction-table" author="ricemonger">
+        <createTable tableName="user_item_show_applied_item_filter">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_filter_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="user_item_show_applied_item_filter" columnNames="user_id, item_filter_name"/>
+        <addForeignKeyConstraint baseTableName="user_item_show_applied_item_filter" baseColumnNames="user_id" 
+                                 referencedTableName="helper_user" referencedColumnNames="id"
+                                 constraintName="fk_user_item_show_filter_user"/>
+        <addForeignKeyConstraint baseTableName="user_item_show_applied_item_filter" baseColumnNames="user_id, item_filter_name" 
+                                 referencedTableName="item_filter" referencedColumnNames="user_id, name"
+                                 constraintName="fk_user_item_show_filter_filter"/>
+    </changeSet>
+
+</databaseChangeLog>

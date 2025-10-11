@@ -21,6 +21,7 @@
         <spring-boot-version>3.2.5</spring-boot-version>
         <spring-cloud.version>2023.0.1</spring-cloud.version>
         <telegram-bot.version>7.2.1</telegram-bot.version>
+        <liquibase.version>5.0.1</liquibase.version>
     </properties>
 
     <dependencyManagement>
@@ -50,6 +51,11 @@
                 <artifactId>spring-graphql-test</artifactId>
                 <version>${spring-graphql.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>

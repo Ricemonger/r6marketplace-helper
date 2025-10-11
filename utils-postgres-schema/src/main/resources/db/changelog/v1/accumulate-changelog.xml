@@ -1,0 +1,10 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <include file="001-create-core-tables.xml" relativeToChangelogFile="true"/>
+    <include file="002-create-composite-key-tables.xml" relativeToChangelogFile="true"/>
+    <include file="003-create-junction-tables.xml" relativeToChangelogFile="true"/>
+   
+</databaseChangeLog>

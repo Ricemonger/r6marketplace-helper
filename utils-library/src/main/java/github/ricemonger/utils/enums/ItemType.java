@@ -11,5 +11,5 @@ public enum ItemType {
     OperatorCardBackground,
     DroneSkin,
     GadgetSkin,
-    LootCrate
+    lootcrate
 }

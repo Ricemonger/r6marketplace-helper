@@ -8,6 +8,7 @@ import github.ricemonger.marketplace.graphQl.common_query_items.DTO.marketableIt
 import github.ricemonger.marketplace.graphQl.common_query_items.DTO.marketableItems.node.marketData.LastSoldAt;
 import github.ricemonger.marketplace.graphQl.common_query_items.DTO.marketableItems.node.marketData.SellStats;
 import github.ricemonger.utils.DTOs.common.Item;
+import github.ricemonger.utils.enums.ItemRarity;
 import github.ricemonger.utils.enums.ItemType;
 import github.ricemonger.utils.exceptions.server.GraphQlCommonItemMappingException;
 import org.junit.jupiter.api.Test;
@@ -68,6 +69,7 @@ class CommonQueryItemsMapperTest {
         expectedItem.setAssetUrl("assetUrl");
         expectedItem.setName("name");
         expectedItem.setTags(List.of("Y2S1", "Y2S2"));
+        expectedItem.setRarity(ItemRarity.UNKNOWN);
         expectedItem.setType(ItemType.WeaponSkin);
         expectedItem.setMaxBuyPrice(100);
         expectedItem.setBuyOrdersCount(10);
@@ -90,11 +92,15 @@ class CommonQueryItemsMapperTest {
         Node node = createNode(dtf, date);
         node.getItem().setType("invalidType");
 
+        String uncommonRarityTag = "Y2S1";
+        when(commonValuesService.getUncommonTagValue()).thenReturn(uncommonRarityTag);
+
         Item expectedItem = new Item();
         expectedItem.setItemId("1");
         expectedItem.setAssetUrl("assetUrl");
         expectedItem.setName("name");
         expectedItem.setTags(List.of("Y2S1", "Y2S2"));
+        expectedItem.setRarity(ItemRarity.UNCOMMON);
         expectedItem.setType(ItemType.Unknown);
         expectedItem.setMaxBuyPrice(100);
         expectedItem.setBuyOrdersCount(10);
@@ -117,11 +123,16 @@ class CommonQueryItemsMapperTest {
         Node node = createNode(dtf, date);
         node.getMarketData().setBuyStats(null);
 
+        when(commonValuesService.getUncommonTagValue()).thenReturn("Y2S1");
+        when(commonValuesService.getRareTagValue()).thenReturn("Y2S2");
+
+
         Item expectedItem = new Item();
         expectedItem.setItemId("1");
         expectedItem.setAssetUrl("assetUrl");
         expectedItem.setName("name");
         expectedItem.setTags(List.of("Y2S1", "Y2S2"));
+        expectedItem.setRarity(ItemRarity.RARE);
         expectedItem.setType(ItemType.WeaponSkin);
         expectedItem.setMaxBuyPrice(0);
         expectedItem.setBuyOrdersCount(0);
@@ -144,11 +155,15 @@ class CommonQueryItemsMapperTest {
         Node node = createNode(dtf, date);
         node.getMarketData().setSellStats(null);
 
+        when(commonValuesService.getRareTagValue()).thenReturn("Y2S1");
+        when(commonValuesService.getEpicTagValue()).thenReturn("Y2S2");
+
         Item expectedItem = new Item();
         expectedItem.setItemId("1");
         expectedItem.setAssetUrl("assetUrl");
         expectedItem.setName("name");
         expectedItem.setTags(List.of("Y2S1", "Y2S2"));
+        expectedItem.setRarity(ItemRarity.EPIC);
         expectedItem.setType(ItemType.WeaponSkin);
         expectedItem.setMaxBuyPrice(100);
         expectedItem.setBuyOrdersCount(10);
@@ -171,11 +186,15 @@ class CommonQueryItemsMapperTest {
         Node node = createNode(dtf, date);
         node.getMarketData().setLastSoldAt(null);
 
+        when(commonValuesService.getEpicTagValue()).thenReturn("Y2S1");
+        when(commonValuesService.getLegendaryTagValue()).thenReturn("Y2S2");
+
         Item expectedItem = new Item();
         expectedItem.setItemId("1");
         expectedItem.setAssetUrl("assetUrl");
         expectedItem.setName("name");
         expectedItem.setTags(List.of("Y2S1", "Y2S2"));
+        expectedItem.setRarity(ItemRarity.LEGENDARY);
         expectedItem.setType(ItemType.WeaponSkin);
         expectedItem.setMaxBuyPrice(100);
         expectedItem.setBuyOrdersCount(10);

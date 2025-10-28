@@ -10,6 +10,10 @@ ubi:
     localeCode: ${UBI_LOCALE_CODE:en-US}
     dateFormat: ${UBI_DATE_FORMAT:yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}
     itemSaleStatsDateFormat: ${UBI_ITEM_SALE_DATE_FORMAT:yyyy-MM-dd}
+    uncommonTagValue: ${UBI_UNCOMMON_TAG_VALUE:rarity_uncommon}
+    rareTagValue: ${UBI_RARE_TAG_VALUE:rarity_rare}
+    epicTagValue: ${UBI_EPIC_TAG_VALUE:rarity_superrare}
+    legendaryTagValue: ${UBI_LEGENDARY_TAG_VALUE:rarity_legendary}
 
 server:
   port: ${SERVER_PORT:8083}

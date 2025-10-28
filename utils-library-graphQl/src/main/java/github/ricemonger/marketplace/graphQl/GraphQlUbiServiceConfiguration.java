@@ -27,4 +27,12 @@ public class GraphQlUbiServiceConfiguration {
     private String dateFormat;
     @Value("${ubi.session.itemSaleStatsDateFormat}")
     private String itemSaleStatsDateFormat;
+    @Value("${ubi.session.uncommonTagValue}")
+    private String uncommonTagValue;
+    @Value("${ubi.session.rareTagValue}")
+    private String rareTagValue;
+    @Value("${ubi.session.epicTagValue}")
+    private String epicTagValue;
+    @Value("${ubi.session.legendaryTagValue}")
+    private String legendaryTagValue;
 }

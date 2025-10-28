@@ -53,6 +53,8 @@ public class CommonQueryItemsMapper {
         result.setAssetUrl(item.getAssetUrl());
         result.setName(item.getName());
         result.setTags(item.getTags());
+        result.setRarityByTags(graphQlCommonValuesService.getUncommonTagValue(),graphQlCommonValuesService.getRareTagValue(),
+                graphQlCommonValuesService.getEpicTagValue(),graphQlCommonValuesService.getLegendaryTagValue());
 
         try {
             result.setType(ItemType.valueOf(item.getType()));

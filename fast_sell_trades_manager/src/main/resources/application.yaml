@@ -18,6 +18,10 @@ ubi:
     maxEpicPrice: ${UBI_MAX_EPIC_PRICE:1000000}
     minLegendaryPrice: ${UBI_MIN_LEGENDARY_PRICE:10}
     maxLegendaryPrice: ${UBI_MAX_LEGENDARY_PRICE:1000000}
+    uncommonTagValue: ${UBI_UNCOMMON_TAG_VALUE:rarity_uncommon}
+    rareTagValue: ${UBI_RARE_TAG_VALUE:rarity_rare}
+    epicTagValue: ${UBI_EPIC_TAG_VALUE:rarity_superrare}
+    legendaryTagValue: ${UBI_LEGENDARY_TAG_VALUE:rarity_legendary}
 
 server:
   port: ${SERVER_PORT:8079}

@@ -68,4 +68,20 @@ public class GraphQlCommonValuesService {
     public String getItemSaleStatsDateFormat() {
         return graphQlUbiServiceConfiguration.getItemSaleStatsDateFormat();
     }
+
+    public String getUncommonTagValue() {
+        return graphQlUbiServiceConfiguration.getUncommonTagValue();
+    }
+
+    public String getRareTagValue() {
+        return graphQlUbiServiceConfiguration.getRareTagValue();
+    }
+
+    public String getEpicTagValue() {
+        return graphQlUbiServiceConfiguration.getEpicTagValue();
+    }
+
+    public String getLegendaryTagValue() {
+        return graphQlUbiServiceConfiguration.getLegendaryTagValue();
+    }
 }
